@@ -1,0 +1,46 @@
+@(serviceLogs: List[metadata.ServiceLog])
+
+@import helper._
+
+@scripts = {
+	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+}
+
+@main("Result Service Logs", scripts){
+	
+	@flash_message()   
+	 
+    <h1>@serviceLogs.size() Service Logs</h1>
+
+		<table class="table table-striped table-bordered table-condensed">
+	<tr>
+		<td>ServiceId</td>
+		<td>User</td>
+		<td>Purpose</td>
+		<td>StartTime</td>
+		<td>EndTime</td>
+		<td>ServiceConfigurationId</td>
+	</tr>
+	@for(serviceLog <- serviceLogs) {
+	<tr>
+	<td>@serviceLog.getServiceId</td>
+	<td>@serviceLog.getUserId</td>
+	<td>@serviceLog.getPurpose</td>
+	<td>@serviceLog.getExecutionStartTime</td>
+	<td>@serviceLog.getExecutionEndTime</td>
+	<td>
+	@form(routes.ClimateServiceController.getConfigurationByConfId()){ 
+		<input
+			name="serviceId" class="hidden" type="hidden"
+			value="@serviceLog.getServiceId">  
+		<input
+			name="logId" class="hidden" type="hidden"
+			value="@serviceLog.getServiceConfigurationId"> 
+		<input
+			type="submit" class="btn btn-link" value="see detail">
+	}
+	</td>
+	</tr>
+	}
+	</table>
+	}

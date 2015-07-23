@@ -1,0 +1,141 @@
+
+@(devices: List[metadata.Device], deviceForm: play.data.Form[metadata.Device])
+
+@import helper._
+
+@scripts = {
+	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+	<script src='@routes.Assets.at("javascripts/device_search.js")'></script>
+}
+
+@main("Devices", scripts) {
+    
+    @flash_message()
+    
+    <div class="visual_search"></div>
+    
+    <h1>@devices.size() Devices</h1>
+		<table class="table table-striped table-bordered table-condensed">
+			<tr>
+	    	<td>URI</td>
+	    	<td>Device Type</td>
+	    	<td>Sensor Type Names within device</td>
+	    	<td>Sensor Names within device</td>
+	    	
+	    	<td>Location: Longitude</td>
+	    	<td>Location: Latitude</td>
+	    	<td>Location: Altitude</td>
+	    	<td>Location: Interpreter</td>
+	    	
+	    	<td>User Defined Fields</td>
+	    	
+	    	@if(session.get("email")){
+	    	<td>Operation</td>
+	    	}
+	    	</tr>
+
+    	@for(device <- devices) {
+    	<tr id="@device.getId()" class="devices">
+            <td class="deviceUri">@device.getDeviceUri()</td>
+            <td class="deviceTypeName">@device.getDeviceTypeName()</td>
+       		<td class="sensorTypeNames">@device.getSensorTypeNames()</td>
+       		<td class="sensorNames">@device.getSensorNames()</td>
+       		
+       		<td class="longitude">
+	       		<span class="@device.getDeviceUri() editable" data-name="longitude">
+	       		@device.getLongitude()
+	       		</span>
+       		</td>
+       		<td class="latitude">
+       			<span class="@device.getDeviceUri() editable" data-name="latitude">
+       			@device.getLatitude()
+       			</span>
+       		</td>
+       		<td class="altitude">
+       			<span class="@device.getDeviceUri() editable" data-name="altitude">
+       			@device.getAltitude()
+       			</span>
+       		</td>
+       		<td class="representation">
+       			<span class="@device.getDeviceUri() editable" data-name="representation">
+       			@device.getRepresentation()
+       			</span>
+       		</td>
+       		
+       		<td class="deviceUserDefinedFields">
+       			<span class="@device.getDeviceUri() editable"
+       				data-name='deviceUserDefinedFields'>
+            		@device.getDeviceUserDefinedFields()
+       			</span>
+       		</td>
+
+			@if(session.get("email")){
+				<td class="operation">
+						<input type="button" class="edit-btn btn btn-primary" value="Edit" 
+							data-pk='@device.getDeviceUri()' 
+							data-url='@routes.DeviceController.editDevice()'>		
+					@form(routes.DeviceController.deleteDevice()){
+              		 	<input name="idHolder" type="hidden" value="@device.getDeviceUri()">
+       					<input type="submit"  class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure you want to delete this item?')">
+           			}
+						
+				</td>
+			}
+    	</tr>
+        }
+    </table>
+    
+    @if(session.get("email")){
+    <h2>Add a new device</h2>
+    
+    @form(routes.DeviceController.newDevice()) {
+        		
+        		@inputText(
+	                deviceForm("uri"), 
+	                '_label -> "URI *(Please DO NOT contain spaces)",
+	                '_error -> deviceForm.globalError                                
+            	)
+        		@select(
+        			deviceForm("deviceTypeName"), 
+                	options(metadata.DeviceType.allDeviceTypeName()),
+        			'_label -> "Device Type Name",
+              	  	'_error -> deviceForm.globalError
+        		)
+		        		
+		        @inputText(
+	                deviceForm("representation"), 
+	                '_label -> "Location Interpreter",
+	                'placeholder-> "GPS",                 
+	                '_error -> deviceForm.globalError                                
+		        )
+		        @inputText(
+	                deviceForm("longitude"), 
+	                '_label -> "Location Longitude",
+	                'placeholder-> "37.410355",                 
+	                '_error -> deviceForm.globalError                                
+		        )
+		        @inputText(
+	                deviceForm("latitude"), 
+	                '_label -> "Location Latitude",                 
+	                'placeholder-> "-122.059661",                 
+	                '_error -> deviceForm.globalError                                
+		        )
+		        @inputText(
+	                deviceForm("altitude"), 
+	                '_label -> "Location Altitude",                 
+	                'placeholder-> "0",                 
+	                '_error -> deviceForm.globalError                                
+		        )       		
+        		
+        		@inputText(
+	                deviceForm("deviceUserDefinedFields"), 
+	                '_label -> "User Defined Fields",
+	                '_error -> deviceForm.globalError                                
+            	)
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Register">
+            <a href="@routes.DeviceController.devices()" class="btn">Cancel</a>
+        </div>
+    }
+    }
+}

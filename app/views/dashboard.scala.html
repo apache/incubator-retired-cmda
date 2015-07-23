@@ -1,0 +1,112 @@
+
+@(dashboard: Dashboard, currentTime: String) 
+@import helper._ 
+
+@main("Dashboard") {
+
+<link rel="stylesheet" href='@routes.Assets.at("stylesheets/jquery.jqplot.min.css")'>
+
+<script src='@routes.Assets.at("javascripts/jquery.jqplot.min.js")'
+	type="text/javascript"></script>
+<script src='@routes.Assets.at("javascripts/jqplot.pieRenderer.min.js")'
+	type="text/javascript"></script>
+	
+<script class="code" type="text/javascript">
+      $(document).ready(
+        function(){
+          active = parseInt($("#activeCount").attr("value"));
+          inactive = parseInt($("#totalCount").attr("value")) - active;
+          var data = [ ['Active', active],['Inactive', inactive] ];
+          var plot1 = jQuery.jqplot ('healthchart', [data], 
+            { 
+              seriesDefaults: {                
+                seriesColors: [ "#dff0d8", "#f2dede", "#fcf8e3", "#4bb2c5", "#c5b47f", "#EAA228"],                
+                renderer: jQuery.jqplot.PieRenderer, 
+                rendererOptions: {                  
+                  showDataLabels: true
+                }
+              }, 
+              legend: { show:true, location: 'e' }
+            }
+          );
+      });
+</script>
+	
+	@flash_message()
+	<input id="activeCount" type="hidden" value="@dashboard.getActiveCount()" />
+	<input id="totalCount" type="hidden" value="@dashboard.getTotalCount()" />
+	<div class="row">
+		<h2>Last Check time : @currentTime</h2>
+	</div>
+	
+	<div class="row">
+		<h2>Device status</h2>
+		<p>You may observe the status of the devices in this table. Active devices 
+		  are in green rows while inactive devices are shown in red. An inactive device is one that 
+		  has not posted a sensor reading in the last 60 seconds.</p>
+	</div>
+	<div class="row">
+		<h3>Statistics</h3>
+		<p>Active devices: @dashboard.getActiveCount()</p>
+		<p>Total devices: @dashboard.getTotalCount()</p>		
+        <div id="healthchart" style="height:300px; width:500px;"></div>
+    </div>
+          
+	<div class="row">
+		
+		<table class="table table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>Device Uri</th>
+					<th>Device Type</th>
+					<th>Location</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+		
+			<tbody>
+			
+
+				@for(boardItem <- dashboard.getItems()) {
+					<style>
+						.active {
+							color: green;
+							font: bold;
+						}
+						.inactive {
+							color: #f2dede;
+							font: italic;
+						}
+						.inactiveLine{
+							background-color: #fcf8e3;
+						}
+						.activeLine{
+							background-color: #dff0d8;
+						}
+					</style>
+					@defining(boardItem.getStatus() == 1){ isActive =>	
+					@if(isActive){
+						<tr class='activeLine'>
+					}else{
+						<tr class='inactiveLine'>
+					}
+						<td>@boardItem.getDevice().getDeviceUri()</td>
+						<td>@boardItem.getDevice().getDeviceTypeName()</td>
+						
+						<td>Longitude: @boardItem.getDevice().getLongitude(), Latitude: @boardItem.getDevice().getLatitude(), Altitude: @boardItem.getDevice().getAltitude()</td>
+						
+						<td>
+							@if(isActive){
+								<span class="active">Active</span>
+							}else{
+								<span class="inactive">Inactive</span>
+							}
+						</td>
+						</tr>
+					}				
+				}
+			
+			</tbody>				
+		</table>
+	</div>
+}

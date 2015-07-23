@@ -1,0 +1,136 @@
+
+@(sensorTypes: List[metadata.SensorType], sensorTypeForm: play.data.Form[metadata.SensorType])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@scripts = {
+	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+}
+
+@main("Sensor Types", scripts) {
+    
+    @flash_message()
+    
+    <h1>@sensorTypes.size() Sensor Types</h1>
+    <table class="table table-striped table-bordered table-condensed">
+    <tr>
+    	<td>Sensor Type Name</td>
+    	<td>Manufacturer</td>
+    	<td>Version</td>
+    	<td>Max Value</td>
+    	<td>Min Value</td>
+    	<td>Unit</td>
+    	<td>Interpreter</td>
+    	<td>Sensor Category</td>
+    	<td>User Defined Fields</td>
+    	
+    	
+    	@if(session.get("email")){
+    	<td>Operation</td>
+    	}
+    </tr>
+
+        @for(sensorType <- sensorTypes) {
+    <tr id="@sensorType.getId()">
+            <td>@sensorType.getSensorTypeName()</td>
+                <td>@sensorType.getManufacturer()</td>
+                <td>@sensorType.getVersion()</td>
+                <td>@sensorType.getMaxValue()</td>
+                <td>@sensorType.getMinValue()</td>
+                <td>@sensorType.getUnit()</td>
+                <td>@sensorType.getInterpreter()</td>
+                <td>@sensorType.getSensorCategoryName()</td>
+                <td>
+	                <span class="@sensorType.getSensorTypeName() editable"
+	                	data-name='sensorTypeUserDefinedFields'>
+	                	@sensorType.getSensorTypeUserDefinedFields()
+	                </span>
+                </td>
+                
+    			@if(session.get("email")){
+
+	              	<td class="operation">
+						
+						<input type="button" class="edit-btn btn btn-primary" value="Edit" 
+							data-pk='@sensorType.getSensorTypeName()' 
+							data-url='@routes.SensorTypeController.editSensorType()' 
+						>
+						
+						
+	               		 @form(routes.SensorTypeController.deleteSensorType()){
+	               		 	<input name="idHolder" type="hidden" value="@sensorType.getSensorTypeName()">
+	        				<input type="submit"  class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure you want to delete this item?')">
+	            		}
+	          		</td>
+           			
+            	}
+    </tr>
+        }
+    </table>
+    
+    
+    @if(session.get("email")){
+    <h2>Add a new sensor type</h2>
+    
+    @form(routes.SensorTypeController.newSensorType()) {
+         
+        @inputText(
+                sensorTypeForm("sensorTypeName"), 
+                '_label -> "Sensor Type Name * (Please DO NOT contain spaces)",     
+                'size -> 30,
+                'placeholder-> "the name of this sensor type",           
+                '_error -> sensorTypeForm.globalError                                
+        )
+        @inputText(
+                sensorTypeForm("manufacturer"), 
+                '_label -> "Manufacturer",  
+                'size -> 30,
+                'placeholder-> "the name of Manufacturer",               
+                '_error -> sensorTypeForm.globalError                                
+        )
+        @inputText(
+                sensorTypeForm("version"), 
+                '_label -> "Version",
+                'placeholder-> 1.0,                 
+                '_error -> sensorTypeForm.globalError                                
+        )
+        @inputText(
+                sensorTypeForm("maximumValue"), 
+                '_label -> "Max Value",
+                '_error -> sensorTypeForm.globalError                                
+        )
+        @inputText(
+                sensorTypeForm("minimumValue"), 
+                '_label -> "Min Value",                 
+                '_error -> sensorTypeForm.globalError                                
+        )
+        @inputText(
+                sensorTypeForm("unit"), 
+                '_label -> "Unit",                 
+                'placeholder-> "Celsius",                 
+                '_error -> sensorTypeForm.globalError                                
+        )
+        @inputText(
+                sensorTypeForm("interpreter"), 
+                '_label -> "Interpreter",                 
+                '_error -> sensorTypeForm.globalError                                
+        )
+        @select(
+        		sensorTypeForm("sensorCategoryName"), 
+                options(metadata.SensorCategory.allSensorCategoryName()),
+     			'_label -> "Sensor Category",
+                '_error -> sensorTypeForm.globalError
+        		)
+        		
+         @inputText(
+                sensorTypeForm("sensorTypeUserDefinedFields"), 
+                '_label -> "User Defined Fields",                     
+                '_error -> sensorTypeForm.globalError                                
+        )
+        <input class="btn" type="submit" value="Register">
+        <a href="@routes.SensorTypeController.sensorTypes()" class="btn">Cancel</a>
+        
+    }
+ 		}   
+}

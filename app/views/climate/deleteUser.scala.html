@@ -1,0 +1,23 @@
+@(userForm: Form[NasaRegistration])
+@import helper._
+@import helper.twitterBootstrap._
+@main("Nasa Update Form"){
+
+
+
+    <div class="clearfix  " id="name_field">
+       
+                    
+    <legend>User Deletion Form</legend>
+    @helper.form(action = routes.NasaRegistrationController.delete()){
+    <fieldset>
+    @helper.inputText(userForm("userNameField"),'_label -> "User Name*")
+    @helper.inputPassword(userForm("passwordField"), '_label -> "Password*")
+    
+    
+    <input type="submit" class="btn btn-primary" value="Delete">
+    <fieldset>
+    </div>
+}
+}
+

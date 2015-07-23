@@ -1,0 +1,31 @@
+@(userForm: Form[NasaRegistration])
+@import helper._
+@import helper.twitterBootstrap._
+@main("Nasa Update Form"){
+
+
+
+    <div class="clearfix  " id="name_field">
+       
+                    
+    <legend>User Update Form</legend>
+    @helper.form(action = routes.NasaRegistrationController.update()){
+    <fieldset>
+    @helper.inputText(userForm("userNameField"),'_label -> "User Name*")
+    @helper.inputPassword(userForm("passwordField"), '_label -> "Password*")
+    @helper.inputText(userForm("fNameField"), '_label -> "First Name*")
+    @helper.inputText(userForm("mNameField"), '_label -> "Middle Name")
+    @helper.inputText(userForm("lNameField"), '_label -> "Last Name")
+
+    @textarea(
+                userForm("affliationField"), 
+                '_label -> "Affliation", 'cols -> 50, 'rows -> 5
+            )
+    @helper.inputText(userForm("emailField"), '_label -> "Email")
+    @helper.inputText(userForm("rAreaField"),  '_label -> "Research Area")
+    <input type="submit" class="btn btn-primary" value="Update">
+    <fieldset>
+    </div>
+}
+}
+

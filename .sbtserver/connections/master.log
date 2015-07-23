@@ -1,0 +1,10 @@
+New log file opened at Tue Jul 21 18:34:15 PDT 2015 by 10232@Lenovo-PC
+Taking next connection to: 55671
+New client attempting to connect on port: 55672-55671
+  Address = /10.0.20.69:55671
+This client on port 55672 has uuid b9269a46-8719-48c7-8a73-da2559e32568 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-b9269a46-8719-48c7-8a73-da2559e32568
+Taking next connection to: 55671
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 55671

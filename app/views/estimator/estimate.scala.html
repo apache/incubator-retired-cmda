@@ -1,0 +1,118 @@
+@(email: String, vfile: String, dataset: String)
+
+
+@import helper._ 
+
+@main("Estimator") {
+
+
+<ol class="breadcrumb">
+	<li><a href="/estimator/tutorial">Tutorial</a></li>
+	<li class="active">Collect Data</li>
+	<li><a href="/estimator/1">Input preference</a></li>
+	<li><a href="/estimator/2">Workflow Summary</a></li>
+	<li><a href="/estimator/3">Recommendation</a></li>
+</ol>
+
+<div class="jumbotron">
+<div class="row">
+
+	<div class="col-lg-6">
+		<img src="/assets/images/NASA_logo.png">
+	</div>
+	<div class="col-lg-6">
+	<h1>We are ready to help you</h1>
+	<p>We have collected your workflow and datasets. Based on those
+		files, we can help you decide which virtual machine option is best for
+		you to use at Amazon EC2.</p>
+	<p>
+		<a class="btn btn-lg btn-default"
+						href="/estimator/tutorial" role="button">Getting Started &raquo;</a>
+	</p>
+	@if(!session.get("username")){
+		<p>Nasa Provides 200 AWS accounts with $150 credit each. First come first serve for contest participants.
+		Remaining slots: 150.
+		If you would like to get a credited account please register here.</p>
+		<p>
+		<a class="btn btn-primary"
+						href="estimator/register" role="button">Register &raquo;</a>
+	</p>
+	}
+	</div>
+</div>
+</div>
+
+<form method="POST" action="/estimator/1" enctype="multipart/form-data">
+
+
+	<fieldset>
+		<legend>Estimator</legend>
+
+		<div class="clearfix" id="name_field">
+			<label for="name">Scripting file</label>
+			<div class="row">
+				<div class="input col-lg-2">
+
+					<input type="file" id="name" name="file" value="@vfile" placeholder="/Downloads/Workflowfiles"> <span
+						class="help-inline"></span> <span class="help-block">Required</span>
+				</div>
+				<div class="upload col-lg-2">
+					
+				</div>
+			</div>
+		</div>
+		<div class="clearfix" id="title_field">
+			<label for="title">Dataset</label>
+			<div class="row">
+				<div class="input col-lg-2">
+	 
+					<input type="text" id="title" name="title" value="@dataset" placeholder="/Downloads/Datasets"> <span
+						class="help-inline"></span> <span class="help-block">Required</span>
+				</div>
+			
+				<div class="upload col-lg-2">
+					<input type="button" class="btn" id="upload-dataset" name="upload-dataset" value="upload">
+				</div>
+			</div>
+		</div>
+		<div class="clearfix  " id="email_field">
+			<label for="email">Email</label>
+			<div class="input">
+
+				<input type="text" id="email" name="email" value="@email"> <span
+					class="help-inline"></span> <span class="help-block">Required</span>
+			</div>
+		</div>
+
+		<div class="clearfix  " id="organization_field">
+			<label for="organization">Organization</label>
+			<div class="input">
+
+				<input type="text" id="organization" name="organization" value="">
+
+				<span class="help-inline"></span> <span class="help-block"></span>
+			</div>
+		</div>
+
+		<div class="clearfix  " id="description_field">
+			<label for="description">Description</label>
+			<div class="input">
+
+				<textarea id="description" name="description" cols="65" rows="7"></textarea>
+
+				<span class="help-inline"></span> <span class="help-block"></span>
+			</div>
+		</div>
+
+	</fieldset>
+
+
+	<div class="actions">
+		<input type="submit" class="btn btn-primary"
+			value="Get Recommendation"> <a href="/estimator" class="btn">Thanks,
+			I know what to use</a>
+	</div>
+
+
+</form>
+}

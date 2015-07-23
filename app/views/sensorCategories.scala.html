@@ -1,0 +1,76 @@
+
+@(sensorCategories: List[metadata.SensorCategory], sensorCategoryForm: play.data.Form[metadata.SensorCategory])
+
+@import helper._
+
+@scripts = {
+	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+}
+
+@main("Sensor Categories", scripts) {
+	
+	@flash_message()    
+
+    <h1>@sensorCategories.size() Sensor Categories</h1>
+		<table class="table table-striped table-bordered table-condensed">
+	<tr>
+		<td>Sensor Category Name</td>
+		<td>Purpose</td> 
+		@if(session.get("email")){
+			<td>Operation</td> 
+		}
+	</tr>
+
+	@for(sensorCategory <- sensorCategories) {
+	<tr>
+		<td>@sensorCategory.getSensorCategoryName()</td>
+
+		<td><span class="@sensorCategory.getSensorCategoryName() editable" data-name='purpose'>
+				@sensorCategory.getPurpose() </span></td>
+
+		@if(session.get("email")){
+			<td class="operation">
+				<input type="button" class="edit-btn btn btn-primary" value="Edit" 
+					data-pk='@sensorCategory.getSensorCategoryName()' 
+					data-url='@routes.SensorCategoryController.editSensorCategory()' 
+				>
+				@form(routes.SensorCategoryController.deleteSensorCategory()){ 
+					<input
+						name="idHolder" class="hidden" type="hidden"
+						value="@sensorCategory.getSensorCategoryName()"> 
+					<input
+						type="submit" class="btn btn-danger delete-btn" value="Delete"
+						onclick="return confirm('Are you sure you want to delete this item?')">
+				}
+			</td> 
+		}
+	</tr>
+	}
+    </table>
+    
+     @if(session.get("email")){
+	    <h2>Add a new sensor category</h2>
+	    
+	    @form(routes.SensorCategoryController.newSensorCategory()) {
+	        
+	        @inputText(
+	        	sensorCategoryForm("Name"),
+	        	'_label -> "Name * (Please DO NOT contain spaces)"
+	        )
+	        @inputText(
+	        	sensorCategoryForm("Purpose"),
+	        	'_label -> "Purpose"
+	        ) 
+	
+	        <input class="btn" type="submit" value="Create">
+	        <a href="@routes.SensorCategoryController.sensorCategories()" class="btn">Cancel</a>
+	    }
+	
+		<br>
+		    
+	    @form(routes.SensorCategoryController.downloadSensorCategory(), 'class -> "form-horizontal", 'role -> "form") {
+	
+	        <button type="submit" name="action" value="download">Download</button>
+	    }
+    }
+}

@@ -1,0 +1,115 @@
+@import helper._
+
+@main("Estimator") {
+
+<ol class="breadcrumb">
+	<li><a href="/estimator/tutorial">Tutorial</a></li>
+	<li><a href="/estimator">Collect Data</a></li>
+	<li class="active">Input preference</li>
+	<li><a href="/estimator/2">Workflow Summary</a></li>
+	<li><a href="/estimator/3">Recommendation</a></li>
+</ol>
+
+<form method="GET" role="form" action="/estimator/2">
+
+
+	<fieldset>
+		<legend>Tell us your preference</legend>
+
+		<p>In general, you have two options, on-demand and batch mode.
+			Under each mode, you can select CPU, memory, storage, and OS.</p>
+
+
+		<div class="form-group">
+			<label class="control-label" for="budget">1) Budget</label>
+			<div>
+				<span>$ </span><input type="text" class="input-xlarge" id="budget" placeholder="50">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label">2) Flexible start
+				& end time?</label>
+
+			<div>
+				<label class="checkbox-inline"> <input type="checkbox"
+					id="yes-flexible"> yes
+				</label> <label class="checkbox-inline"> <input type="checkbox"
+					id="no-flexible"> no
+				</label>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label">3) Estimated Usage</label>
+			
+			<div class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="cpu"> CPU </label>
+				<select id="cpu">
+					<option>1</option>
+					<option>2</option>
+					<option>4</option>
+					<option>More than 4</option>
+					<option>No idea</option>
+				</select>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="memory"> Memory (GiB) </label>
+				<select id="cpu">
+					<option>1.7</option>
+					<option>3.75</option>
+					<option>7.5</option>
+					<option>15</option>
+					<option>More than 15</option>
+					<option>No idea</option>
+				</select>
+				
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="storage"> Storage (GiB) </label>
+				<select id="storage">
+					<option>1*4 SSD</option>
+					<option>1*32 SSD</option>
+					<option>1*160</option>
+					<option>1*410</option>
+					<option>No idea</option>
+				</select>
+			</div>
+			</div>
+		</div>
+			
+		<div class="form-group">
+			<label class="control-label">4) Operating System</label>
+			
+			<div>
+				<label class="checkbox-inline"> <input type="checkbox"
+					id="nix-os"> Linux/ Unix
+				</label> <label class="checkbox-inline"> <input type="checkbox"
+					id="windows-os"> Windows
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label" for="region">5) Region</label>
+			
+			<div>
+				<select id="region">
+					<option value="US West (North California)">US West (North
+						California)</option>
+					<option value="US West (Oregon)">US West (Oregon)</option>
+					<option value="US East (N. Virginia)">US East (N.
+						Virginia)</option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+
+	<div class="actions">
+		<input type="submit" class="btn primary" value="Submit"> <a
+			href="/estimator" class="btn">Cancel</a>
+	</div>
+</form>
+}

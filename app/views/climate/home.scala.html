@@ -1,0 +1,33 @@
+@(email: String, vfile: String, dataset: String)
+
+@import helper._ 
+
+@main("Home") {
+
+<div class="jumbotron">
+	<div class="row">
+
+		<div class="col-lg-6">
+			</br></br>
+			<img src="/assets/images/JPL_Cover.jpg" height="430" width="500" />
+		</div>
+		<div class="col-lg-6">
+			<h1>Climate Data Analysis</h1>
+			<p>JPL has provided a repository of web services for multi-aspect
+				physics-based and phenomenon-oriented phenomenon-oriented climate
+				model performance evaluation and diagnosis through the comprehensive
+				and synergistic use of multiple observational data, reanalysis data,
+				and model outputs.</p>
+			
+			<!-- @if(!session.get("username")){ -->
+			
+			<p>
+				@if(false){ <a class="btn btn-primary" href="climate/register"
+					role="button">Register &raquo;</a> }
+			</p>
+			<!-- } -->
+		</div>
+	</div>
+</div>
+
+}

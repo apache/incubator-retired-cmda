@@ -1,0 +1,46 @@
+@(results: List[SearchDataset], url: String)
+
+	@import helper._
+
+	@main("All DataSets") {
+		<ol class="breadcrumb">
+			<li><a href="/climate/climateServices">Services List</a></li>
+			<li><a href="/climate/recommendation">Recommendation</a></li>
+			<li class="active">DataSet List</li>
+		</ol>
+		<div class="container container-xs-height" style="overflow-y">
+		@if(results != null) {
+			<div class="row row-xs-height">
+				<p>Parallel Web-Service Climate Model Diagnostic Analyzer Datasets</p>
+				<div style="overflow-y : auto ; height : 250px ; width : 100 % ; margin-bottom : 5px">
+					<table class="table table-striped table-bordered table-condensed">
+						<thead>
+							<tr>
+								<td>Name</td>
+								<td>Description</td>
+								<td>Ontology</td>
+							</tr>
+						</thead>
+						<tbody>
+						@for(str <- results) {
+							<tr>
+								<td><a href="/climate/dataSets/@str.getData_id">@str.getTitle</a></td>
+								<td>@str.getDescription</td>
+								<td>@str.getKeyword</td>
+							</tr>
+						}
+						</tbody>
+					</table>
+				</div>
+				@*<p>Next >></p>*@
+
+				@if(url != null) {
+					<iframe src="@url" height="300px" width="100%"></iframe>
+				}
+			</div>
+		}
+		</div>
+	}
+
+
+

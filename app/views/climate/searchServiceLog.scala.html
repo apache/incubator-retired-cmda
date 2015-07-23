@@ -1,0 +1,313 @@
+@(serviceLogForm: play.data.Form[metadata.ServiceLog])
+
+@import helper._
+
+@scripts = {
+	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+	<script type="text/javascript">
+	$(function() {
+	    var availableTags = [
+	      "NASA/MODIS",
+	      "NASA/AMSRE",
+	      "NASA/TRMM",
+	      "NASA/GPCP",
+	      "NASA/QuikSCAT",
+	      "NASA/AVISO",
+	      "NASA/GRACE",
+	      "NOAA/NODC",
+	      "NASA/CERES",
+	      "CCCMA/CANESM2",
+	      "GFDL/ESM2G",
+	      "GISS/E2-H",
+	      "GISS/E2-R",
+	      "NCAR/CAM5",
+	      "NCC/NORESM",
+	      "UKMO/HadGEM2-ES",
+	      "CCCMA/CANAM4",
+	      "CSIRO/MK3.6",
+	      "GFDL/CM3",
+	      "IPSL/CM5A-LR",
+	      "MIROC/MIROC5",
+	      "UKMO/HadGEM2-A",
+	      "ECMWF/interim"
+	    ];
+	    var availableTagsVariableName = [
+	       "Total Cloud Fraction",
+	       "Leaf Area Index",
+	       "Surface Temperature",
+	       "Sea Surface Temperature",
+	       "Precipitation Flux",
+	       "Eastward Near-Surface Wind",
+	       "Northward Near-Surface Wind",
+	       "Near-Surface Wind Speed",
+	       "Sea Surface Height",
+	       "Equivalent Water Height Over Land",
+	       "Equivalent Water Height Over Ocean",
+	       "Ocean Heat Content Anomaly within 700 m Depth",
+	       "Ocean Heat Content Anomaly within 2000 m Depth",
+	       "Surface Downwelling Longwave Radiation",
+	       "Surface Downwelling Shortwave Radiation",
+	       "Surface Upwelling Longwave Radiation",
+	       "Surface Upwelling Shortwave Radiation",
+	       "Surface Downwelling Clear-Sky Longwave Radiation",
+	       "Surface Downwelling Clear-Sky Shortwave Radiation",
+	       "Surface Upwelling Clear-Sky Shortwave Radiation",
+	       "TOA Incident Shortwave Radiation",
+	       "TOA Outgoing Clear-Sky Longwave Radiation",
+	       "TOA Outgoing Longwave Radiation",
+	       "TOA Outgoing Clear-Sky Shortwave Radiation",
+	       "TOA Outgoing Shortwave Radiation"
+	    ];
+	    $( "#dataSource" ).autocomplete({
+	      source: availableTags
+	    });
+	    $( "#variableName" ).autocomplete({
+		  source: availableTagsVariableName
+		});
+	  });
+	
+	$(document).ready(function(){
+		$( "#preview" ).click(function() {
+			var target = document.getElementById("show");
+			if(target.style.display=="none"){
+				target.style.display="block";
+				$( "#preview" ).text("Hide");
+				var dataS = $("#dataSource").val();
+				var varName = $("#variableName").val();
+				var exectionPurpose = $("#exectionPurpose").val();
+				var userId = $("#userId").val();
+				var startTime = $("#startTime").val();
+				var endTime = $("#endTime").val();
+				
+				/* var startLon = $("#startLon").val();
+				var endLon = $("#endLon").val();
+				var startPre = $("#startPre").val();
+				var endPre = $("#endPre").val(); */
+				if(dataS!=""){
+					$("#content").append(" Data Source = "+dataS);	
+				}
+				if(varName!="" && varName!=null){
+					$("#content").append(" Variable Name = "+varName);	
+				}
+				if(exectionPurpose!="" && exectionPurpose!=null){
+					$("#content").append(" Exection Purpose = "+exectionPurpose);	
+				}
+				if(userId!="" && userId!=null){
+					$("#content").append(" UserId = "+userId);	
+				}
+				if(startTime!="" && startTime!=null){
+					$("#content").append(" Start Time = "+startTime);	
+				}
+				if(endTime!="" && endTime!=null){
+					$("#content").append(" End Time = "+endTime);	
+				}
+				
+				/* if(startLon!=""){
+					$("#content").append(" Start Longtitude = "+startLon);	
+				}
+				if(endLon!=""){
+					$("#content").append(" End Longtitude = "+endLon);	
+				}
+				if(startPre!=""){
+					$("#content").append(" Start Pressure = "+startPre);	
+				}
+				if(endPre!=""){
+					$("#content").append(" End Pressure = "+endPre);	
+				} */
+				
+			}else {
+				$("#content").val('');	
+                target.style.display="none";
+                $( "#preview" ).text("Preview");
+            }
+		});
+	});
+		
+	</script>
+}
+
+@main("Service Logs", scripts) {
+	
+	@flash_message()   
+	 
+    <!-- <h1 align="center">Search Log</h1>
+    <div align="center" id = "selectButton">
+    	<button type="button" class="btn btn-info">ScatterPlot2Vars</button>
+    	<button type="button" class="btn btn-info">ConditionalSampling</button>
+    	<button type="button" class="btn btn-info">ThreeDimVarVertical</button>
+    	<button type="button" class="btn btn-info">DiffPlot2Vars</button>
+    	<button type="button" class="btn btn-info">TwoDimZonalMean</button>
+    	<button type="button" class="btn btn-info">TwoDimMap</button>
+    	<button type="button" class="btn btn-info">TwoDimSlice3D</button>
+    </div>
+    <hr></hr>
+    <div id="TwoDimZonalMean">
+    	<div class="form-horizontal">
+    		<div class="form-group">
+    			<label class="col-sm-2 control-label">Data Source</label>
+    			<div class="col-sm-9">
+    				<select class="form-control">
+    					<option></option>
+    					<optgroup label="Observation">
+    						<option>NASA/MODIS</option>
+    						<option>NASA/AMSRE</option>
+    						<option>NASA/TRMM</option>
+    						<option>NASA/GPCP</option>
+    						<option>NASA/QuikSCAT</option>
+    						<option>NASA/AVISO</option>
+    						<option>NASA/GRACE</option>
+    						<option>NOAA/NODC</option>
+    						<option>NASA/CERES</option>
+    					</optgroup>
+    					<optgroup label="Model: Historical">
+							<option>CCCMA/CANESM2</option>
+							<option>GFDL/ESM2G</option>
+							<option>GISS/E2-H</option>
+							<option>GISS/E2-R</option>
+							<option>NCAR/CAM5</option>
+							<option>NCC/NORESM</option>
+							<option>UKMO/HadGEM2-ES</option>
+						</optgroup>
+						<optgroup label="Model: AMIP">
+							<option>CCCMA/CANAM4</option>
+							<option>CSIRO/MK3.6</option>
+							<option>GFDL/CM3</option>
+							<option>IPSL/CM5A-LR</option>
+							<option>MIROC/MIROC5</option>
+							<option>UKMO/HadGEM2-A</option>
+						</optgroup>
+						<optgroup label="Reanalysis">
+							<option>ECMWF/interim</option>
+						</optgroup>	
+    				</select>
+    			</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Variable Name</label>
+				<div class="col-sm-9">
+					<select class="form-control">
+						<option></option>
+    					<option>Total Cloud Fraction</option>
+						<option>Leaf Area Index</option>
+    				</select>
+    			</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Start year-month</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" placeholder="2004-01" aria-describedby="basic-addon1">
+				</div>
+				<label class="col-sm-2 control-label">End year-month</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" placeholder="2004-12" aria-describedby="basic-addon1">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<h4>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Feb" value="Jan">Jan
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Feb" value="Feb">Feb
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Mar" value="Mar">Mar
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Apr" value="Apr">Apr
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="May" value="May">May
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Jun" value="Jun">Jun
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Jul" value="Jul">Jul
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Aug" value="Aug">Aug
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Sep" value="Sep">Sep
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Oct" value="Oct">Oct
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Nov" value="Nov">Nov
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="Dec" value="Dec">Dec
+						</label>
+					</h4>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">start lat (deg):</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" placeholder="-90" aria-describedby="basic-addon1">
+				</div>
+				<label class="col-sm-2 control-label">end lat (deg):</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" placeholder="90" aria-describedby="basic-addon1">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Variable Scale:</label>
+				<label class="col-sm-2 col-sm-offset-1 radio-inline">
+  					<input type="radio" id="linear" value="linear">linear
+				</label>
+				<label class="col-sm-2 col-sm-offset-1 radio-inline">
+  					<input type="radio" id="logarithmic" value="logarithmic">logarithmic
+				</label>	
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Execution Purpose</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" aria-describedby="basic-addon1">
+				</div>
+			</div>
+			<button type="submit" class="col-sm-offset-6 btn-lg btn-info">Search</button>
+		</div>
+    </div> -->
+    <div align="right">
+		<button id="workflow-gen" type="button" class="btn btn-info text-right" >Generate Workflow</button>
+    </div>
+    <h1 align="center">Search Log</h1>
+    
+    @helper.form(routes.AccountController.getSearchServiceLogOneDimension()) {
+    	<!-- @select(serviceLogForm("Data Source"), options(Seq("NASA/MODIS","NASA/AMSRE","NASA/TRMM","NASA/GPCP","NASA/QuikSCAT","NASA/AVISO","NASA/GRACE","")), '_label -> "Data Source", '_default -> "", 'style->"width: 290px")  --> 
+    	<div class="ui-widget">
+    	<div class = "col-sm-offset-3 col-sm-10">
+    		@inputText(serviceLogForm("Data Source"), 'id -> "dataSource", '_label -> Messages("Data Source"), 'placeholder -> "NASA/MODIS", 'size->70) 
+    	</div>
+    	<div class = "col-sm-offset-3 col-sm-10">
+    		@inputText(serviceLogForm("Variable Name"), 'id -> "variableName", '_label -> Messages("Variable Name"), 'placeholder -> "Total Cloud Fraction", 'size->70) 
+    	</div>
+    	<div class = "col-sm-offset-3 col-sm-10">
+    		@inputText(serviceLogForm("Execution Purpose"), 'id -> "exectionPurpose", '_label -> Messages("Execution Purpose"), 'placeholder -> " test", 'size->70) 
+       	</div>
+       	<div class = "col-sm-offset-3 col-sm-10">
+       		@inputText(serviceLogForm("User Id"), 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->70)
+	    </div>
+	    <div class = "col-sm-offset-3 col-sm-10">
+	    	@inputText(serviceLogForm("Start Time"), 'id -> "startTime", '_label -> Messages("Start Time"), 'placeholder -> "200401", 'size->70)
+	    	@inputText(serviceLogForm("End Time"), 'id -> "endTime", '_label -> Messages("End Time"), 'placeholder -> "200412", 'size->70)
+	    	<!-- @inputText(serviceLogForm("Start Latitude"),'id -> "startLa", '_label -> Messages("Start Latitude"), 'placeholder -> "-90", 'size->70)
+	    	@inputText(serviceLogForm("End Latitude"),'id -> "endLa", '_label -> Messages("End Latitude"), 'placeholder -> "90", 'size->70) -->
+	    	<div id="show" style="display: none;">
+	    		<textarea style="width: 640px" rows="4" id="content"></textarea>
+	    	</div>
+	    </div>
+	    <div align="center">
+	    <button id="preview" type="button" class="btn btn-info"> Preview</button>	
+	    <input class="btn" type="submit" value="Search" >
+	    </div>
+	    </div>
+	    }
+}

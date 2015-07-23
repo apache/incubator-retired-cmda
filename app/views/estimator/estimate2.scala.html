@@ -1,0 +1,32 @@
+
+@import helper._
+
+@main("Estimator") {
+
+<ol class="breadcrumb">
+	<li><a href="/estimator/tutorial">Tutorial</a></li>
+	<li><a href="/estimator">Collect Data</a></li>
+	<li><a href="/estimator/1">Input preference</a></li>
+	<li class="active">Workflow Summary</li>
+	<li><a href="/estimator/3">Recommendation</a></li>
+</ol>
+
+<form method="GET" role="form" action="/estimator/3">
+
+<fieldset>
+	<div class="container">
+	<p>Here is the workflow summary</p>
+	<img alt="workflow summary" src='@routes.Assets.at("images/workflow_1.png")'  height="500" width="700">
+	<img alt="workflow summary" src='@routes.Assets.at("images/workflow_2.png")' height="500" width="700">
+	</div>
+	
+</fieldset>	
+	<br></br>
+	<div class="actions">
+		<input type="submit" class="btn btn-primary" value="See Recommendation" action="/estimator/3" style="position: relative; left: 15px">
+	</div>
+    
+</form>           
+		
+	
+	}

@@ -1,0 +1,53 @@
+
+@()
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" style="padding-bottom: 0;" href="/"><img
+					src='@routes.Assets.at("images/logo.png")' style="height: 28px;"></a>
+			</div>
+			<div class="navbar-collapse collapse" style="height:">
+				<ul class="nav navbar-nav navbar-right">
+
+					
+					<li class="dropdown"><a href="#"
+						class="dropdown-toggle" data-toggle="dropdown">Account Management<b
+							class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="@routes.NasaRegistrationController.updateForm()">Update User Details</a></li>
+							<li><a href="@routes.NasaRegistrationController.deleteForm()">Delete User</a></li>
+							<li><a href="@routes.EstimateController.accountSummary(session.get("username"))">Account Summary</a></li>
+						</ul>
+						</li>
+
+										<li><a>About Us</a></li>
+
+					@if(!session.get("username")){
+					
+						<form class="navbar-form navbar-right" action="@routes.EstimateController.login()">
+							<button type="submit" class="btn btn-success">Log in</button>
+						</form>
+					}else{
+						<li><a href="/estimator/tutorial">Estimator</a></li>
+						<form class="navbar-form navbar-right" action="@routes.EstimateController.logout()">
+							<button type="submit" class="btn btn-success">Log out</button>
+						</form>
+					}
+					
+					@if(session.get("username") && session.get("username").equals("admin")){
+						<form class="navbar-form navbar-right" action="@routes.NasaRegistrationController.adminPage()">
+							<button type="submit" class="btn btn-success">Admin Console</button>
+						</form>
+					}	
+					
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>

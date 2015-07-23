@@ -1,0 +1,111 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+
+# Authentication
+GET     /login                              controllers.Application.login()
+POST    /login                              controllers.Application.authenticate()
+GET     /logout                             controllers.Application.logout()
+
+# BugReporting
+GET     /bugs                       controllers.BugReportController.reports()
+GET     /newReport					controllers.BugReportController.newReport()
+GET	/bug/list					controllers.BugReportController.list()
+POST	/delete/report				controllers.BugReportController.deleteReport()
+POST	/solve/report				controllers.BugReportController.solveReport()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# sensor_types
+GET	/sensorTypes				controllers.SensorTypeController.sensorTypes()
+POST    /new/sensorTypes                controllers.SensorTypeController.newSensorType()
+POST    /delete/sensorTypes    	controllers.SensorTypeController.deleteSensorType()
+POST	/edit/sensorTypes		controllers.SensorTypeController.editSensorType()
+
+# device_types
+GET	/deviceTypes				controllers.DeviceTypeController.deviceTypes()
+POST    /new/deviceTypes               controllers.DeviceTypeController.newDeviceType()
+POST    /delete/deviceTypes     controllers.DeviceTypeController.deleteDeviceType()
+POST	/edit/deviceTypes		controllers.DeviceTypeController.editDeviceType()
+
+# devices
+GET	/devices				controllers.DeviceController.devices()
+POST    /new/devices                controllers.DeviceController.newDevice()
+POST    /delete/devices     controllers.DeviceController.deleteDevice()
+POST	/edit/devices		controllers.DeviceController.editDevice()
+
+# sensors
+GET	/sensors				controllers.SensorController.sensors()
+POST    /new/sensors                controllers.SensorController.newSensor()
+POST    /delete/sensors    controllers.SensorController.deleteSensor()
+POST	/edit/sensors		controllers.SensorController.editSensor()
+
+# sensor_categories
+GET	/sensorCategories				controllers.SensorCategoryController.sensorCategories()
+POST    /new/sensorCategories                controllers.SensorCategoryController.newSensorCategory()
+POST    /delete/sensorCategories     controllers.SensorCategoryController.deleteSensorCategory()
+POST	/download/sensorCategories	 controllers.SensorCategoryController.downloadSensorCategory()
+POST	/edit/sensorCategories		controllers.SensorCategoryController.editSensorCategory()
+
+# dashboard
+GET	/dashboard				controllers.DashboardController.dashboard()
+
+# About Us
+GET	/aboutus				controllers.AboutusController.aboutus()
+
+# sensor reading
+GET     /sensorReading			controllers.SensorReadingController.sensorReadings()
+POST	/getSensorReadings		controllers.SensorReadingController.getSensorReadingsWithinRange() 
+POST	/getSensorReadingsAtTimestamp	 controllers.SensorReadingController.getSensorReadingsAtTimestamp()
+POST	/getLatestSensorReadings	 controllers.SensorReadingController.getLatestSensorReadings()
+
+
+
+
+# recommendation
+GET		/estimator				controllers.EstimateController.estimate(email ?= null, vfile ?= null, dataset ?= null)
+POST	        /estimator/1			controllers.EstimateController.estimate1()
+GET		/estimator/1			controllers.EstimateController.estimate1()			
+GET		/estimator/2			controllers.EstimateController.estimate2()
+GET		/estimator/3			controllers.EstimateController.estimate3()
+GET		/estimator/tutorial		controllers.EstimateController.tutorial()
+GET		/estimator/login		controllers.EstimateController.login()
+POST            /estimator/login        controllers.EstimateController.authenticate()
+GET             /estimator/logout       controllers.EstimateController.logout()
+GET		/estimator/accountSummary		controllers.EstimateController.accountSummary(userName ?= null)
+
+#Registration
+GET 	        /estimator/register controllers.NasaRegistrationController.registrationForm()
+POST            /estimator/register/publish controllers.NasaRegistrationController.submit()
+GET             /estimator/updateUser controllers.NasaRegistrationController.updateForm()
+POST            /estimator/updateUser/update controllers.NasaRegistrationController.update()
+GET             /estimator/deleteUser controllers.NasaRegistrationController.deleteForm()
+POST            /estimator/deleteUser/delete controllers.NasaRegistrationController.delete()
+GET             /estimator/adminPage controllers.NasaRegistrationController.adminPage()
+
+# Climate Model
+GET		/climate				controllers.EstimateController.estimate(email ?= null, vfile ?= null, dataset ?= null)
+POST	        /climate/1			controllers.EstimateController.estimate1()
+GET		/climate/1			controllers.EstimateController.estimate1()			
+GET		/climate/2			controllers.EstimateController.estimate2()
+GET		/climate/3			controllers.EstimateController.estimate3()
+GET		/climate/tutorial		controllers.EstimateController.tutorial()
+GET		/climate/login		controllers.EstimateController.login()
+POST            /climate/login        controllers.EstimateController.authenticate()
+GET             /climate/logout       controllers.EstimateController.logout()
+GET		/climate/accountSummary		controllers.EstimateController.accountSummary(userName ?= null)
+
+
+
+#Climate Model Registration
+GET 	        /climate/register controllers.NasaRegistrationController.registrationForm()
+POST            /climate/register/publish controllers.NasaRegistrationController.submit()
+GET             /climate/updateUser controllers.NasaRegistrationController.updateForm()
+POST            /climate/updateUser/update controllers.NasaRegistrationController.update()
+GET             /climate/deleteUser controllers.NasaRegistrationController.deleteForm()
+POST            /climate/deleteUser/delete controllers.NasaRegistrationController.delete()
+GET             /climate/adminPage controllers.NasaRegistrationController.adminPage()
