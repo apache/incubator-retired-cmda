@@ -3,8 +3,8 @@
 # ~~~~
 
 # Home page
-GET         /                                                    controllers.Application.index()
-
+GET         /home                                                controllers.Application.index()
+GET 		/													 controllers.ClimateServiceController.home(email ?= null, vfile ?= null, dataset ?= null)
 # Account
 
 GET         /serviceLog                                          controllers.AccountController.getServiceLog()
