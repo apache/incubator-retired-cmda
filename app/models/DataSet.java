@@ -135,7 +135,7 @@ public class DataSet {
 		List<DataSet> dataSets = new ArrayList<DataSet>();
 
 		JsonNode dataSetNode = APICall
-				.callAPI("http://localhost:9020/dataset/getAllDatasets/json");
+				.callAPI("http://localhost:9034/dataset/getAllDatasets/json");
 
 		// if no value is returned or error or is not json array
 		if (dataSetNode == null || dataSetNode.has("error")
@@ -197,7 +197,7 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 //			queryJson.put("gridDimension", gridDimension);
 //		}
 		
-		JsonNode dataSetNode = APICall.postAPI("http://localhost:9020/dataset/queryDataset", queryJson);
+		JsonNode dataSetNode = APICall.postAPI("http://localhost:9034/dataset/queryDataset", queryJson);
 		if (dataSetNode == null || dataSetNode.has("error")
 				|| !dataSetNode.isArray()) {
 			return dataset;

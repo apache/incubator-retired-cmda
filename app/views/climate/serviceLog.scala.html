@@ -15,11 +15,13 @@
 	@flash_message()   
 	 
     <h1>@serviceLogs.size() Service Logs</h1>
+    <!-- 
     @helper.form(routes.AccountController.syncData()) {
     	<div class = "col-sm-2">
     		<input class="btn btn-primary" type="submit" value="Sync data" style="margin-top:18px">
     	</div>
     }
+     -->
     @helper.form(routes.AccountController.getSearchServiceLog()) {
     	<div class = "col-sm-offset-3 col-sm-2">
     		@inputText(serviceLogForm("User Id"), 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->20)
