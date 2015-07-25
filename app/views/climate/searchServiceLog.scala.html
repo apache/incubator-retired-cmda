@@ -79,8 +79,10 @@
 				var varName = $("#variableName").val();
 				var exectionPurpose = $("#exectionPurpose").val();
 				var userId = $("#userId").val();
-				var startTime = $("#startTime").val();
-				var endTime = $("#endTime").val();
+				var executionStartTime = $("#executionStartTime").val();
+				var executionEndTime = $("#executionEndTime").val();
+				var dataSetStartTime = $("#dataSetStartTime").val();
+				var dataSetEndTime = $("#dataSetEndTime").val();
 				
 				/* var startLon = $("#startLon").val();
 				var endLon = $("#endLon").val();
@@ -98,25 +100,20 @@
 				if(userId!="" && userId!=null){
 					$("#content").append(" UserId = "+userId);	
 				}
-				if(startTime!="" && startTime!=null){
-					$("#content").append(" Start Time = "+startTime);	
+				if(executionStartTime!="" && executionStartTime!=null){
+					$("#content").append(" Execution Start Time = "+executionStartTime);	
 				}
-				if(endTime!="" && endTime!=null){
-					$("#content").append(" End Time = "+endTime);	
+				if(executionEndTime!="" && executionEndTime!=null){
+					$("#content").append("Execution End Time = "+executionEndTime);	
+				}
+				if(dataSetStartTime!="" && dataSetStartTime!=null){
+					$("#content").append(" DataSet Start Time = "+dataSetStartTime);	
+				}
+				if(dataSetEndTime!="" && dataSetEndTime!=null){
+					$("#content").append(" DataSet End Time = "+dataSetEndTime);	
 				}
 				
-				/* if(startLon!=""){
-					$("#content").append(" Start Longtitude = "+startLon);	
-				}
-				if(endLon!=""){
-					$("#content").append(" End Longtitude = "+endLon);	
-				}
-				if(startPre!=""){
-					$("#content").append(" Start Pressure = "+startPre);	
-				}
-				if(endPre!=""){
-					$("#content").append(" End Pressure = "+endPre);	
-				} */
+				
 				
 			}else {
 				$("#content").val('');	
@@ -129,7 +126,7 @@
 	</script>
 }
 
-@main("Service Logs", scripts) {
+@main("Search Execution Service Logs", scripts) {
 	
 	@flash_message()   
 	 
@@ -276,7 +273,7 @@
 		</div>
     </div> -->
    
-    <h1 align="center">Search Log</h1>
+    <h1 align="center"> Search Service Execution Log</h1>
     
     @helper.form(routes.AccountController.getSearchServiceLogOneDimension()) {
     	<!-- @select(serviceLogForm("Data Source"), options(Seq("NASA/MODIS","NASA/AMSRE","NASA/TRMM","NASA/GPCP","NASA/QuikSCAT","NASA/AVISO","NASA/GRACE","")), '_label -> "Data Source", '_default -> "", 'style->"width: 290px")  --> 
@@ -294,17 +291,15 @@
        		@inputText(serviceLogForm("User Id"), 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->70)
 	    </div>
 	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(serviceLogForm("Start Time"), 'id -> "startTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "200401", 'size->70)
-	    	@inputText(serviceLogForm("End Time"), 'id -> "endTime", '_label -> Messages("Execution End Time"), 'placeholder -> "200412", 'size->70)
+	    	@inputText(serviceLogForm("Execution Start Time"), 'id -> "executionStartTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "200401", 'size->70)
+	    	@inputText(serviceLogForm("Execution End Time"), 'id -> "executionEndTime", '_label -> Messages("Execution End Time"), 'placeholder -> "200412", 'size->70)
 	    	<!-- @inputText(serviceLogForm("Start Latitude"),'id -> "startLa", '_label -> Messages("Start Latitude"), 'placeholder -> "-90", 'size->70)
 	    	@inputText(serviceLogForm("End Latitude"),'id -> "endLa", '_label -> Messages("End Latitude"), 'placeholder -> "90", 'size->70) -->
-	    	<div id="show" style="display: none;">
-	    		<textarea style="width: 640px" rows="4" id="content"></textarea>
-	    	</div>
+	    	
 	    </div>
 	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(serviceLogForm("Start Time Data"), 'id -> "startTimeDetail", '_label -> Messages("Data Start Time"), 'placeholder -> "200401", 'size->70)
-	    	@inputText(serviceLogForm("End Time Data"), 'id -> "endTimeDetail", '_label -> Messages("Data End Time"), 'placeholder -> "200412", 'size->70)
+	    	@inputText(serviceLogForm("DataSet Start Time"), 'id -> "dataSetStartTime", '_label -> Messages("DataSet Start Time"), 'placeholder -> "200401", 'size->70)
+	    	@inputText(serviceLogForm("DataSet End Time"), 'id -> "dataSetEndTime", '_label -> Messages("DataSet End Time"), 'placeholder -> "200412", 'size->70)
 	    	
 	    	<div id="show" style="display: none;">
 	    		<textarea style="width: 640px" rows="4" id="content"></textarea>

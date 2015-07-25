@@ -14,12 +14,14 @@
 
 		<table class="table table-striped table-bordered table-condensed">
 	<tr>
-		<td>ServiceId</td>
-		<td>User</td>
-		<td>Purpose</td>
-		<td>StartTime</td>
-		<td>EndTime</td>
-		<td>ServiceConfigurationId</td>
+		<td class="col-md-1">ServiceId</td>
+		<td class="col-md-2">User</td>
+		<td class="col-md-2">Purpose</td>
+		<td class="col-md-2">Execution Start Time</td>
+		<td class="col-md-2">Execution End Time</td>		
+		<td class="col-md-2">DataSet Start Time</td>
+		<td class="col-md-2">DataSet End Time</td>
+		<td class="col-md-2">Details</td>
 	</tr>
 	@for(serviceLog <- serviceLogs) {
 	<tr>
@@ -28,6 +30,8 @@
 	<td>@serviceLog.getPurpose</td>
 	<td>@serviceLog.getExecutionStartTime</td>
 	<td>@serviceLog.getExecutionEndTime</td>
+	<td>@serviceLog.getDataSetStartTime</td>
+	<td>@serviceLog.getDataSetEndTime</td>
 	<td>
 	@form(routes.ClimateServiceController.getConfigurationByConfId()){ 
 		<input

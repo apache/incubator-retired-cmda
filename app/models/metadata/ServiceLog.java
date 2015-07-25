@@ -31,7 +31,10 @@ public class ServiceLog {
 	private String datasetLogId;
 	private String executionStartTime;
 	private String executionEndTime;
-
+	private String dataSetStartTime;
+	private String dataSetEndTime;
+	
+	
 	public String getServiceExecutionLogId() {
 		return serviceExecutionLogId;
 	}
@@ -87,7 +90,7 @@ public class ServiceLog {
 	public void setExecutionStartTime(String executionStartTime) {
 		this.executionStartTime = executionStartTime;
 	}
-
+	
 	public String getExecutionEndTime() {
 		return executionEndTime;
 	}
@@ -95,6 +98,24 @@ public class ServiceLog {
 	public void setExecutionEndTime(String executionEndTime) {
 		this.executionEndTime = executionEndTime;
 	}
+	
+	public String getDataSetStartTime() {
+		return dataSetStartTime;
+	}
+
+	public void setDataSetStartTime(String dataSetStartTime) {
+		this.dataSetStartTime = dataSetStartTime;
+	}
+	
+	public String getDataSetEndTime() {
+		return dataSetEndTime;
+	}
+
+	public void setDataSetEndTime(String dataSetEndTime) {
+		this.dataSetEndTime = dataSetEndTime;
+	}
+
+	
 
 	private static final String GET_ALL_SERVICE_LOG = Constants.NEW_BACKEND + Constants.SERVICE_EXECUTION_LOG
 			+ util.Constants.NEW_GET_ALL_SERVICE_LOG;
@@ -143,7 +164,10 @@ public class ServiceLog {
 		newServiceLog.setServiceConfigurationId(json.get("serviceConfiguration").get("id").asText());
 		newServiceLog.setExecutionStartTime(json.findPath("executionStartTime").asText());
 		newServiceLog.setExecutionEndTime(json.findPath("executionEndTime").asText());
-
+		newServiceLog.setDataSetStartTime(json.findPath("dataSetStartTime").asText());
+		newServiceLog.setDataSetEndTime(json.findPath("dataSetEndTime").asText());
+		
+		
 		newServiceLog.setDatasetLogId(json.findPath("datasetLogId").asText());	//Not used variavle, use original code for now to set this to an empyy string
 
 		return newServiceLog;
@@ -333,6 +357,7 @@ public class ServiceLog {
 		return serviceLog;
 	}
 
+	//simple search function on top of the table of service execution log
 	public static List<ServiceLog> search(String userId, long startTime, long endTime) {
 
 		List<ServiceLog> serviceLog = new ArrayList<ServiceLog>();
@@ -387,14 +412,17 @@ public class ServiceLog {
 
 	/**
 	 * Search Service Execution Logs in the backend. All parameters are optional
+	 * Actually used in the search page
 	 *
 	 * @param userId
 	 * @param startTime
 	 * @param endTime
 	 * @param executionPurpose
-	 * @param parameters       A key-value pair list of all parameters
+	 * @param parameters       A key-value pair list of all parameters that hosted by service configuration item including data source , variable name, dataset start/end time
 	 * @return
 	 */
+	
+	
 	public static List<ServiceLog> queryExecutionLogs(String userId, Date startTime, Date endTime, String executionPurpose, Map<String, String> parameters) {
 		
 		List<ServiceLog> serviceLog = new ArrayList<ServiceLog>();

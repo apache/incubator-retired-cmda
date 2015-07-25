@@ -32,6 +32,24 @@ public class DataSet {
 	private String variableName;
 	private String dataSourceInput;
 	private String variableNameInput;
+	private String startTime;
+	private String endTime;
+	
+	public String getStartTime() {
+		return startTime;
+	}
+	
+	public String getEndTime() {
+		return endTime;
+	}
+	
+	public void setEndTime(String dataSetEndTime) {
+		this.endTime = dataSetEndTime;
+	}
+	
+	public void setStartTime(String dataSetStartTime) {
+		this.startTime = dataSetStartTime;
+	}
 	
 	public String getDataSetName() {
 		return dataSetName;
@@ -165,12 +183,18 @@ public class DataSet {
 			dataset.setDataSourceInput(json.get("dataSourceInputParameterToCallScienceApplicationCode").asText());
 			dataset.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
 			
+//!!!!!!fake start/end time value
+//			dataset.setEndTime(json.get("dataSetEndTime").asText());
+//			dataset.setStartTime(json.get("dataSetStartTime").asText());
+			dataset.setEndTime("201508");
+			dataset.setStartTime("201507");
+			
 			dataSets.add(dataset);
 		}
 		return dataSets;
 	}
 	
-public static List<DataSet> queryDataSet(String dataSetName, String agency, String instrument, String physicalVariable, String gridDimension) {
+public static List<DataSet> queryDataSet(String dataSetName, String agency, String instrument, String physicalVariable, String gridDimension, String dataSetStartTime, String dataSetEndTime) {
 		
 		List<DataSet> dataset = new ArrayList<DataSet>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -180,6 +204,8 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 		queryJson.put("instrument", instrument);
 		queryJson.put("physicalVariable", physicalVariable);
 		queryJson.put("gridDimension", gridDimension);
+		queryJson.put("dataSetEndTime", dataSetEndTime);
+		queryJson.put("dataSetStartTime", dataSetStartTime);
 		
 //		if (dataSetName != null && !dataSetName.isEmpty()) {
 //			queryJson.put("name", dataSetName);
@@ -239,6 +265,12 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 		newDataSet.setVariableName(json.get("variableNameInWebInterface").asText());
 		newDataSet.setDataSourceInput(json.get("dataSourceInputParameterToCallScienceApplicationCode").asText());
 		newDataSet.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
+		
+		
+//!!!!!!fake start/end time value		
+//		newDataSet.setEndTime(json.get("dataSetEndTime").asText());
+//		newDataSet.setStartTime(json.get("dataSetStartTime").asText());
+		
 	
 		return newDataSet;
 	}

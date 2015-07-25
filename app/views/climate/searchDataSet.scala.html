@@ -108,26 +108,34 @@
 			if(target.style.display=="none"){
 				target.style.display="block";
 				$( "#preview" ).text("Hide");
-				var dataS = $("#dataSetName").val();
-				var varName = $("#agency").val();
-				var exectionPurpose = $("#instrument").val();
-				var userId = $("#physicalVariable").val();
-				var startTime = $("#gridDimension").val();
+				var dataSetName = $("#dataSetName").val();
+				var agency = $("#agency").val();
+				var instrument = $("#instrument").val();
+				var physicalVariable = $("#physicalVariable").val();
+				var gridDimension = $("#gridDimension").val();
+				var dataSetStartTime = $("#dataSetStartTime").val();
+				var dataSetEndTime = $("#dataSetEndTime").val();
 
-				if(dataS!=""){
-					$("#content").append(" Data Set Name = "+dataS);	
+				if(dataSetName!=""){
+					$("#content").append(" Data Set Name = "+dataSetName);	
 				}
-				if(varName!="" && varName!=null){
-					$("#content").append(" Agency = "+varName);	
+				if(agency!="" && agency!=null){
+					$("#content").append(" Agency = "+agency);	
 				}
-				if(exectionPurpose!="" && exectionPurpose!=null){
-					$("#content").append(" Instrument = "+exectionPurpose);	
+				if(instrument!="" && instrument!=null){
+					$("#content").append(" Instrument = "+instrument);	
 				}
-				if(userId!="" && userId!=null){
-					$("#content").append(" Physical Variable = "+userId);	
+				if(physicalVariable!="" && physicalVariable!=null){
+					$("#content").append(" Physical Variable = "+physicalVariable);	
 				}
-				if(startTime!="" && startTime!=null){
-					$("#content").append(" Grid Dimension = "+startTime);	
+				if(gridDimension!="" && gridDimension!=null){
+					$("#content").append(" Grid Dimension = "+gridDimension);	
+				}
+				if(dataSetStartTime!="" && dataSetStartTime!=null){
+					$("#content").append(" DataSet Start Time = "+dataSetStartTime);	
+				}
+				if(dataSetEndTime!="" && dataSetEndTime!=null){
+					$("#content").append(" DataSet End Time = "+dataSetEndTime);	
 				}
 				
 			}else {
@@ -145,7 +153,7 @@
 	
 	@flash_message()   
 	 
-    <h1 align="center">Search DataSets</h1>
+    <h1 align="center">Search DataSet</h1>
     @helper.form(routes.dataSetController.getSearchResult()) {
     	<div class="ui-widget">
     	<div class = "col-sm-offset-3 col-sm-10">
@@ -162,13 +170,11 @@
 	    </div>
 	    <div class = "col-sm-offset-3 col-sm-10">
 	    	@inputText(dataSetForm("Grid Dimension"), 'id -> "gridDimension", '_label -> Messages("Grids Dimension"), 'placeholder -> "3D", 'size->70)
-	    	<div id="show" style="display: none;">
-	    		<textarea style="width: 640px" rows="4" id="content"></textarea>
-	    	</div>
+	    	
 	    </div>
 	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(dataSetForm("Start Time Data"), 'id -> "startTimeDetail", '_label -> Messages("Data Start Time"), 'placeholder -> "200401", 'size->70)
-	    	@inputText(dataSetForm("End Time Data"), 'id -> "endTimeDetail", '_label -> Messages("Data End Time"), 'placeholder -> "200412", 'size->70)
+	    	@inputText(dataSetForm("DataSet Start Time"), 'id -> "dataSetStartTime", '_label -> Messages("DataSet Start Time"), 'placeholder -> "200401", 'size->70)
+	    	@inputText(dataSetForm("DataSet End Time"), 'id -> "dataSetEndTime", '_label -> Messages("DataSet End Time"), 'placeholder -> "200412", 'size->70)
 	    	
 	    	<div id="show" style="display: none;">
 	    		<textarea style="width: 640px" rows="4" id="content"></textarea>

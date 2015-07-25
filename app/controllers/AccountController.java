@@ -57,6 +57,8 @@ public class AccountController extends Controller {
 		return ok(searchServiceLog.render(serviceLogForm));
 	}
 
+	
+//this is  the one we are using now	
 	public static Result getSearchServiceLogOneDimension() {
 		Form<ServiceLog> dc = serviceLogForm.bindFromRequest();
 		ObjectNode jsonData = Json.newObject();
@@ -66,9 +68,13 @@ public class AccountController extends Controller {
 		String userId = "";
 		String startTime = "";
 		String endTime = "";
+		
+		String dataSetStartTime = "";
+		String dataSetEndTime = "";
+		
 //		String startLatitude = "";
 //		String endLatitude = "";
-		Date start = null, end= null;
+		Date executionStartTime = null, executionEndTime= null;
 		try {
 			dataSource = dc.field("Data Source").value().replace("/", "_");
 			//Logger.info("data "+dataSource);
@@ -78,17 +84,18 @@ public class AccountController extends Controller {
 			//Logger.info("data "+test);
 			//startTime = TimeConvert.datetoTimeStamp(dc.field("Start Time").value());
 			//endTime = TimeConvert.datetoTimeStamp(dc.field("End Time").value());
-			startTime = dc.field("Start Time").value();
-			endTime = dc.field("End Time").value();
+			startTime = dc.field("Execution Start Time").value();
+			endTime = dc.field("Execution End Time").value();
 //			startLatitude = dc.field("Start Latitude").value();
 //			endLatitude = dc.field("End Latitude").value();
-
+			dataSetStartTime = dc.field("DataSet Start Time").value();
+			dataSetEndTime = dc.field("DataSet End Time").value();
 
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
 
 			if (!startTime.isEmpty()) {
 				try {
-					start = simpleDateFormat.parse(startTime);
+					executionStartTime = simpleDateFormat.parse(startTime);
 				} catch (ParseException e) {
 					System.out.println("Wrong Date Format :" + startTime);
 					return badRequest("Wrong Date Format :" + startTime);
@@ -96,7 +103,7 @@ public class AccountController extends Controller {
 			}
 			if (!endTime.isEmpty()) {
 				try {
-					end = simpleDateFormat.parse(endTime);
+					executionEndTime = simpleDateFormat.parse(endTime);
 				} catch (ParseException e) {
 					System.out.println("Wrong Date Format :" + endTime);
 					return badRequest("Wrong Date Format :" + endTime);
@@ -168,12 +175,16 @@ public class AccountController extends Controller {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("model", dataSource);
 		parameters.put("var", variableName);
-
-		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, start, end, executionPurpose, parameters);
+		parameters.put("startT", dataSetStartTime);
+		parameters.put("endT", dataSetEndTime);
+		
+		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, executionStartTime, executionEndTime, executionPurpose, parameters);
 		return ok(searchLogResult.render(response));
 
 	}
 
+	
+// deprecated one
 	public static Result getSearchServiceLog() {
 		Form<ServiceLog> dc = serviceLogForm.bindFromRequest();
 		ObjectNode jsonData = Json.newObject();

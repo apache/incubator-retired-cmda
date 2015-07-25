@@ -47,6 +47,9 @@ public class dataSetController extends Controller{
 		String instrument = "";
 		String physicalVariable = "";
 		String gridDimension = "";
+		String dataSetStartTime = "";
+		String dataSetEndTime = "";
+		
 		try {
 			dataSetName = dc.field("Data Set Name").value();
 			//Logger.info("data "+dataSource);
@@ -54,6 +57,8 @@ public class dataSetController extends Controller{
 			instrument = dc.field("Instrument").value();
 			physicalVariable = dc.field("Physical Variable").value();
 			gridDimension = dc.field("Grid Dimension").value();
+			dataSetStartTime = dc.field("DataSet Start Time").value();
+			dataSetEndTime = dc.field("DataSet End Time").value();
 
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -64,7 +69,7 @@ public class dataSetController extends Controller{
 			Application.flashMsg(APICall.createResponse(ResponseType.UNKNOWN));
 		}
 
-		List<DataSet> response = DataSet.queryDataSet(dataSetName, agency, instrument, physicalVariable, gridDimension);
+		List<DataSet> response = DataSet.queryDataSet(dataSetName, agency, instrument, physicalVariable, gridDimension, dataSetStartTime, dataSetEndTime);
 		return ok(dataSetList.render(response, dataSetForm));
 	}
 }
