@@ -32,6 +32,11 @@ import util.APICall.ResponseType;
 import util.TimeConvert;
 import views.html.climate.*;
 
+/******************************************************************************
+ * TODO: Change the name of the controller to support; Later to service execution log
+ ******************************************************************************/
+
+
 
 public class AccountController extends Controller {
 
@@ -178,7 +183,7 @@ public class AccountController extends Controller {
 		parameters.put("startT", dataSetStartTime);
 		parameters.put("endT", dataSetEndTime);
 		
-		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, executionStartTime, executionEndTime, executionPurpose, parameters);
+		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, executionStartTime, executionEndTime, executionPurpose, dataSetStartTime, dataSetEndTime, parameters);
 		return ok(searchLogResult.render(response));
 
 	}
@@ -226,7 +231,9 @@ public class AccountController extends Controller {
 			Application.flashMsg(APICall.createResponse(ResponseType.UNKNOWN));
 		}
 
-		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, start, end, null, null);
+		String dataSetStartTime;
+		String dataSetEndTime;
+		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, start, end, null, null, null, null);
 		return ok(searchLogResult.render(response));
 	}
 	
@@ -271,7 +278,7 @@ public class AccountController extends Controller {
 			Application.flashMsg(APICall.createResponse(ResponseType.UNKNOWN));
 		}
 
-		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, start, end, null, null);
+		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, start, end, null, null, null, null);
 		return ok(searchLogResultWorkflow.render(response, userId, startTime, endTime, null));
 	}
 	
@@ -338,7 +345,7 @@ public class AccountController extends Controller {
 //		Application.flashMsg(response);
 		String resStr = response.toString();
 		
-		List<ServiceLog> responseList = ServiceLog.queryExecutionLogs(userId, start, end, null, null);
+		List<ServiceLog> responseList = ServiceLog.queryExecutionLogs(userId, start, end, null, null, null, null);
 		return ok(searchLogResultWorkflow.render(responseList,userId, startTime, endTime, resStr));
 	}
 	

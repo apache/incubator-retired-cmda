@@ -423,7 +423,7 @@ public class ServiceLog {
 	 */
 	
 	
-	public static List<ServiceLog> queryExecutionLogs(String userId, Date startTime, Date endTime, String executionPurpose, Map<String, String> parameters) {
+	public static List<ServiceLog> queryExecutionLogs(String userId, Date startTime, Date endTime, String executionPurpose, String dataSetStartTime, String dataSetEndTime, Map<String, String> parameters) {
 		
 		List<ServiceLog> serviceLog = new ArrayList<ServiceLog>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -436,6 +436,12 @@ public class ServiceLog {
 		}
 		if (endTime != null) {
 			queryJson.put("executionEndTime", endTime.getTime());
+		}
+		if (dataSetStartTime != null) {
+			queryJson.put("dataSetStartTime", dataSetStartTime);
+		}
+		if (dataSetEndTime != null) {
+			queryJson.put("dataSetEndTime", dataSetEndTime);
 		}
 		if (executionPurpose != null && !executionPurpose.isEmpty()) {
 			queryJson.put("purpose", executionPurpose);
