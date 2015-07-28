@@ -184,10 +184,10 @@ public class DataSet {
 			dataset.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
 			
 //!!!!!!fake start/end time value
-//			dataset.setEndTime(json.get("dataSetEndTime").asText());
-//			dataset.setStartTime(json.get("dataSetStartTime").asText());
-			dataset.setEndTime("201508");
-			dataset.setStartTime("201507");
+			dataset.setEndTime(json.get("dataSetEndTime").asText());
+			dataset.setStartTime(json.get("dataSetStartTime").asText());
+//			dataset.setEndTime("201508");
+//			dataset.setStartTime("201507");
 			
 			dataSets.add(dataset);
 		}
