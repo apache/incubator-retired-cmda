@@ -180,7 +180,7 @@ public class ServiceLog {
 				newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 			}
 	    } catch (ParseException e){	    
-	    	e.printStackTrace();
+//	    	e.printStackTrace();
 	    }
 		
 		try {
@@ -190,7 +190,7 @@ public class ServiceLog {
 				newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 			}
 	    } catch (ParseException e){	    
-	    	e.printStackTrace();
+//	    	e.printStackTrace();
 	    }
 		
 		
