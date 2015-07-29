@@ -9,6 +9,8 @@ import util.Constants;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -164,10 +166,25 @@ public class ServiceLog {
 		newServiceLog.setServiceConfigurationId(json.get("serviceConfiguration").get("id").asText());
 		newServiceLog.setExecutionStartTime(json.findPath("executionStartTime").asText());
 		newServiceLog.setExecutionEndTime(json.findPath("executionEndTime").asText());
-		newServiceLog.setDataSetStartTime(json.findPath("datasetStudyStartTime").asText());
-		newServiceLog.setDataSetEndTime(json.findPath("datasetStudyEndTime").asText());
+//		newServiceLog.setDataSetStartTime(json.findPath("datasetStudyStartTime").asText());
+//		newServiceLog.setDataSetEndTime(json.findPath("datasetStudyEndTime").asText());
+		
+		Date tmptime = null;
+		try {
+			tmptime = (new SimpleDateFormat("YYYY-MM-DD HH:MM:SS")).parse(json.findPath("datasetStudyStartTime").asText());
+	    } catch (ParseException e){	    
+	    	e.printStackTrace();
+	    }
+		newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmptime));
 		
 		
+		tmptime = null;
+		try {
+			tmptime = (new SimpleDateFormat("YYYY-MM-DD HH:MM:SS")).parse(json.findPath("datasetStudyEndTime").asText());
+	    } catch (ParseException e){	    
+	    	e.printStackTrace();
+	    }
+		newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmptime));
 		
 		newServiceLog.setDatasetLogId(json.findPath("datasetLogId").asText());	//Not used variavle, use original code for now to set this to an empyy string
 
