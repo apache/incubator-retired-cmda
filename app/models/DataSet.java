@@ -1,5 +1,6 @@
 package models;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -184,8 +185,10 @@ public class DataSet {
 			dataset.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
 			
 //!!!!!!fake start/end time value
-			dataset.setEndTime(json.get("dataSetEndTime").asText());
-			dataset.setStartTime(json.get("dataSetStartTime").asText());
+			String tmpTime = json.get("dataSetEndTime").asText();
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
+			dataset.setEndTime(json.get("endTime").asText());
+			dataset.setStartTime(json.get("startTime").asText());
 //			dataset.setEndTime("201508");
 //			dataset.setStartTime("201507");
 			
