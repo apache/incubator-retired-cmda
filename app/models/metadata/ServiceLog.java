@@ -166,7 +166,7 @@ public class ServiceLog {
 		newServiceLog.setExecutionEndTime(json.findPath("executionEndTime").asText());
 		newServiceLog.setDataSetStartTime(json.findPath("datasetStudyStartTime").asText());
 		newServiceLog.setDataSetEndTime(json.findPath("datasetStudyEndTime").asText());
-		System.out.println("Get dataset start time:  " + json.findPath("datasetStudyStartTime").asText() );
+		
 		
 		
 		newServiceLog.setDatasetLogId(json.findPath("datasetLogId").asText());	//Not used variavle, use original code for now to set this to an empyy string
