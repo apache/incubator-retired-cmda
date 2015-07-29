@@ -185,8 +185,7 @@ public class DataSet {
 			dataset.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
 			
 //!!!!!!fake start/end time value
-			String tmpTime = json.get("dataSetEndTime").asText();
-			SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
+			
 			dataset.setEndTime(json.get("endTime").asText());
 			dataset.setStartTime(json.get("startTime").asText());
 //			dataset.setEndTime("201508");
