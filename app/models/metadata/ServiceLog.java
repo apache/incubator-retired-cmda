@@ -171,12 +171,11 @@ public class ServiceLog {
 		
 		String datasetStudyStartTime = json.findPath("datasetStudyStartTime").asText();
 		String datasetStudyEndTime = json.findPath("datasetStudyEndTime").asText();
-		System.out.println("get dataset Start time :  " + datasetStudyStartTime);
-		System.out.println("get dataset End time :  " + datasetStudyEndTime);
+		
 		Date tmpTime = null;
 		try {
 			tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(datasetStudyStartTime);
-			System.out.println("get dataset tmp time :  " + tmpTime);
+			
 			if (tmpTime != null) {
 				newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 			}
@@ -186,7 +185,7 @@ public class ServiceLog {
 		
 		try {
 			tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(datasetStudyEndTime);
-			System.out.println("get dataset tmp time :  " + tmpTime);
+			
 			if (tmpTime != null) {
 				newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 			}
