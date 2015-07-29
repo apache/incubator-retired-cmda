@@ -168,10 +168,10 @@ public class ServiceLog {
 		newServiceLog.setExecutionEndTime(json.findPath("executionEndTime").asText());
 //		newServiceLog.setDataSetStartTime(json.findPath("datasetStudyStartTime").asText());
 //		newServiceLog.setDataSetEndTime(json.findPath("datasetStudyEndTime").asText());
-		
+		System.out.println("get dataset Start time :  " + json.findPath("datasetStudyStartTime").asText());
 		Date tmptime = null;
 		try {
-			tmptime = (new SimpleDateFormat("YYYY-MM-DD HH:MM:SS")).parse(json.findPath("datasetStudyStartTime").asText());
+			tmptime = (new SimpleDateFormat("MMM DD, YYYY HH:MM:SS")).parse(json.findPath("datasetStudyStartTime").asText());
 	    } catch (ParseException e){	    
 	    	e.printStackTrace();
 	    }
