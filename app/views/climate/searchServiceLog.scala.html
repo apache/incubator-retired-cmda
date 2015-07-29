@@ -291,15 +291,15 @@
        		@inputText(serviceLogForm("User Id"), 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->70)
 	    </div>
 	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(serviceLogForm("Execution Start Time"), 'id -> "executionStartTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "200401", 'size->70)
-	    	@inputText(serviceLogForm("Execution End Time"), 'id -> "executionEndTime", '_label -> Messages("Execution End Time"), 'placeholder -> "200412", 'size->70)
+	    	@inputText(serviceLogForm("Execution Start Time"), 'id -> "executionStartTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
+	    	@inputText(serviceLogForm("Execution End Time"), 'id -> "executionEndTime", '_label -> Messages("Execution End Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
 	    	<!-- @inputText(serviceLogForm("Start Latitude"),'id -> "startLa", '_label -> Messages("Start Latitude"), 'placeholder -> "-90", 'size->70)
 	    	@inputText(serviceLogForm("End Latitude"),'id -> "endLa", '_label -> Messages("End Latitude"), 'placeholder -> "90", 'size->70) -->
 	    	
 	    </div>
 	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(serviceLogForm("DataSet Start Time"), 'id -> "dataSetStartTime", '_label -> Messages("DataSet Start Time"), 'placeholder -> "200401", 'size->70)
-	    	@inputText(serviceLogForm("DataSet End Time"), 'id -> "dataSetEndTime", '_label -> Messages("DataSet End Time"), 'placeholder -> "200412", 'size->70)
+	    	@inputText(serviceLogForm("DataSet Start Time"), 'id -> "dataSetStartTime", '_label -> Messages("DataSet Start Time"), 'placeholder -> "YYYYMM", 'size->70)
+	    	@inputText(serviceLogForm("DataSet End Time"), 'id -> "dataSetEndTime", '_label -> Messages("DataSet End Time"), 'placeholder -> "YYYYMM", 'size->70)
 	    	
 	    	<div id="show" style="display: none;">
 	    		<textarea style="width: 640px" rows="4" id="content"></textarea>

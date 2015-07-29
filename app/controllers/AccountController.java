@@ -96,7 +96,7 @@ public class AccountController extends Controller {
 			dataSetStartTime = dc.field("DataSet Start Time").value();
 			dataSetEndTime = dc.field("DataSet End Time").value();
 
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
 			if (!startTime.isEmpty()) {
 				try {
