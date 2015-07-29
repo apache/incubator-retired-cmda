@@ -164,17 +164,36 @@ public class ServiceLog {
 		newServiceLog.setPurpose(json.get("purpose").asText());
 		newServiceLog.setUserId(json.get("user").get("firstName").asText()+" "+json.get("user").get("lastName").asText());
 		newServiceLog.setServiceConfigurationId(json.get("serviceConfiguration").get("id").asText());
-		newServiceLog.setExecutionStartTime(json.findPath("executionStartTime").asText());
-		newServiceLog.setExecutionEndTime(json.findPath("executionEndTime").asText());
+//		newServiceLog.setExecutionStartTime(json.findPath("executionStartTime").asText());
+//		newServiceLog.setExecutionEndTime(json.findPath("executionEndTime").asText());
 //		newServiceLog.setDataSetStartTime(json.findPath("datasetStudyStartTime").asText());
 //		newServiceLog.setDataSetEndTime(json.findPath("datasetStudyEndTime").asText());
+		
+		String executionStartTime = json.findPath("executionStartTime").asText();
+		String executionEndTime = json.findPath("executionEndTime").asText();
 		
 		String datasetStudyStartTime = json.findPath("datasetStudyStartTime").asText();
 		String datasetStudyEndTime = json.findPath("datasetStudyEndTime").asText();
 		
 		Date tmpTime = null;
 		try {
-			tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(datasetStudyStartTime);
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(executionStartTime);		
+			if (tmpTime != null) {
+				newServiceLog.setExecutionStartTime(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(tmpTime));
+			}
+	    } catch (ParseException e) {	    
+	    }
+		
+		try {
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(executionEndTime);			
+			if (tmpTime != null) {
+				newServiceLog.setExecutionEndTime(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(tmpTime));
+			}
+	    } catch (ParseException e) {	    
+	    }
+		
+		try {
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(datasetStudyStartTime);
 			
 			if (tmpTime != null) {
 				newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
@@ -184,7 +203,7 @@ public class ServiceLog {
 	    }
 		
 		try {
-			tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(datasetStudyEndTime);
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(datasetStudyEndTime);
 			
 			if (tmpTime != null) {
 				newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
