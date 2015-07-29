@@ -169,22 +169,27 @@ public class ServiceLog {
 //		newServiceLog.setDataSetStartTime(json.findPath("datasetStudyStartTime").asText());
 //		newServiceLog.setDataSetEndTime(json.findPath("datasetStudyEndTime").asText());
 		System.out.println("get dataset Start time :  " + json.findPath("datasetStudyStartTime").asText());
-		Date tmptime = null;
+		Date tmpTime = null;
 		try {
-			tmptime = (new SimpleDateFormat("MMM DD, YYYY HH:MM:SS")).parse(json.findPath("datasetStudyStartTime").asText());
+			
+			tmpTime = (new SimpleDateFormat("MMM DD, YYYY HH:MM:SS")).parse(json.findPath("datasetStudyStartTime").asText());
+			System.out.println("get dataset tmp time :  " + tmpTime);
+			if (tmpTime != null) {
+				newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
+			}
 	    } catch (ParseException e){	    
 	    	e.printStackTrace();
 	    }
-		newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmptime));
 		
 		
-		tmptime = null;
-		try {
-			tmptime = (new SimpleDateFormat("YYYY-MM-DD HH:MM:SS")).parse(json.findPath("datasetStudyEndTime").asText());
-	    } catch (ParseException e){	    
-	    	e.printStackTrace();
-	    }
-		newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmptime));
+		
+//		tmptime = null;
+//		try {
+//			tmptime = (new SimpleDateFormat("YYYY-MM-DD HH:MM:SS")).parse(json.findPath("datasetStudyEndTime").asText());
+//	    } catch (ParseException e){	    
+//	    	e.printStackTrace();
+//	    }
+//		newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmptime));
 		
 		newServiceLog.setDatasetLogId(json.findPath("datasetLogId").asText());	//Not used variavle, use original code for now to set this to an empyy string
 
