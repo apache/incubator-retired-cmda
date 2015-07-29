@@ -171,7 +171,6 @@ public class ServiceLog {
 		System.out.println("get dataset Start time :  " + json.findPath("datasetStudyStartTime").asText());
 		Date tmpTime = null;
 		try {
-			
 			tmpTime = (new SimpleDateFormat("MMM DD, YYYY HH:MM:SS")).parse(json.findPath("datasetStudyStartTime").asText());
 			System.out.println("get dataset tmp time :  " + tmpTime);
 			if (tmpTime != null) {
@@ -181,6 +180,15 @@ public class ServiceLog {
 	    	e.printStackTrace();
 	    }
 		
+		try {
+			tmpTime = (new SimpleDateFormat("MMM DD, YYYY HH:MM:SS")).parse(json.findPath("datasetStudyEndTime").asText());
+			System.out.println("get dataset tmp time :  " + tmpTime);
+			if (tmpTime != null) {
+				newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
+			}
+	    } catch (ParseException e){	    
+	    	e.printStackTrace();
+	    }
 		
 		
 //		tmptime = null;
