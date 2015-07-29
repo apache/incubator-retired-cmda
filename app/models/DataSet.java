@@ -186,12 +186,12 @@ public class DataSet {
 			
 //!!!!!!fake start/end time value
 			
-			if (json.get("endTime").asText() != null) {
+			if (json.get("endTime") != null) {
 				dataset.setEndTime(json.get("endTime").asText());
 			} else {
 				dataset.setEndTime(null);
 			}
-			if (json.get("startTime").asText() != null) {
+			if (json.get("startTime") != null) {
 				dataset.setStartTime(json.get("startTime").asText());
 			} else {
 				dataset.setEndTime(null);
