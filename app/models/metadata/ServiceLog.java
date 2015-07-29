@@ -175,7 +175,7 @@ public class ServiceLog {
 		System.out.println("get dataset End time :  " + datasetStudyEndTime);
 		Date tmpTime = null;
 		try {
-			tmpTime = (new SimpleDateFormat("MMM DD, YYYY HH:MM:SS a")).parse(datasetStudyStartTime);
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(datasetStudyStartTime);
 			System.out.println("get dataset tmp time :  " + tmpTime);
 			if (tmpTime != null) {
 				newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
@@ -185,7 +185,7 @@ public class ServiceLog {
 	    }
 		
 		try {
-			tmpTime = (new SimpleDateFormat("MMM DD, YYYY HH:MM:SS a")).parse(datasetStudyEndTime);
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(datasetStudyEndTime);
 			System.out.println("get dataset tmp time :  " + tmpTime);
 			if (tmpTime != null) {
 				newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
