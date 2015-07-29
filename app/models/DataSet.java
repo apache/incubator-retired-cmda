@@ -1,5 +1,6 @@
 package models;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -186,16 +187,43 @@ public class DataSet {
 			
 //!!!!!!fake start/end time value
 			
-			if (json.get("endTime") != null) {
-				dataset.setEndTime(json.get("endTime").asText());
-			} else {
-				dataset.setEndTime(null);
-			}
-			if (json.get("startTime") != null) {
-				dataset.setStartTime(json.get("startTime").asText());
-			} else {
-				dataset.setEndTime(null);
-			}
+//			if (json.get("endTime") != null) {
+//				dataset.setEndTime(json.get("endTime").asText());
+//			} else {
+//				dataset.setEndTime(null);
+//			}
+//			if (json.get("startTime") != null) {
+//				dataset.setStartTime(json.get("startTime").asText());
+//			} else {
+//				dataset.setEndTime(null);
+//			}
+			
+			
+			String startTime = json.findPath("startTime").asText();
+			String endTime = json.findPath("endTime").asText();
+			
+			Date tmpTime = null;
+			try {
+				tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(startTime);
+				
+				if (tmpTime != null) {
+					dataset.setStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
+				}
+		    } catch (ParseException e){	    
+//		    	e.printStackTrace();
+		    }
+			
+			try {
+				tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(endTime);
+				
+				if (tmpTime != null) {
+					dataset.setEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
+				}
+		    } catch (ParseException e){	    
+//		    	e.printStackTrace();
+		    }
+			
+			
 //			dataset.setEndTime("201508");
 //			dataset.setStartTime("201507");
 			
