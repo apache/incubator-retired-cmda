@@ -186,8 +186,16 @@ public class DataSet {
 			
 //!!!!!!fake start/end time value
 			
-			dataset.setEndTime(json.get("endTime").asText());
-			dataset.setStartTime(json.get("startTime").asText());
+			if (json.get("endTime").asText() != null) {
+				dataset.setEndTime(json.get("endTime").asText());
+			} else {
+				dataset.setEndTime(null);
+			}
+			if (json.get("startTime").asText() != null) {
+				dataset.setStartTime(json.get("startTime").asText());
+			} else {
+				dataset.setEndTime(null);
+			}
 //			dataset.setEndTime("201508");
 //			dataset.setStartTime("201507");
 			
