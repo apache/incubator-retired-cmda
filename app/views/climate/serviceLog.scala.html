@@ -26,11 +26,11 @@
     	<div class = "col-sm-offset-3 col-sm-2">
     		@inputText(serviceLogForm("User Id"), 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->20)
     	</div>
-    	<div class = "col-sm-2">
-    		@inputText(serviceLogForm("Start Time"), 'id -> "startTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "mm/dd/yyyy hh:mm", 'size->20)
+    	<div class = "col-sm-3">
+    		@inputText(serviceLogForm("Start Time"), 'id -> "startTime", 'type -> "datetime-local", '_label -> Messages("Execution Start Time"), 'size->30)
     	</div>
-    	<div class = "col-sm-2">
-	    	@inputText(serviceLogForm("End Time"), 'id -> "endTime", '_label -> Messages("Execution End Time"), 'placeholder -> "mm/dd/yyyy hh:mm", 'size->20)
+    	<div class = "col-sm-3">
+	    	@inputText(serviceLogForm("End Time"), 'id -> "endTime", 'type -> "datetime-local", '_label -> Messages("Execution End Time"), 'size->30)
     	</div>
     	<input class="btn" type="submit" value="Search" style="margin-top:18px">
     }

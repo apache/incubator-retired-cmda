@@ -204,7 +204,7 @@ public class AccountController extends Controller {
 			Logger.info(""+endTime);
 
 
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 			if (!startTime.isEmpty()) {
 				try {
