@@ -53,20 +53,20 @@
 	</thead>
 	@for(serviceLog <- serviceLogs) {
 	<tr>
-	<td>@serviceLog.getServiceName</td>
-	<td>@serviceLog.getUserId</td>
-	<td>@serviceLog.getPurpose</td>
-	<td>@serviceLog.getExecutionStartTime</td>
-	<td>@serviceLog.getExecutionEndTime</td>
-	<td>@serviceLog.getDataSetStartTime</td>
-	<td>@serviceLog.getDataSetEndTime</td>
+	<td><font size="2">@serviceLog.getServiceName</font></td>
+	<td><font size="2">@serviceLog.getUserId</font></td>
+	<td><font size="2">@serviceLog.getPurpose</font></td>
+	<td><font size="2">@serviceLog.getExecutionStartTime</font></td>
+	<td><font size="2">@serviceLog.getExecutionEndTime</font></td>
+	<td><font size="2">@serviceLog.getDataSetStartTime</font></td>
+	<td><font size="2">@serviceLog.getDataSetEndTime</font></td>
 	<td>
 	@form(routes.ClimateServiceController.getConfigurationByConfId()){
 		<input
 			name="logId" class="hidden" type="hidden"
 			value="@serviceLog.getServiceExecutionLogId">
 		<input
-			type="submit" class="btn btn-link" value="see detail">
+			type="submit"  value="see details">
 	}
 	</td>
 	<!--  
