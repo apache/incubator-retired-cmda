@@ -27,6 +27,7 @@ public class ServiceLog {
 
 	private String serviceExecutionLogId;
 	private String serviceId;
+	private String serviceName;
 	private String userId;
 	private String purpose;
 	private String serviceConfigurationId;
@@ -115,9 +116,15 @@ public class ServiceLog {
 
 	public void setDataSetEndTime(String dataSetEndTime) {
 		this.dataSetEndTime = dataSetEndTime;
+	}	
+
+	public String getServiceName() {
+		return serviceName;
 	}
 
-	
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
 
 	private static final String GET_ALL_SERVICE_LOG = Constants.NEW_BACKEND + Constants.SERVICE_EXECUTION_LOG
 			+ util.Constants.NEW_GET_ALL_SERVICE_LOG;
@@ -161,6 +168,7 @@ public class ServiceLog {
 				"id").asText());
 		newServiceLog.setServiceId(json.get(
 				"climateService").get("id").asText());
+		newServiceLog.setServiceName(json.get("climateService").get("name").asText());
 		newServiceLog.setPurpose(json.get("purpose").asText());
 		newServiceLog.setUserId(json.get("user").get("firstName").asText()+" "+json.get("user").get("lastName").asText());
 		newServiceLog.setServiceConfigurationId(json.get("serviceConfiguration").get("id").asText());
