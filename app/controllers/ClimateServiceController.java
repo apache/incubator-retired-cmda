@@ -895,6 +895,10 @@ public class ClimateServiceController extends Controller {
 				"attachment; filename=user.json");
 		return ok(file);
 	}
+	
+	public static Result oneService(String url) {
+		return ok(oneService.render(url));
+	}
 
 	// -- Authentication
 	public static class Login {

@@ -120,6 +120,7 @@ POST	/climate/edit/climateServices		controllers.ClimateServiceController.editCli
 GET		/climate/new/climateServices		controllers.ClimateServiceController.addClimateServices()
 GET		/serviceLog/conf		controllers.ClimateServiceController.getConfigurationByConfId()
 POST    /climate/delete/serviceLog   controllers.ClimateServiceController.deleteServiceLog()
+GET		/climate/oneService		controllers.ClimateServiceController.oneService(url ?= null)
 
 #Keyword search
 GET 	    /climate/dataSets/						controllers.dataSetController.datasetList()

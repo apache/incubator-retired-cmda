@@ -33,13 +33,13 @@
 	</tr>
 	@for(climateService <- climateServices){
 	<tr>
-		<td><a href = "@climateService.getUrl()">@climateService.getClimateServiceName()</a></td>
+		<td><a href = "@{routes.ClimateServiceController.oneService(climateService.getUrl())}">@climateService.getClimateServiceName()</a></td>
 
 		<td><span class="@climateService.getClimateServiceName() editable"  data-name='purpose'>
 				@climateService.getPurpose() </span></td>
 		
 		<td><span class="@climateService.getClimateServiceName() editable" id = "url" data-name='url'>
-				<a href = "@climateService.getUrl()"><img src='@climateService.getPhoto()' style="height: 200px; width: 200px" ></a> </span></td>
+				<a href = "@{routes.ClimateServiceController.oneService(climateService.getUrl())}"><img src='@climateService.getPhoto()' style="height: 200px; width: 200px" ></a> </span></td>
 		<!-- 	
 		<td><span class="@climateService.getClimateServiceName() editable" data-name='scenario'>
 				@climateService.getScenario() </span></td>
