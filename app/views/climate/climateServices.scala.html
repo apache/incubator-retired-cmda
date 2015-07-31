@@ -17,55 +17,25 @@
 	@flash_message()   
 	 
     <h1>@climateServices.size() Climate Services</h1>
-		<table class="table table-striped table-bordered table-condensed ex2">
+		<table class="table table-striped table-bordered table-condensed ex2 tablesorter" id = "csTable">
+		<thead>
 	<tr>
 		<th class="col-md-2">Climate Service Name</td>
 		<th class="col-md-4">Purpose</td>
-		<th class="col-md-4">Url</td>
-		<!--  
-		<th class="col-md-2">Scenario</td>
-		<th class="col-md-2">Version</td>
-		<th class="col-md-2">Root Service</td>
-		-->
-		 @if(false){
-			<td class="col-md-3">Operation</td> 
-	     } 
+		<th class="col-md-2">Url</td>
+		
 	</tr>
+	</thead>
 	@for(climateService <- climateServices){
 	<tr>
-		<td><a href = "@{routes.ClimateServiceController.oneService(climateService.getUrl())}">@climateService.getClimateServiceName()</a></td>
+		<td><a href = "@{routes.ClimateServiceController.oneService(climateService.getUrl())}"><font size="3">@climateService.getClimateServiceName()</a></font></td>
 
-		<td><span class="@climateService.getClimateServiceName() editable"  data-name='purpose'>
-				@climateService.getPurpose() </span></td>
+		<td><span class="@climateService.getClimateServiceName() editable"  data-name='purpose'><font size="3">
+				@climateService.getPurpose() </font></span></td>
 		
-		<td><span class="@climateService.getClimateServiceName() editable" id = "url" data-name='url'>
-				<a href = "@{routes.ClimateServiceController.oneService(climateService.getUrl())}"><img src='@climateService.getPhoto()' style="height: 200px; width: 200px" ></a> </span></td>
-		<!-- 	
-		<td><span class="@climateService.getClimateServiceName() editable" data-name='scenario'>
-				@climateService.getScenario() </span></td>
-				
-		<td><span class="@climateService.getClimateServiceName() editable" data-name='versionNo'>
-				@climateService.getVersion() </span></td>
-				
-		<td><span class="@climateService.getClimateServiceName() editable" data-name='rootServiceId'>
-				@climateService.getRootservice() </span></td>
-		-->		
-		@if(false){ 
-			<td class="operation">
-				<input type="button" class="edit-btn btn btn-primary" value="Edit" 
-					data-pk='@climateService.getClimateServiceName()'
-					data-url='@routes.ClimateServiceController.editClimateService()' 
-				>
-				@form(routes.ClimateServiceController.deleteClimateService()){ 
-					<input
-						name="idHolder" class="hidden" type="hidden"
-						value="@climateService.getId()"> 
-					<input
-						type="submit" class="btn btn-danger delete-btn span2" value="Delete"
-						onclick="return confirm('Are you sure you want to delete this item?')">
-				}
-			</td> 
-		}
+		<td class = "text-center" ><span class="@climateService.getClimateServiceName() editable" id = "url" data-name='url'>
+				<a href = "@{routes.ClimateServiceController.oneService(climateService.getUrl())}"><img src='@climateService.getPhoto()' style="height: 150px; width: 150px" ></a> </span></td>
+	
 	</tr>
 	}
     </table>
