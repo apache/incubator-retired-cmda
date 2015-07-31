@@ -11,6 +11,7 @@ import scala.Console;
 import models.metadata.ClimateService;
 import models.metadata.ServiceLog;
 import util.APICall;
+import util.Constants;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -150,12 +151,14 @@ public class DataSet {
 		this.variableNameInput = variableNameInput;
 	}
 	
+	private static final String GET_ALL_DATASET = Constants.NEW_BACKEND + "dataset/getAllDatasets/json";
+	private static final String DATASET_QUERY = Constants.NEW_BACKEND + "dataset/queryDataset";
+	
 	public static List<DataSet> all() {
 
 		List<DataSet> dataSets = new ArrayList<DataSet>();
 
-		JsonNode dataSetNode = APICall
-				.callAPI("http://localhost:9034/dataset/getAllDatasets/json");
+		JsonNode dataSetNode = APICall.callAPI(GET_ALL_DATASET);
 
 		// if no value is returned or error or is not json array
 		if (dataSetNode == null || dataSetNode.has("error")
@@ -204,7 +207,7 @@ public class DataSet {
 			
 			Date tmpTime = null;
 			try {
-				tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(startTime);
+				tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(startTime);
 				
 				if (tmpTime != null) {
 					dataset.setStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
@@ -214,7 +217,7 @@ public class DataSet {
 		    }
 			
 			try {
-				tmpTime = (new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a")).parse(endTime);
+				tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(endTime);
 				
 				if (tmpTime != null) {
 					dataset.setEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
@@ -261,7 +264,7 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 //			queryJson.put("gridDimension", gridDimension);
 //		}
 		
-		JsonNode dataSetNode = APICall.postAPI("http://localhost:9034/dataset/queryDataset", queryJson);
+		JsonNode dataSetNode = APICall.postAPI(DATASET_QUERY, queryJson);
 		if (dataSetNode == null || dataSetNode.has("error")
 				|| !dataSetNode.isArray()) {
 			return dataset;
@@ -303,7 +306,29 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 		newDataSet.setVariableName(json.get("variableNameInWebInterface").asText());
 		newDataSet.setDataSourceInput(json.get("dataSourceInputParameterToCallScienceApplicationCode").asText());
 		newDataSet.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
+		String startTime = json.findPath("startTime").asText();
+		String endTime = json.findPath("endTime").asText();
+		Date tmpTime = null;
 		
+		try {
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(startTime);
+			
+			if (tmpTime != null) {
+				newDataSet.setStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
+			}
+	    } catch (ParseException e){	    
+	    }
+		
+		try {
+			tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(endTime);
+			
+			if (tmpTime != null) {
+				newDataSet.setEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
+			}
+	    } catch (ParseException e){	    
+	    	
+	    }
+
 		
 //!!!!!!fake start/end time value		
 //		newDataSet.setEndTime(json.get("dataSetEndTime").asText());
