@@ -153,28 +153,28 @@
 	
 	@flash_message()   
 	 
-    <h1 align="center">Search DataSet</h1>
+    <h1 style="margin-left:490px">Search DataSet</h1>
     @helper.form(routes.dataSetController.getSearchResult()) {
-    	<div class="ui-widget">
-    	<div class = "col-sm-offset-3 col-sm-10">
-    		@inputText(dataSetForm("Data Set Name"), 'id -> "dataSetName", '_label -> Messages("Data Set Name"), 'placeholder -> "ARGO Ocean Temperature", 'size->70) 
+    	<div class="ui-widget col-sm-offset-3 col-sm-7">
+    	<div class = "form-group">
+    		@inputText(dataSetForm("Data Set Name"), 'class -> "form-control", 'id -> "dataSetName", '_label -> Messages("Data Set Name"), 'placeholder -> "ARGO Ocean Temperature", 'size->70) 
     	</div>
-    	<div class = "col-sm-offset-3 col-sm-10">
-    		@inputText(dataSetForm("Agency"), 'id -> "agency", '_label -> Messages("Agency"), 'placeholder -> "NOAA", 'size->70) 
+    	<div class = "form-group">
+    		@inputText(dataSetForm("Agency"), 'class -> "form-control", 'id -> "agency", '_label -> Messages("Agency"), 'placeholder -> "NOAA", 'size->70) 
     	</div>
-    	<div class = "col-sm-offset-3 col-sm-10">
-    		@inputText(dataSetForm("Instrument"), 'id -> "instrument", '_label -> Messages("Instrument"), 'placeholder -> "ARGO", 'size->70) 
+    	<div class = "form-group">
+    		@inputText(dataSetForm("Instrument"), 'class -> "form-control", 'id -> "instrument", '_label -> Messages("Instrument"), 'placeholder -> "ARGO", 'size->70) 
        	</div>
-       	<div class = "col-sm-offset-3 col-sm-10">
-       		@inputText(dataSetForm("Physical Variable"), 'id -> "physicalVariable", '_label -> Messages("Physical Variable"), 'placeholder -> "Ocean temperature", 'size->70)
+       	<div class = "form-group">
+       		@inputText(dataSetForm("Physical Variable"), 'class -> "form-control", 'id -> "physicalVariable", '_label -> Messages("Physical Variable"), 'placeholder -> "Ocean temperature", 'size->70)
 	    </div>
-	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(dataSetForm("Grid Dimension"), 'id -> "gridDimension", '_label -> Messages("Grids Dimension"), 'placeholder -> "3D", 'size->70)
+	    <div class = "form-group">
+	    	@inputText(dataSetForm("Grid Dimension"), 'class -> "form-control", 'id -> "gridDimension", '_label -> Messages("Grids Dimension"), 'placeholder -> "3D", 'size->70)
 	    	
 	    </div>
-	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(dataSetForm("DataSet Start Time"), 'id -> "dataSetStartTime", '_label -> Messages("DataSet Start Time"), 'placeholder -> "200401", 'size->70)
-	    	@inputText(dataSetForm("DataSet End Time"), 'id -> "dataSetEndTime", '_label -> Messages("DataSet End Time"), 'placeholder -> "200412", 'size->70)
+	    <div class = "form-group">
+	    	@inputText(dataSetForm("DataSet Start Time"), 'class -> "form-control", 'id -> "dataSetStartTime", '_label -> Messages("DataSet Start Time"), 'placeholder -> "200401", 'size->70)
+	    	@inputText(dataSetForm("DataSet End Time"), 'class -> "form-control", 'id -> "dataSetEndTime", '_label -> Messages("DataSet End Time"), 'placeholder -> "200412", 'size->70)
 	    	
 	    	<div id="show" style="display: none;">
 	    		<textarea style="width: 640px" rows="4" id="content"></textarea>

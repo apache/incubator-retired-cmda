@@ -129,177 +129,34 @@
 @main("Search Execution Service Logs", scripts) {
 	
 	@flash_message()   
-	 
-    <!-- <h1 align="center">Search Log</h1>
-    <div align="center" id = "selectButton">
-    	<button type="button" class="btn btn-info">ScatterPlot2Vars</button>
-    	<button type="button" class="btn btn-info">ConditionalSampling</button>
-    	<button type="button" class="btn btn-info">ThreeDimVarVertical</button>
-    	<button type="button" class="btn btn-info">DiffPlot2Vars</button>
-    	<button type="button" class="btn btn-info">TwoDimZonalMean</button>
-    	<button type="button" class="btn btn-info">TwoDimMap</button>
-    	<button type="button" class="btn btn-info">TwoDimSlice3D</button>
-    </div>
-    <hr></hr>
-    <div id="TwoDimZonalMean">
-    	<div class="form-horizontal">
-    		<div class="form-group">
-    			<label class="col-sm-2 control-label">Data Source</label>
-    			<div class="col-sm-9">
-    				<select class="form-control">
-    					<option></option>
-    					<optgroup label="Observation">
-    						<option>NASA/MODIS</option>
-    						<option>NASA/AMSRE</option>
-    						<option>NASA/TRMM</option>
-    						<option>NASA/GPCP</option>
-    						<option>NASA/QuikSCAT</option>
-    						<option>NASA/AVISO</option>
-    						<option>NASA/GRACE</option>
-    						<option>NOAA/NODC</option>
-    						<option>NASA/CERES</option>
-    					</optgroup>
-    					<optgroup label="Model: Historical">
-							<option>CCCMA/CANESM2</option>
-							<option>GFDL/ESM2G</option>
-							<option>GISS/E2-H</option>
-							<option>GISS/E2-R</option>
-							<option>NCAR/CAM5</option>
-							<option>NCC/NORESM</option>
-							<option>UKMO/HadGEM2-ES</option>
-						</optgroup>
-						<optgroup label="Model: AMIP">
-							<option>CCCMA/CANAM4</option>
-							<option>CSIRO/MK3.6</option>
-							<option>GFDL/CM3</option>
-							<option>IPSL/CM5A-LR</option>
-							<option>MIROC/MIROC5</option>
-							<option>UKMO/HadGEM2-A</option>
-						</optgroup>
-						<optgroup label="Reanalysis">
-							<option>ECMWF/interim</option>
-						</optgroup>	
-    				</select>
-    			</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Variable Name</label>
-				<div class="col-sm-9">
-					<select class="form-control">
-						<option></option>
-    					<option>Total Cloud Fraction</option>
-						<option>Leaf Area Index</option>
-    				</select>
-    			</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Start year-month</label>
-				<div class="col-sm-3">
-					<input type="text" class="form-control" placeholder="2004-01" aria-describedby="basic-addon1">
-				</div>
-				<label class="col-sm-2 control-label">End year-month</label>
-				<div class="col-sm-3">
-					<input type="text" class="form-control" placeholder="2004-12" aria-describedby="basic-addon1">
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<h4>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Feb" value="Jan">Jan
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Feb" value="Feb">Feb
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Mar" value="Mar">Mar
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Apr" value="Apr">Apr
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="May" value="May">May
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Jun" value="Jun">Jun
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Jul" value="Jul">Jul
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Aug" value="Aug">Aug
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Sep" value="Sep">Sep
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Oct" value="Oct">Oct
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Nov" value="Nov">Nov
-						</label>
-						<label class="checkbox-inline">
-  							<input type="checkbox" id="Dec" value="Dec">Dec
-						</label>
-					</h4>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">start lat (deg):</label>
-				<div class="col-sm-3">
-					<input type="text" class="form-control" placeholder="-90" aria-describedby="basic-addon1">
-				</div>
-				<label class="col-sm-2 control-label">end lat (deg):</label>
-				<div class="col-sm-3">
-					<input type="text" class="form-control" placeholder="90" aria-describedby="basic-addon1">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Variable Scale:</label>
-				<label class="col-sm-2 col-sm-offset-1 radio-inline">
-  					<input type="radio" id="linear" value="linear">linear
-				</label>
-				<label class="col-sm-2 col-sm-offset-1 radio-inline">
-  					<input type="radio" id="logarithmic" value="logarithmic">logarithmic
-				</label>	
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Execution Purpose</label>
-				<div class="col-sm-9">
-					<input type="text" class="form-control" aria-describedby="basic-addon1">
-				</div>
-			</div>
-			<button type="submit" class="col-sm-offset-6 btn-lg btn-info">Search</button>
-		</div>
-    </div> -->
-   
-    <h1 align="center"> Search Service Execution Log</h1>
+	
+    <h1 style="margin-left:360px"> Search Service Execution Log</h1>
     
     @helper.form(routes.AccountController.getSearchServiceLogOneDimension()) {
     	<!-- @select(serviceLogForm("Data Source"), options(Seq("NASA/MODIS","NASA/AMSRE","NASA/TRMM","NASA/GPCP","NASA/QuikSCAT","NASA/AVISO","NASA/GRACE","")), '_label -> "Data Source", '_default -> "", 'style->"width: 290px")  --> 
-    	<div class="ui-widget">
-    	<div class = "col-sm-offset-3 col-sm-10">
-    		@inputText(serviceLogForm("Data Source"), 'id -> "dataSource", '_label -> Messages("Data Source"), 'placeholder -> "NASA/MODIS", 'size->70) 
+    	<div class="ui-widget col-sm-offset-3 col-sm-7">
+    	<div class = "form-group">
+    		@inputText(serviceLogForm("Data Source"),'class -> "form-control", 'id -> "dataSource", '_label -> Messages("Data Source"), 'placeholder -> "NASA/MODIS", 'size->70) 
     	</div>
-    	<div class = "col-sm-offset-3 col-sm-10">
-    		@inputText(serviceLogForm("Variable Name"), 'id -> "variableName", '_label -> Messages("Variable Name"), 'placeholder -> "Total Cloud Fraction", 'size->70) 
+    	<div class = "form-group">
+    		@inputText(serviceLogForm("Variable Name"),'class -> "form-control", 'id -> "variableName", '_label -> Messages("Variable Name"), 'placeholder -> "Total Cloud Fraction", 'size->70) 
     	</div>
-    	<div class = "col-sm-offset-3 col-sm-10">
-    		@inputText(serviceLogForm("Execution Purpose"), 'id -> "exectionPurpose", '_label -> Messages("Execution Purpose"), 'placeholder -> " test", 'size->70) 
+    	<div class = "form-group">
+    		@inputText(serviceLogForm("Execution Purpose"),'class -> "form-control", 'id -> "exectionPurpose", '_label -> Messages("Execution Purpose"), 'placeholder -> "test", 'size->70) 
        	</div>
-       	<div class = "col-sm-offset-3 col-sm-10">
-       		@inputText(serviceLogForm("User Id"), 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->70)
+       	<div class = "form-group">
+       		@inputText(serviceLogForm("User Id"),'class -> "form-control", 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->70)
 	    </div>
-	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(serviceLogForm("Execution Start Time"), 'id -> "executionStartTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
-	    	@inputText(serviceLogForm("Execution End Time"), 'id -> "executionEndTime", '_label -> Messages("Execution End Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
-	    	<!-- @inputText(serviceLogForm("Start Latitude"),'id -> "startLa", '_label -> Messages("Start Latitude"), 'placeholder -> "-90", 'size->70)
-	    	@inputText(serviceLogForm("End Latitude"),'id -> "endLa", '_label -> Messages("End Latitude"), 'placeholder -> "90", 'size->70) -->
+	    <div class = "form-group">
+	    	@inputText(serviceLogForm("Execution Start Time"),'class -> "form-control", 'id -> "executionStartTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
+	    	@inputText(serviceLogForm("Execution End Time"),'class -> "form-control", 'id -> "executionEndTime", '_label -> Messages("Execution End Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
+	    	<!-- @inputText(serviceLogForm("Start Latitude"),'class -> "form-control",'id -> "startLa", '_label -> Messages("Start Latitude"), 'placeholder -> "-90", 'size->70)
+	    	@inputText(serviceLogForm("End Latitude"),'class -> "form-control",'id -> "endLa", '_label -> Messages("End Latitude"), 'placeholder -> "90", 'size->70) -->
 	    	
 	    </div>
-	    <div class = "col-sm-offset-3 col-sm-10">
-	    	@inputText(serviceLogForm("DataSet Start Time"), 'id -> "dataSetStartTime", '_label -> Messages("DataSet Start Time"), 'placeholder -> "YYYYMM", 'size->70)
-	    	@inputText(serviceLogForm("DataSet End Time"), 'id -> "dataSetEndTime", '_label -> Messages("DataSet End Time"), 'placeholder -> "YYYYMM", 'size->70)
+	    <div class = "form-group">
+	    	@inputText(serviceLogForm("Dataset Start Time"),'class -> "form-control", 'id -> "dataSetStartTime", '_label -> Messages("Dataset Start Time"), 'placeholder -> "YYYYMM", 'size->70)
+	    	@inputText(serviceLogForm("Dataset End Time"),'class -> "form-control", 'id -> "dataSetEndTime", '_label -> Messages("Dataset End Time"), 'placeholder -> "YYYYMM", 'size->70)
 	    	
 	    	<div id="show" style="display: none;">
 	    		<textarea style="width: 640px" rows="4" id="content"></textarea>
