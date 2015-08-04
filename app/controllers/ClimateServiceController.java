@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.metadata.ClimateService;
 import models.metadata.DiffPlotTwoTimeAveragedVar;
+import models.metadata.RegridAndDownload;
 import models.metadata.TwoDVarZonalMean;
 import models.metadata.TwoDVarMap;
 import models.metadata.TwoDVarTimeSeries;
@@ -193,7 +194,8 @@ public class ClimateServiceController extends Controller {
 		TwoDVarTimeSeries twoDVarTimeSeries = new TwoDVarTimeSeries();
 		ThreeDVarZonalMean threeDVarZonalMean = new ThreeDVarZonalMean();
 		ConditionalSampling conditionalSampling = new ConditionalSampling();
-
+		RegridAndDownload regridAndDownload = new RegridAndDownload();
+		
 		try {
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			String logId = df.field("logId").value();
@@ -529,6 +531,41 @@ public class ClimateServiceController extends Controller {
 					twoDVarTimeSeries.setImage(response.path("plotUrl").textValue());
 					twoDVarTimeSeries.setDataURL(response.path("dataUrl").textValue());
 					return ok(views.html.climate.twoDVariableTimeSeries.render(twoDVarTimeSeries));
+			}else if (serviceName.equals("regridAndDownload")){    //NEW ONE the 10th
+				for (int i = 0; i < responseConfigItems.size(); i++) {
+					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
+					String parameterValue = responseConfigItems.get(i).path("value").textValue();
+					if (parameterName.equals("model")) {
+						regridAndDownload.setDataSource(parameterValue);
+
+					} else if (parameterName.equals("var")) {
+						regridAndDownload.setVariableName(parameterValue);
+
+					} else if (parameterName.equals("startT")) {
+						regridAndDownload.setStartYearMonth(parameterValue);
+
+					} else if (parameterName.equals("endT")) {
+						regridAndDownload.setEndYearMonth(parameterValue);
+					} else if (parameterName.equals("lat1")) {
+						regridAndDownload.setStartLat(parameterValue);
+					} else if (parameterName.equals("lat2")) {
+						regridAndDownload.setEndLat(parameterValue);
+					} else if (parameterName.equals("dlat")) {
+						regridAndDownload.setDeltaLat(parameterValue);
+					} else if (parameterName.equals("dlon")) {
+						regridAndDownload.setDeltaLon(parameterValue);
+					} else if (parameterName.equals("lon1")) {
+						regridAndDownload.setStartLon(parameterValue);
+					} else if (parameterName.equals("lon2")) {
+						regridAndDownload.setEndLon(parameterValue);
+					} else if (parameterName.equals("plev")) {
+						regridAndDownload.setPressureLevel(parameterValue);
+					}
+				}
+				regridAndDownload.setExecutionPurpose(response.path("purpose").textValue());
+				
+				regridAndDownload.setDataURL(response.path("dataUrl").textValue());
+				return ok(views.html.climate.regridAndDownload.render(regridAndDownload));
 			}else if (serviceName.equals("3-D-Variable-Zonal-Mean")){
 					// old ID 1597
 					String press1 = "";
