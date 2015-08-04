@@ -47,8 +47,9 @@ public class dataSetController extends Controller{
 		String instrument = "";
 		String physicalVariable = "";
 		String gridDimension = "";
-		String dataSetStartTime = "";
-		String dataSetEndTime = "";
+		String startTime = "";
+		String endTime = "";
+		Date dataSetStartTime = null, dataSetEndTime= null;
 		
 		try {
 			dataSetName = dc.field("Data Set Name").value();
@@ -57,8 +58,27 @@ public class dataSetController extends Controller{
 			instrument = dc.field("Instrument").value();
 			physicalVariable = dc.field("Physical Variable").value();
 			gridDimension = dc.field("Grid Dimension").value();
-			dataSetStartTime = dc.field("DataSet Start Time").value();
-			dataSetEndTime = dc.field("DataSet End Time").value();
+			startTime = dc.field("DataSet Start Time").value();
+			endTime = dc.field("DataSet End Time").value();
+			
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+			if (!startTime.isEmpty()) {
+				try {
+					dataSetStartTime = simpleDateFormat.parse(startTime);
+				} catch (ParseException e) {
+					System.out.println("Wrong Date Format :" + startTime);
+					return badRequest("Wrong Date Format :" + startTime);
+				}
+			}
+			if (!endTime.isEmpty()) {
+				try {
+					dataSetEndTime = simpleDateFormat.parse(endTime);
+				} catch (ParseException e) {
+					System.out.println("Wrong Date Format :" + endTime);
+					return badRequest("Wrong Date Format :" + endTime);
+				}
+			}
+			
 
 		} catch (IllegalStateException e) {
 			e.printStackTrace();

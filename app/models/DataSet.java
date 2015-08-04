@@ -235,7 +235,7 @@ public class DataSet {
 		return dataSets;
 	}
 	
-public static List<DataSet> queryDataSet(String dataSetName, String agency, String instrument, String physicalVariable, String gridDimension, String dataSetStartTime, String dataSetEndTime) {
+public static List<DataSet> queryDataSet(String dataSetName, String agency, String instrument, String physicalVariable, String gridDimension, Date dataSetStartTime, Date dataSetEndTime) {
 		
 		List<DataSet> dataset = new ArrayList<DataSet>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -245,8 +245,12 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 		queryJson.put("instrument", instrument);
 		queryJson.put("physicalVariable", physicalVariable);
 		queryJson.put("gridDimension", gridDimension);
-		queryJson.put("dataSetEndTime", dataSetEndTime);
-		queryJson.put("dataSetStartTime", dataSetStartTime);
+		if (dataSetEndTime != null) {
+			queryJson.put("dataSetEndTime", dataSetEndTime.getTime());
+		}
+		if (dataSetStartTime != null) {
+			queryJson.put("dataSetStartTime", dataSetStartTime.getTime());
+		}
 		
 //		if (dataSetName != null && !dataSetName.isEmpty()) {
 //			queryJson.put("name", dataSetName);
