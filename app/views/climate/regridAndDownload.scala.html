@@ -56,75 +56,81 @@
 	    //dataSource = "NASA_QuikSCAT";
 	    var x = document.getElementById("data1");
 	    // if(dataSource == "NASA_AIRS" ){
-	    if(dataSource == "NASA/MODIS" ){
-	 		x.options[0].selected=true;
-	   	}
-	   	else if(dataSource == "NASA_AMSRE" ){
-	   		x.options[1].selected=true;
-	   	}
-	   	else if(dataSource == "NASA_TRMM" ){
-	   		x.options[2].selected=true;
-	   	}
-	   	else if(dataSource == "NASA/GPCP" ){
-	   		x.options[3].selected=true;
-	   	}
-	   	else if(dataSource == "NASA_QuikSCAT" ){
-	   		x.options[4].selected=true;
-	   	}
-	   	else if(dataSource == "NASA_AVISO" ){
-	   		x.options[5].selected=true;
-	   	}
-	   	else if(dataSource == "NASA_GRACE" ){
-	   		x.options[6].selected=true;
-	   	}
-	   	else if(dataSource == "NOAA_NODC" ){
-	   		x.options[7].selected=true;
-	   	}
-	   	else if(dataSource == "NASA_CERES" ){
-	   		x.options[8].selected=true;
-	   	}
-	   	else if(dataSource == "CCCMA_CANESM2" ){
-	   		x.options[9].selected=true;
-	   	}
-	   	else if(dataSource == "GFDL_ESM2G" ){
-	   		x.options[10].selected=true;
-	   	}
-	   	else if(dataSource == "GISS_E2-H" ){
-	   		x.options[11].selected=true;
-	   	}
-	   	else if(dataSource == "GISS_E2-R" ){
-	   		x.options[12].selected=true;
-	   	}
-	   	else if(dataSource == "NCAR_CAM5" ){
-	   		x.options[13].selected=true;
-	   	}
-	   	else if(dataSource == "NCC_NORESM" ){
-	   		x.options[14].selected=true;
-	   	}
-	   	else if(dataSource == "UKMO_HadGEM2-ES" ){
-	   		x.options[15].selected=true;
-	   	}
-	   	else if(dataSource == "CCCMA_CANAM4" ){
-	   		x.options[16].selected=true;
-	   	}
-	   	else if(dataSource == "CSIRO_MK3.6" ){
-	   		x.options[17].selected=true;
-	   	}
-	   	else if(dataSource == "GFDL_CM3" ){
-	   		x.options[18].selected=true;
-	   	}
-	   	else if(dataSource == "IPSL_CM5A-LR" ){
-	   		x.options[19].selected=true;
-	   	}
-	   	else if(dataSource == "MIROC_MIROC5" ){
-	   		x.options[20].selected=true;
-	   	}
-	   	else if(dataSource == "UKMO_HADGEM2-A" ){
-	   		x.options[21].selected=true;
-	   	}
-	   	else if(dataSource == "ECMWF_interim" ){
-	   		x.options[22].selected=true;
-	   	}
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
       // }
       }
 
@@ -181,6 +187,27 @@ function changeVariableName(){
       	x.options[23].selected=true;
       else if (var_string == "rsut")
       	x.options[24].selected=true;
+      else if (var_string == "rlutcs")
+       	x.options[25].selected=true;
+      else if (var_string == "rsutcs")
+       	x.options[26].selected=true;
+      else if (var_string == "ta")
+      	x.options[27].selected=true;
+      else if (var_string == "hus")
+      	x.options[28].selected=true;
+      else if (var_string == "cli")
+      	x.options[29].selected=true;
+      else if (var_string == "clw")
+      	x.options[30].selected=true;
+      else if (var_string == "ot")
+      	x.options[31].selected=true;
+      else if (var_string == "os")
+       	x.options[32].selected=true;
+      else if (var_string == "wap")
+       	x.options[33].selected=true;
+      else if (var_string == "hur")
+       	x.options[34].selected=true;
+      
     }
 
 // function changePres() {
