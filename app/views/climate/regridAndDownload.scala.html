@@ -141,7 +141,22 @@
 
 function changeVariableName(){
       var var_string = $('#variableName').text();
+      var data_string = $('#dataSource').text();
+      data_string = data_string.replace("_", "/");
+      
+      
+      var varList2 = dataList[data_string][1];  
       var x = document.getElementById("#var1");
+      
+      
+      for (var i=0; i<varList2.length; i++) {
+    	  var k = varList2[i];
+          if (k == var_string) {
+          	x.options[i].selected=true;
+          	break;
+          }
+      }
+      /*
       if (var_string == "clt")
    		x.options[1].selected=true;
       else if (var_string == "ts")
@@ -188,13 +203,11 @@ function changeVariableName(){
       else if (var_string == "rlut")
       	x.options[21].selected=true;
       else if (var_string == "rsut")
-        	x.options[22].selected=true;
+       	x.options[22].selected=true;
       else if (var_string == "rlutcs")
-        	x.options[23].selected=true;
+       	x.options[23].selected=true;
       else if (var_string == "rsutcs")
-      	x.options[24].selected=true;
-      
-     
+      	x.options[24].selected=true;     
       else if (var_string == "ta")
       	x.options[25].selected=true;
       else if (var_string == "hus")
@@ -211,7 +224,7 @@ function changeVariableName(){
        	x.options[31].selected=true;
       else if (var_string == "hur")
        	x.options[32].selected=true;
-      
+      */
     }
 
 // function changePres() {
