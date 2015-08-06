@@ -1,22 +1,27 @@
-@(parameters: metadata.RegridAndDownload)
- 
+@(parameters: metadata.RegridAndDownload) 
 @import helper._
- 
+
 <link rel="stylesheet"
-    href='@routes.Assets.at("stylesheets/livefitler.css")'>
-    
+	href='@routes.Assets.at("stylesheets/livefitler.css")'>
+
 @scripts = {
-    <script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
-    <script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
-    <script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
-    <script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
-    <script type= "text/javascript" src="@routes.Assets.at("javascripts/xmisc.js")"></script>
-    <script type="text/javascript" src='@routes.Assets.at("javascripts/varList.js")'></script>
-    <script type="text/javascript" src="@routes.Assets.at("javascripts/dataList.js")"></script>
-    <script type="text/javascript">
+
+<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+<script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/json2.js")'></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/xmisc.js")"></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/varList.js")'></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/dataList.js")"></script>
+<script type="text/javascript">
+
     
-     var Response = null;
+    var Response = null;
     var variable = "";
  
     // called on load or reload
@@ -136,7 +141,7 @@
 
 function changeVariableName(){
       var var_string = $('#variableName').text();
-      var x = document.getElementById("var1");
+      var x = document.getElementById("#var1");
       if (var_string == "clt")
    		x.options[1].selected=true;
       else if (var_string == "ts")
@@ -283,7 +288,8 @@ function disable_download_button()
     {
       var var_string;
       var_string = $("#var"+ID).val();
-
+      
+      variable = var_string;
       // alert("var_string: " + var_string)
 
       if (varList[var_string][2]==3) {
@@ -402,7 +408,7 @@ function disable_download_button()
         arglistTB = arglistTB.concat("&source1=");
         arglistTB = arglistTB.concat(d1);
         arglistTB = arglistTB.concat("&var=");
-        arglistTB = arglistTB.concat(variable1);
+        arglistTB = arglistTB.concat(variable);
         urlTimeBounds = urlTimeBounds + encodeURI(arglistTB);
         // alert("urlTimeBounds: " + urlTimeBounds);
 
@@ -529,28 +535,20 @@ function disable_download_button()
     });
     
   </script>
-}
-
-@main("Parameters of ConfId", scripts){
-    
-@flash_message()
+} @main("Parameters of ConfId", scripts){ @flash_message()
 <p>
-
 <div id="dataSource" style="display: none;">@parameters.getDataSource()</div>
 <div id="variableName" style="display: none;">@parameters.getVariableName()</div>
 <div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
 <div id="endYearMonth" style="display: none;">@parameters.getEndYearMonth()</div>
 <div id="pressureLevel" style="display: none;">@parameters.getPressureLevel()</div>
-
 <div id="startLat" style="display: none;">@parameters.getStartLat()</div>
 <div id="endLat" style="display: none;">@parameters.getEndLat()</div>
 <div id="deltaLat" style="display: none;">@parameters.getDeltaLat()</div>
 <div id="startLon" style="display: none;">@parameters.getStartLon()</div>
 <div id="endLon" style="display: none;">@parameters.getEndLon()</div>
 <div id="deltaLon" style="display: none;">@parameters.getDeltaLon()</div>
-
 <div id="executionPurpose" style="display: none;">@parameters.getExecutionPurpose()</div>
-
 <div id="dataURL" style="display: none;">@parameters.getDataURL()</div>
 <div id="serviceResponseText" style="display: none;">@parameters.getServiceResponseText()</div>
 
@@ -562,90 +560,96 @@ function disable_download_button()
 
 
 
-<tr>
-<td colspan="4">
-<center>
-<b>Service: Regrid and Download</b><br><br>
-This service regrids a variable from a dataset according to the lat/lon/plev specified by the user, and mades the regridded data downloadable by the user. 
-<br><br>
-</center>
-</td>
-</tr>
+	<tr>
+		<td colspan="4">
+			<center>
+				<b>Service: Regrid and Download</b><br> <br> This service
+				regrids a variable from a dataset according to the lat/lon/plev
+				specified by the user, and mades the regridded data downloadable by
+				the user. <br> <br>
+			</center>
+		</td>
+	</tr>
 
-<tr>
-<td>data source:</td><td><select name="data1", id="data1" onchange="put_var(1)">
-</select></td>
+	<tr>
+		<td>data source:</td>
+		<td><select name="data1" id="data1" onchange="put_var(1)">
+		</select></td>
 
-<td>variable name:</td><td><select name="var1", id="var1" onchange="select_var1(1)">
-</select>
-</td>
-</tr>
+		<td>variable name:</td>
+		<td><select name="var1" id="var1" onchange="select_var1(1)">
+		</select></td>
+	</tr>
 
-<tr>
-<td colspan=4>
-atmosphere pressure level (hPa), or ocean pressure level (dbar)
-<!--
+	<tr>
+		<td colspan=4>atmosphere pressure level (hPa), or ocean pressure
+			level (dbar) <!--
 <input id=pres1 size=50>
--->
-<input list="plev1" id="pres1" size="100">
-<datalist id="plev1">
-<option value="100000,80000,50000,30000,20000,10000">
-<option value="100000,30000,10000">
-<option value="100000,10000">
-<option value="50000,20000">
-</datalist>
-</td>
-</tr>
+--> <input list="plev1" id="pres1" size="100"
+			value="@parameters.getPressureLevel()"> <datalist id="plev1">
+				<option value="100000,80000,50000,30000,20000,10000">
+				<option value="100000,30000,10000">
+				<option value="100000,10000">
+				<option value="50000,20000">
+			</datalist>
+		</td>
+	</tr>
 
-<tr>
-<td>start year-month: <input id="t0" value="2004-01" alt="start"/></td>
-<td>end year-month: <input id="t1" value="2004-12" alt="end"/></td>
-<td colspan=2>
-</td>
-</tr>
+	<tr>
+		<td>start year-month: <input id="t0"
+			value="@parameters.getStartYearMonth()" alt="start" /></td>
+		<td>end year-month: <input id="t1"
+			value="@parameters.getEndYearMonth()" alt="end" /></td>
+		<td colspan=2></td>
+	</tr>
 
 
-<tr>
-<td width="25%">start lat (deg): <input size=5 id="lat0" value="-90"/></td>
-<td width="25%">end lat (deg): <input size=5 id="lat1" value="90"/></td>
-<td width="25%">grid size (deg): <input size=5 id="dlat" value="1.0"/></td>
-<td></td>
-</tr>
+	<tr>
+		<td width="25%">start lat (deg): <input size=5 id="lat0"
+			value="@parameters.getStartLat()" /></td>
+		<td width="25%">end lat (deg): <input size=5 id="lat1"
+			value="@parameters.getEndLat()" /></td>
+		<td width="25%">grid size (deg): <input size=5 id="dlat"
+			value="@parameters.getDeltaLat()" /></td>
+		<td></td>
+	</tr>
 
-<tr>
-<td width="25%">start lon (deg): <input size=5 id="lon0" value="0"/></td>
-<td width="25%">end lon (deg): <input size=5 id="lon1" value="360"/></td>
-<td width="25%">grid size (deg): <input size=5 id="dlon" value="1.0"/></td>
-<td></td>
-</tr>
-<tr>
-      <td colspan="1">Execution purpose</td>
-      <td colspan="3">
-        <form>
-          <textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
-        </form>
-      </td>    
-    </tr>
-<tr>
-<td colspan="2" align="center"><input id="action1" type="submit" value="            Run Again            " style="height:28px"/></td>
-<form>
-<td colspan="2" align="center"><input id="download_data" type="button" value="Download Data" style="height:28px"/>
-</td>
-</form>
+	<tr>
+		<td width="25%">start lon (deg): <input size=5 id="lon0"
+			value="@parameters.getStartLon()" /></td>
+		<td width="25%">end lon (deg): <input size=5 id="lon1"
+			value="@parameters.getEndLon()" /></td>
+		<td width="25%">grid size (deg): <input size=5 id="dlon"
+			value="@parameters.getDeltaLon()" /></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="1">Execution purpose</td>
+		<td colspan="3">
+			<form>
+				<textarea name="purpose" id="purpose" rows="4" cols="50">@parameters.getExecutionPurpose()</textarea>
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><input id="action1" type="submit"
+			value="            Run Again            " style="height: 28px" /></td>
+		<form>
+			<td colspan="2" align="center"><input id="download_data"
+				type="button" value="Download Data" style="height: 28px" /></td>
+		</form>
 
-</tr>
+	</tr>
 
-<tr>
-<td colspan="4" align="center">
-<textarea readonly id="data_url" cols="130" rows="2">Data URL Here</textarea>
-</td>
-</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea readonly id="data_url"
+				cols="130" rows="2">@parameters.getDataURL()</textarea></td>
+	</tr>
 
-<tr>
-<td colspan="4" align="center">
-<textarea id="Response" cols="130" rows="6">Service Response Text Here</textarea>
-</td>
-</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea id="Response" cols="130"
+				rows="6">@parameters.getServiceResponseText()</textarea></td>
+	</tr>
 
 </table>
 }

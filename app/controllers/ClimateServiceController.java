@@ -531,7 +531,7 @@ public class ClimateServiceController extends Controller {
 					twoDVarTimeSeries.setImage(response.path("plotUrl").textValue());
 					twoDVarTimeSeries.setDataURL(response.path("dataUrl").textValue());
 					return ok(views.html.climate.twoDVariableTimeSeries.render(twoDVarTimeSeries));
-			}else if (serviceName.equals("regridAndDownload")){    //NEW ONE the 10th
+			}else if (serviceName.equals("Regrid-and-Download")){    //NEW ONE the 10th
 				for (int i = 0; i < responseConfigItems.size(); i++) {
 					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
 					String parameterValue = responseConfigItems.get(i).path("value").textValue();
