@@ -341,7 +341,7 @@ function disable_download_button()
         // sample url: http://cmacws.jpl.nasa.gov:8090/svc/scatterPlot2V?model1=ukmo_hadgem2-a&var1=ts&pres1=200&model2=ukmo_hadgem2-a&var2=clt&pres2=200&start_time=199001&end_time=199512&lon1=0&lon2=100&lat1=-29&lat2=29
         // form url string
         // var url = "http://cmacws.jpl.nasa.gov:8090/svc/scatterPlot2V?";
-        var url = "http://" +  "einstein.sv.cmu.edu" + ":9002/svc/regridAndDownload?";
+        var url = "http://" + "cmacws4.jpl.nasa.gov" + ":8090/svc/regridAndDownload?";
         // alert("url: " + url);
 
         var d1 = $("#data1").val();
@@ -413,11 +413,11 @@ function disable_download_button()
         // url = url + arglist;
         // alert("url: " + url);
 
-        var urlTimeBounds = "http://" + "einstein.sv.cmu.edu" + ":9002/svc/time_bounds?"; 
+        var urlTimeBounds = "http://" + "cmacws4.jpl.nasa.gov" + ":8090/svc/time_bounds?"; 
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
         arglistTB = arglistTB.concat("1");
-        arglistTB = arglistTB.concat("&source=");
+        arglistTB = arglistTB.concat("&source1=");
         arglistTB = arglistTB.concat(d1);
         arglistTB = arglistTB.concat("&var=");
         arglistTB = arglistTB.concat(variable);
