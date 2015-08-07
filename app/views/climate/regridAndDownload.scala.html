@@ -28,9 +28,8 @@
     window.onload = function() {
 
       put_data(1);
-      put_var(1);
-
       changeDataSource();
+      put_var(1);
       changeVariableName();
       enable_download_button();
 
@@ -142,15 +141,15 @@
 function changeVariableName(){
       var var_string = $('#variableName').text();
       var data_string = $('#dataSource').text();
-      data_string = data_string.replace("_", "/");
+      data_string = data_string.replace("_", "/").toUpperCase();
       
-      
+    
       var varList2 = dataList[data_string][1];  
-      var x = document.getElementById("#var1");
-      
+      var x = document.getElementById("var1");
       
       for (var i=0; i<varList2.length; i++) {
     	  var k = varList2[i];
+    	  
           if (k == var_string) {
           	x.options[i].selected=true;
           	break;
@@ -595,24 +594,26 @@ function disable_download_button()
 	</tr>
 
 	<tr>
-		<td colspan=4>atmosphere pressure level (hPa), or ocean pressure
-			level (dbar) <!--
-<input id=pres1 size=50>
---> <input list="plev1" id="pres1" size="100"
-			value="@parameters.getPressureLevel()"> <datalist id="plev1">
-				<option value="100000,80000,50000,30000,20000,10000">
-				<option value="100000,30000,10000">
-				<option value="100000,10000">
-				<option value="50000,20000">
+		<td colspan=4>atmosphere pressure level (hPa), or ocean pressure level (dbar)
+			<!--
+			<input id=pres1 size=50>
+			--> 
+			<input list="plev1" id="pres1" size="50"
+			value="@parameters.getPressureLevel()"> 
+			<datalist id="plev1">
+				<option value="100000,80000,50000,30000,20000,10000"></option>
+				<option value="100000,30000,10000"></option>
+				<option value="100000,10000"></option>
+				<option value="50000,20000"></option>
 			</datalist>
 		</td>
 	</tr>
 
 	<tr>
 		<td>start year-month: <input id="t0"
-			value="@parameters.getStartYearMonth()" alt="start" /></td>
+			value="@parameters.getStartYearMonth()" alt="start" size="15"/></td>
 		<td>end year-month: <input id="t1"
-			value="@parameters.getEndYearMonth()" alt="end" /></td>
+			value="@parameters.getEndYearMonth()" alt="end" size="15"/></td>
 		<td colspan=2></td>
 	</tr>
 
