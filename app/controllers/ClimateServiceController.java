@@ -35,6 +35,8 @@ import play.data.DynamicForm;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -934,7 +936,16 @@ public class ClimateServiceController extends Controller {
 	}
 	
 	public static Result oneService(String url) {
-		return ok(oneService.render(url));
+		InetAddress ip = null;
+		String hostname = "";
+		try {
+			ip = InetAddress.getLocalHost();
+			hostname = ip.getHostName();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		
+		return ok(oneService.render("http://" + hostname + url));
 	}
 
 	// -- Authentication
