@@ -940,7 +940,7 @@ public class ClimateServiceController extends Controller {
 		String hostname = "";
 		try {
 			ip = InetAddress.getLocalHost();
-			hostname = ip.getHostName();
+			hostname = ip.getHostAddress();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
