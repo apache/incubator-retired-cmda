@@ -27,10 +27,11 @@
     // called on load or reload
     window.onload = function() {
 
-      put_data(1);
       changeDataSource();
-      put_var(1);
       changeVariableName();
+      put_data(1);
+      put_var(1);
+      
       enable_download_button();
 
       $('#t0').val($('#startYearMonth').text());

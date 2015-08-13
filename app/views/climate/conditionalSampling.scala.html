@@ -22,9 +22,13 @@
     // called on load or reload
     window.onload = function() {
       select_all_months();
+      changeDataSource1();
+      changeDataSource2();
+      changeVariableName1();
+      changeVariableName2();
       select_data1(1);
-      select_var1(1);
       select_data1(2);
+      select_var1(1);
       select_var1(2);
       // no data to download yet
       //disable_download_button();
@@ -32,10 +36,6 @@
       z.disabled=false;
       setDefault();
       
-      changeDataSource1();
-      changeDataSource2();
-      changeVariableName1();
-      changeVariableName2();
       $('#pres1').val("N/A");
       $('#pres2').val("N/A");
       $('#t0').val($('#startYearMonth').text());
@@ -1326,7 +1326,7 @@
         // sample url: http://cmacws.jpl.nasa.gov:9002/svc/conditionalSampling?model1=ukmo_hadgem2-a&var1=ts&pres1=200&model2=ukmo_hadgem2-a&var2=clt&pres2=200&start_time=199001&end_time=199512&lon1=0&lon2=100&lat1=-29&lat2=29
         // form url string
         // var url = "http://cmacws.jpl.nasa.gov:9002/svc/conditionalSamp?";
-        var url = "http://" + "einstein.sv.cmu.edu" + ":9002/svc/conditionalSampling?";
+        var url = "http://" + window.location.hostname + ":9002/svc/conditionalSampling?";
         // alert("url: " + url);
 
         var d1 = $("#data1").val();
@@ -1592,7 +1592,7 @@
         // url = url + arglist;
          //alert("url: " + url);
 
-        var urlTimeBounds = "http://" + "einstein.sv.cmu.edu" + ":9002/svc/two_time_bounds?";
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/two_time_bounds?";
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
         arglistTB = arglistTB.concat("1");

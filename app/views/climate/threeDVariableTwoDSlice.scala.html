@@ -20,10 +20,10 @@
     // called on load or reload
     window.onload = function() {
       changeMonths();
-      select_data();
-      select_var();
       changeDataSource();
       changeVariableName();
+      select_data();
+      select_var();
       enable_download_button();
       $('#t0').val($('#startYearMonth').text());
       $('#t1').val($('#endYearMonth').text());
@@ -429,7 +429,7 @@
 
         // form url string
         // var url = "http://cmacws.jpl.nasa.gov:9002/svc/twoDimSlice3D?";
-        var url = "http://" + "einstein.sv.cmu.edu" + ":9002/svc/twoDimSlice3D?";
+        var url = "http://" + window.location.hostname + ":9002/svc/twoDimSlice3D?";
         // alert(url);
 
         var d1 = $("#data").val();
@@ -564,7 +564,7 @@
         //alert("url: " + url);
 
 
-        var urlTimeBounds = "http://" + "einstein.sv.cmu.edu" + ":9002/svc/time_bounds?";
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/time_bounds?";
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
         arglistTB = arglistTB.concat("1");
