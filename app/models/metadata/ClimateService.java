@@ -330,6 +330,8 @@ public class ClimateService {
 			photo = "http://einstein.sv.cmu.edu:9002/static/threeDimZonalMean/e4e120045d2bb589eed371e1ca08fd99/nasa_airs_ta_200401_200412_Annual.jpeg";
 		}else if(url.contains("diffPlot2Vars.html")){
 			photo = "http://einstein.sv.cmu.edu:9002/static/diffPlot2V/8f156f328c641e68dd9a69b67fd154de/diffPlot.png";
+		}else if (url.contains("regridAndDownload.html")) {
+			photo = "/assets/images/regrid.jpg";
 		}
 		else{
 			//photo = "http://i1-mac.softpedia-static.com/screenshots/Climate-Data-Analysis-Tools_1.png";
