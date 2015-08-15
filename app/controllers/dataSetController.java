@@ -52,14 +52,14 @@ public class dataSetController extends Controller{
 		Date dataSetStartTime = null, dataSetEndTime= null;
 		
 		try {
-			dataSetName = dc.field("Data Set Name").value();
+			dataSetName = dc.field("Dataset Name").value();
 			//Logger.info("data "+dataSource);
 			agency = dc.field("Agency").value();
 			instrument = dc.field("Instrument").value();
 			physicalVariable = dc.field("Physical Variable").value();
 			gridDimension = dc.field("Grid Dimension").value();
-			startTime = dc.field("DataSet Start Time").value();
-			endTime = dc.field("DataSet End Time").value();
+			startTime = dc.field("Dataset Start Time").value();
+			endTime = dc.field("Dataset End Time").value();
 			
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
 			if (!startTime.isEmpty()) {
