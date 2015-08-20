@@ -20,6 +20,7 @@ import models.metadata.ThreeDVarAvgVertical4Profile;
 import models.metadata.ScatterHistogramTwoVar;
 import models.metadata.ConditionalSampling;
 import models.metadata.ServiceLog;
+import models.metadata.CorrelationMap;
 import play.Logger;
 import play.data.Form;
 import play.libs.Json;
@@ -195,6 +196,7 @@ public class ClimateServiceController extends Controller {
 		ThreeDVarZonalMean threeDVarZonalMean = new ThreeDVarZonalMean();
 		ConditionalSampling conditionalSampling = new ConditionalSampling();
 		RegridAndDownload regridAndDownload = new RegridAndDownload();
+		CorrelationMap correlationMap = new CorrelationMap();
 		
 		try {
 			DynamicForm df = DynamicForm.form().bindFromRequest();
@@ -862,6 +864,48 @@ public class ClimateServiceController extends Controller {
 					threeDVar2DSlice.setDataURL(response.path("dataUrl").textValue());
 					return ok(views.html.climate.threeDVariableTwoDSlice.render(threeDVar2DSlice));
 
+			}else if(serviceName.equals("Time-Lagged-Correlation-Map-of-Two-Variables")){
+				correlationMap.setPressureLevel1("N/A");
+				Console.println(correlationMap.getPressureLevel1());
+				correlationMap.setPressureLevel2("N/A");
+				for(int i = 0; i < responseConfigItems.size(); i++){
+					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
+					String parameterValue = responseConfigItems.get(i).path("value").textValue();
+					if (parameterName.equals("model1")) {
+						correlationMap.setSource1(parameterValue);
+						
+					} else if (parameterName.equals("model2")) {
+						correlationMap.setSource2(parameterValue);
+
+					} else if (parameterName.equals("var1")) {
+						correlationMap.setVariableName1(parameterValue);
+
+					} else if (parameterName.equals("var2")) {
+						correlationMap.setVariableName2(parameterValue);
+					} else if (parameterName.equals("pre1")) {
+						correlationMap.setPressureLevel1(parameterValue);
+					} else if (parameterName.equals("pre2")) {
+						correlationMap.setPressureLevel2(parameterValue);
+					} else if (parameterName.equals("startT")) {
+						correlationMap.setStartYear(parameterValue);
+					} else if (parameterName.equals("endT")) {
+						correlationMap.setEndYear(parameterValue);
+					} else if (parameterName.equals("lon1")) {
+						correlationMap.setStartLon(parameterValue);
+					} else if (parameterName.equals("lon2")) {
+						correlationMap.setEndLon(parameterValue);
+					} else if (parameterName.equals("lat1")) {
+						correlationMap.setStartLat(parameterValue);
+					} else if (parameterName.equals("lat2")) {
+						correlationMap.setEndLat(parameterValue);
+					}
+				}
+				correlationMap.setExecutionPurpose(response.path("purpose").textValue());
+				correlationMap.setLaggedTime(response.path("laggedTime").textValue());
+				correlationMap.setImage(response.path("plotUrl").textValue());
+				correlationMap.setDataUrl(response.path("dataUrl").textValue());
+				return ok(views.html.climate.correlationMap.render(correlationMap));
+			
 			}else{
 				
 			}
