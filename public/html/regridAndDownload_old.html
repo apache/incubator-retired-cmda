@@ -8,8 +8,8 @@
   <script type="text/javascript" src="js/json2.js"></script>
   <script type="text/javascript" src="js/xmisc.js"></script>
 
-  <script src='js2/dataList.js'></script>
-  <script src='js2/varList.js'></script>
+  <script src='js/dataList.js'></script>
+  <script src='js/varList.js'></script>
 
   <script type="text/javascript">
 
@@ -22,7 +22,6 @@
     window.onload = function() {
       put_data(1);
       put_var(1);
-      select_var1(1);
 
       // no data to download yet
       disable_download_button();
@@ -56,7 +55,7 @@
     {
       var x;
       x=document.getElementById("pres"+ID);
-      x.value = "";
+      //x.value = "500";
       x.disabled=false;
     }
 
@@ -96,7 +95,7 @@
 
       // alert("var_string: " + var_string)
 
-      if (varList[var_string][2]===3) {
+      if (varList[var_string][2]==3) {
         enable_pres1(ID);
       } else {
         disable_pres1(ID);
@@ -121,7 +120,7 @@
 
 
       $("#action1").click(function(event) {
-        // alert('****** inside regridAndDownload()!');
+        // alert('****** inside scatterPlot2V()!');
         Response = null;
 
         // no data to download yet
@@ -130,8 +129,9 @@
         $("#Response").html("Calculating ...");
         $("#data_url").html("Calculating ...");
 
-        // http://cmacws3.jpl.nasa.gov:8090/svc/regridAndDownload?model=gfdl_esm2g&var=zos&pres=N/A&start_time=200401&end_time=200412&lon1=0&lon2=360&dlon=1.0&lat1=-90&lat2=90&dlat=1.0
+        // sample url: http://cmacws.jpl.nasa.gov:8090/svc/scatterPlot2V?model1=ukmo_hadgem2-a&var1=ts&pres1=200&model2=ukmo_hadgem2-a&var2=clt&pres2=200&start_time=199001&end_time=199512&lon1=0&lon2=100&lat1=-29&lat2=29
         // form url string
+        // var url = "http://cmacws.jpl.nasa.gov:8090/svc/scatterPlot2V?";
         var url = "http://" + window.location.hostname + ":9002/svc/regridAndDownload?";
         // alert("url: " + url);
 
@@ -145,38 +145,13 @@
 
         // alert("arglist: " + arglist);
 
-        var variable1 = $("#var1").val();
+        var v1 = $("#var1").val();
         arglist = arglist.concat("&var=");
-        arglist = arglist.concat(variable1);
+        arglist = arglist.concat(v1);
 
         // alert("arglist: " + arglist);
 
-        var pres10 = $("#pres1").val();
-        var pres1 = "";
-        // alert("pres10: " + pres10);
-
-        if (pres10=="") {pres1 = "-999999"; }
-        else {
-          if (!(isNaN(Number(pres10)))) { 
-            pres1 = pres10; 
-          } else {
-            var checkNan = 0;
-            var pres2 = [];
-            var temp1=pres10.split(",");
-            for (var i in temp1) {
-              if (isNaN(Number(temp1[i]))) {
-                checkNan = 1; 
-              } else {
-                pres2.push(Number(temp1[i]));
-              }
-            }
-            if (pres2.length>0) { pres1 = pres2.join(); }
-            else { pres1 = "-999999"; }
-          }
-        }
-
-        // alert("pres1: " + pres1);
-
+        var pres1 = $("#pres1").val();
         arglist = arglist.concat("&plev=");
         arglist = arglist.concat(pres1);
 
@@ -200,6 +175,7 @@
         var lat0 = $("#lat0").val();
         var lat1 = $("#lat1").val();
         var dlat = $("#dlat").val();
+        var purpose = $("#purpose").val();
 
         arglist = arglist.concat("&lon1=");
         arglist = arglist.concat(lon0);
@@ -219,6 +195,8 @@
         arglist = arglist.concat("&dlat=");
         arglist = arglist.concat(dlat);
 
+        arglist = arglist.concat("&purpose=");
+        arglist = arglist.concat(purpose);
         // alert("arglist: " + arglist);
 
         // url = url + encodeURIComponent(arglist);
@@ -226,11 +204,11 @@
         // url = url + arglist;
         // alert("url: " + url);
 
-        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/time_bounds?";
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/time_bounds?"; 
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
         arglistTB = arglistTB.concat("1");
-        arglistTB = arglistTB.concat("&source=");
+        arglistTB = arglistTB.concat("&source1=");
         arglistTB = arglistTB.concat(d1);
         arglistTB = arglistTB.concat("&var=");
         arglistTB = arglistTB.concat(variable1);
@@ -274,7 +252,6 @@
 
                 if ( lowerT == 0 && upperT ==0 ) {
                   alert("We do not have data for this source and variable configuration.");
-                  //  alert(urlTimeBounds);
                   return;
                 }
 
@@ -395,10 +372,10 @@ atmosphere pressure level (hPa), or ocean pressure level (dbar)
 -->
 <input list="plev1" id=pres1 size=100>
 <datalist id="plev1">
-<option value="1000,800,500,300,200,100">
-<option value="1000,300,100">
-<option value="1000,100">
-<option value="500,200">
+<option value="100000,80000,50000,30000,20000,10000">
+<option value="100000,30000,10000">
+<option value="100000,10000">
+<option value="50000,20000">
 </datalist>
 </td>
 </tr>
@@ -424,7 +401,14 @@ atmosphere pressure level (hPa), or ocean pressure level (dbar)
 <td width="25%">grid size (deg): <input size=5 id="dlon" value="1.0"/></td>
 <td></td>
 </tr>
-
+<tr>
+      <td colspan="1">Execution purpose</td>
+      <td colspan="3">
+        <form>
+          <textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
+        </form>
+      </td>    
+    </tr>
 <tr>
 <td colspan="2" align="center"><input id="action1" type="submit" value="            Get  Data            " style="height:28px"/></td>
 <form>
