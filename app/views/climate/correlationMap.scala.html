@@ -40,8 +40,18 @@
         
         $('#t0').val($('#startYearMonth').text());
         $('#t1').val($('#endYearMonth').text());
-        $('#pres1').val($('#pressureLevel1').text());
-        $('#pres2').val($('#pressureLevel2').text());
+        
+        if($('#pressureLevel1').text() == "-9999"){
+        	disable_pres1(1);
+        }else{
+        	$('#pres1').val($('#pressureLevel1').text());
+        }
+        
+        if($('#pressureLevel2').text() == "-9999"){
+        	disable_pres1(2);
+        }else{
+        	$('#pres2').val($('#pressureLevel2').text());
+        }
 
         $('#lat0').val($('#startLat').text());
         $('#lat1').val($('#endLat').text());
@@ -55,6 +65,24 @@
         $('#data_url').html($('#dataURL').text());
         $('#Response').html($('#serviceResponseText').text());
         
+    }
+    
+ // disable pressure level box for 2D var
+    function disable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "N/A";
+      x.disabled=true;
+    }
+
+    // enable pressure level box for 3D var
+    function enable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "500";
+      x.disabled=false;
     }
     
     function changeDataSource1() {
