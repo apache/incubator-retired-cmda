@@ -705,6 +705,8 @@ public class ClimateServiceController extends Controller {
 							diffPlotTwoTimeAvg.setVaribaleName2(parameterValue);
 						} else if (parameterName.equals("pre1")) {
 							diffPlotTwoTimeAvg.setPressureLevel1(parameterValue);
+						} else if (parameterName.equals("pre2")) {
+							diffPlotTwoTimeAvg.setPressureLevel2(parameterValue);
 						} else if (parameterName.equals("startT")) {
 							diffPlotTwoTimeAvg.setStartYear(parameterValue);
 						} else if (parameterName.equals("endT")) {
