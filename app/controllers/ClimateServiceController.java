@@ -898,10 +898,11 @@ public class ClimateServiceController extends Controller {
 						correlationMap.setStartLat(parameterValue);
 					} else if (parameterName.equals("lat2")) {
 						correlationMap.setEndLat(parameterValue);
+					}else if (parameterName.equals("lagT")) {
+						correlationMap.setLaggedTime(parameterValue);
 					}
 				}
 				correlationMap.setExecutionPurpose(response.path("purpose").textValue());
-				correlationMap.setLaggedTime(response.path("laggedTime").textValue());
 				correlationMap.setImage(response.path("plotUrl").textValue());
 				correlationMap.setDataURL(response.path("dataUrl").textValue());
 				return ok(views.html.climate.correlationMap.render(correlationMap));
