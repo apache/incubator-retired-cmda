@@ -49,7 +49,7 @@ public class dataSetController extends Controller{
 		String gridDimension = "";
 		String startTime = "";
 		String endTime = "";
-		Date dataSetStartTime = null, dataSetEndTime= null;
+		Date dataSetStartTime = new Date(0), dataSetEndTime = new Date();
 		
 		try {
 			dataSetName = dc.field("Dataset Name").value();
@@ -65,6 +65,13 @@ public class dataSetController extends Controller{
 			if (!startTime.isEmpty()) {
 				try {
 					dataSetStartTime = simpleDateFormat.parse(startTime);
+					Date min = new Date(0);
+					Date max = new Date();
+					if (dataSetStartTime.before(min)) {
+						dataSetStartTime = min;
+					} else if (dataSetStartTime.after(max)) {
+						dataSetStartTime = max;
+					}
 				} catch (ParseException e) {
 					System.out.println("Wrong Date Format :" + startTime);
 					return badRequest("Wrong Date Format :" + startTime);
@@ -73,6 +80,14 @@ public class dataSetController extends Controller{
 			if (!endTime.isEmpty()) {
 				try {
 					dataSetEndTime = simpleDateFormat.parse(endTime);
+					Date min = new Date(0);
+					Date max = new Date();
+					if (dataSetEndTime.before(min)) {
+						dataSetEndTime = min;
+					}
+					else if (dataSetEndTime.after(max)) {
+						dataSetEndTime = max;
+					}
 				} catch (ParseException e) {
 					System.out.println("Wrong Date Format :" + endTime);
 					return badRequest("Wrong Date Format :" + endTime);
