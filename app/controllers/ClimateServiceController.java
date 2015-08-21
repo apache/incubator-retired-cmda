@@ -898,7 +898,7 @@ public class ClimateServiceController extends Controller {
 						correlationMap.setStartLat(parameterValue);
 					} else if (parameterName.equals("lat2")) {
 						correlationMap.setEndLat(parameterValue);
-					}else if (parameterName.equals("lagT")) {
+					}else if (parameterName.equals("laggedTime")) {
 						correlationMap.setLaggedTime(parameterValue);
 					}
 				}
