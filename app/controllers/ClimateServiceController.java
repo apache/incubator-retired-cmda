@@ -903,7 +903,7 @@ public class ClimateServiceController extends Controller {
 				correlationMap.setExecutionPurpose(response.path("purpose").textValue());
 				correlationMap.setLaggedTime(response.path("laggedTime").textValue());
 				correlationMap.setImage(response.path("plotUrl").textValue());
-				correlationMap.setDataUrl(response.path("dataUrl").textValue());
+				correlationMap.setDataURL(response.path("dataUrl").textValue());
 				return ok(views.html.climate.correlationMap.render(correlationMap));
 			
 			}else{

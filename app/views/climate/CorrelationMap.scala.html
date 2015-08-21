@@ -9,12 +9,11 @@
 	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
 	<script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+	<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js'></script>
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/xmisc.js")"></script>
-	
-	<script src='js2/dataList2.js'></script>
-  	<script src='js2/varList.js'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/xmisc.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("html/js2/dataList2.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("html/js2/varList.js")'></script>
 	
 	<script type="text/javascript">
 
@@ -60,9 +59,9 @@
     
     function changeDataSource1() {
     	var dataSource = $('#dataSource1').text();
-	    //dataSource = "NASA_QuikSCAT";
+
 	    var x = document.getElementById("data1");
-	    // if(dataSource == "NASA_AIRS" ){
+
 	    if(dataSource == "gfdl_esm2g" ){
      		x.options[0].selected=true;
      	}
@@ -144,7 +143,6 @@
     	var dataSource = $('#dataSource2').text();
 	    //dataSource = "NASA_QuikSCAT";
 	    var x = document.getElementById("data2");
-	    // if(dataSource == "NASA_AIRS" ){
 	    if(dataSource == "gfdl_esm2g" ){
      		x.options[0].selected=true;
      	}
@@ -483,7 +481,6 @@
         arglistTB = arglistTB.concat("&var2=");
         arglistTB = arglistTB.concat(variable2);
         urlTimeBounds = urlTimeBounds + encodeURI(arglistTB);
-        // alert("urlTimeBounds: " + urlTimeBounds);
 
         $.ajax({
             type: "GET",
@@ -649,18 +646,16 @@
         });
 
       });
-
     });
-    
   </script>
-}@main("Parameters of ConfId", scripts){ @flash_message()
+} @main("Parameters of ConfId", scripts){ @flash_message()
 <p>
-<div id="dataSource1" style="display: none;">@parameters.getDataSource1()</div>
-<div id="dataSource2" style="display: none;">@parameters.getDataSource2()</div>
+<div id="dataSource1" style="display: none;">@parameters.getSource1()</div>
+<div id="dataSource2" style="display: none;">@parameters.getSource2()</div>
 <div id="variableName1" style="display: none;">@parameters.getVariableName1()</div>
 <div id="variableName2" style="display: none;">@parameters.getVariableName2()</div>
-<div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
-<div id="endYearMonth" style="display: none;">@parameters.getEndYearMonth()</div>
+<div id="startYearMonth" style="display: none;">@parameters.getStartYear()</div>
+<div id="endYearMonth" style="display: none;">@parameters.getEndYear()</div>
 <div id="pressureLevel1" style="display: none;">@parameters.getPressureLevel1()</div>
 <div id="pressureLevel2" style="display: none;">@parameters.getPressureLevel2()</div>
 <div id="startLat" style="display: none;">@parameters.getStartLat()</div>
@@ -745,8 +740,8 @@ atmosphere pressure level (hPa) <br> or ocean pressure level (dbar)
 </tr>
 
 <tr>
-<td id=startYear>start year-month:</td><td><input id="t0" value="@parameters.getStartYearMonth()" alt="start"/></td>
-<td id=endYear>end year-month:</td><td><input id="t1" value="@parameters.getEndYearMonth()" alt="end"/></td>
+<td id=startYear>start year-month:</td><td><input id="t0" value="@parameters.getStartYear()" alt="start"/></td>
+<td id=endYear>end year-month:</td><td><input id="t1" value="@parameters.getEndYear()" alt="end"/></td>
 </tr>
 
 

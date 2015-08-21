@@ -115,16 +115,16 @@ public class CorrelationMap {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public String getDataUrl() {
+	public String getDataURL() {
 		return dataUrl;
 	}
-	public void setDataUrl(String dataUrl) {
+	public void setDataURL(String dataUrl) {
 		this.dataUrl = dataUrl;
 	}
-	public String getServiceResponse() {
+	public String getServiceResponseText() {
 		return serviceResponse;
 	}
-	public void setServiceResponse(String serviceResponse) {
+	public void setServiceResponseText(String serviceResponse) {
 		this.serviceResponse = serviceResponse;
 	}
 }
