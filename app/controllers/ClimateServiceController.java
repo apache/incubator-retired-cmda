@@ -882,9 +882,9 @@ public class ClimateServiceController extends Controller {
 
 					} else if (parameterName.equals("var2")) {
 						correlationMap.setVariableName2(parameterValue);
-					} else if (parameterName.equals("pre1")) {
+					} else if (parameterName.equals("pres1")) {
 						correlationMap.setPressureLevel1(parameterValue);
-					} else if (parameterName.equals("pre2")) {
+					} else if (parameterName.equals("pres2")) {
 						correlationMap.setPressureLevel2(parameterValue);
 					} else if (parameterName.equals("startT")) {
 						correlationMap.setStartYear(parameterValue);
