@@ -21,6 +21,7 @@ import models.metadata.ScatterHistogramTwoVar;
 import models.metadata.ConditionalSampling;
 import models.metadata.ServiceLog;
 import models.metadata.CorrelationMap;
+import models.metadata.ConditionalSampling2Var;
 import play.Logger;
 import play.data.Form;
 import play.libs.Json;
@@ -197,6 +198,7 @@ public class ClimateServiceController extends Controller {
 		ConditionalSampling conditionalSampling = new ConditionalSampling();
 		RegridAndDownload regridAndDownload = new RegridAndDownload();
 		CorrelationMap correlationMap = new CorrelationMap();
+		ConditionalSampling2Var conditionalSampling2Var = new ConditionalSampling2Var();
 		
 		try {
 			DynamicForm df = DynamicForm.form().bindFromRequest();
@@ -909,6 +911,104 @@ public class ClimateServiceController extends Controller {
 				correlationMap.setDataURL(response.path("dataUrl").textValue());
 				return ok(views.html.climate.correlationMap.render(correlationMap));
 			
+			}else if (serviceName.equals("Conditional-Sampling-for-2-Variables")){
+				for (int i = 0; i < responseConfigItems.size(); i++) {
+					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
+					String parameterValue = responseConfigItems.get(i).path("value").textValue();
+					if (parameterName.equals("model1")) {
+						conditionalSampling2Var.setDataSourceP(parameterValue);
+					} else if (parameterName.equals("model2")) {
+						conditionalSampling2Var.setDataSourceE1(parameterValue);
+					}else if (parameterName.equals("model3")) {
+						conditionalSampling2Var.setDataSourceE2(parameterValue);
+
+					}else if (parameterName.equals("var1")) {
+						conditionalSampling2Var.setVariableNameP(parameterValue);
+
+					} else if (parameterName.equals("var2")) {
+						conditionalSampling2Var.setVariableNameE1(parameterValue);
+					}else if (parameterName.equals("var3")) {
+						conditionalSampling2Var.setVariableNameE2(parameterValue);
+					} else if (parameterName.equals("pres1")) {
+						conditionalSampling2Var.setPressureRangeP(parameterValue);
+					} else if (parameterName.equals("pres2")) {
+						conditionalSampling2Var.setPressureRangeE1(parameterValue);
+					} else if (parameterName.equals("startT")) {
+						conditionalSampling2Var.setStartYearMonth(parameterValue);
+					} else if (parameterName.equals("endT")) {
+						conditionalSampling2Var.setEndYearMonth(parameterValue);
+					} else if (parameterName.equals("lon1")) {
+						conditionalSampling2Var.setStartLon(parameterValue);
+					} else if (parameterName.equals("lon2")) {
+						conditionalSampling2Var.setEndLon(parameterValue);
+					} else if (parameterName.equals("lat1")) {
+						conditionalSampling2Var.setStartLat(parameterValue);
+					} else if (parameterName.equals("lat2")) {
+						conditionalSampling2Var.setEndLat(parameterValue);
+					} else if (parameterName.equals("months")) {
+						String[] months = parameterValue.split(",");
+
+						for (int j = 0; j < months.length; j++) {
+							if (months[j].equals("1")) {
+								conditionalSampling2Var.addMonth("jan");
+							} else if (months[j].equals("2")) {
+								conditionalSampling2Var.addMonth("feb");
+							} else if (months[j].equals("3")) {
+								conditionalSampling2Var.addMonth("mar");
+							} else if (months[j].equals("4")) {
+								conditionalSampling2Var.addMonth("apr");
+							} else if (months[j].equals("5")) {
+								conditionalSampling2Var.addMonth("may");
+							} else if (months[j].equals("6")) {
+								conditionalSampling2Var.addMonth("jun");
+							} else if (months[j].equals("7")) {
+								conditionalSampling2Var.addMonth("jul");
+							} else if (months[j].equals("8")) {
+								conditionalSampling2Var.addMonth("aug");
+							} else if (months[j].equals("9")) {
+								conditionalSampling2Var.addMonth("sep");
+							} else if (months[j].equals("10")) {
+								conditionalSampling2Var.addMonth("oct");
+							} else if (months[j].equals("11")) {
+								conditionalSampling2Var.addMonth("nov");
+							} else if (months[j].equals("12")) {
+								conditionalSampling2Var.addMonth("dec");
+							}
+
+						}
+						conditionalSampling2Var.changeSelectMonths();
+					} else if (parameterName.equals("bin_min1")) {
+						conditionalSampling2Var.setBin_min1(parameterValue);
+					} else if (parameterName.equals("bin_max1")) {
+						conditionalSampling2Var.setBin_max1(parameterValue);
+					} else if (parameterName.equals("bin_n1")) {
+						conditionalSampling2Var.setBin_n1(parameterValue);
+					}else if (parameterName.equals("bin_min2")) {
+						conditionalSampling2Var.setBin_min2(parameterValue);
+					} else if (parameterName.equals("bin_max2")) {
+						conditionalSampling2Var.setBin_max2(parameterValue);
+					} else if (parameterName.equals("bin_n2")) {
+						conditionalSampling2Var.setBin_n2(parameterValue);
+					} else if (parameterName.equals("env_var_plev1")) {
+						conditionalSampling2Var.setEnableVarPlev1(parameterValue);
+					} else if (parameterName.equals("env_var_plev2")) {
+						conditionalSampling2Var.setEnableVarPlev2(parameterValue);
+					} else if (parameterName.equals("displayOpt")) {
+						int paramBit=Integer.parseInt(parameterValue);
+						int bitmaskX = 0x1;
+						int bitmaskY = 0x2;
+						int bitmaskZ = 0x4;
+
+						conditionalSampling2Var.setX(Integer.toString(paramBit & bitmaskX, 2));
+						conditionalSampling2Var.setY(Integer.toString((paramBit & bitmaskY)>>1, 2));
+						conditionalSampling2Var.setZ(Integer.toString((paramBit & bitmaskZ)>>2, 2));
+
+					}
+				}
+				conditionalSampling2Var.setExecutionPurpose(response.path("purpose").textValue());
+				conditionalSampling2Var.setImage(response.path("plotUrl").textValue());
+				conditionalSampling2Var.setDataURL(response.path("dataUrl").textValue());
+				return ok(views.html.climate.conditionalSampling2Var.render(conditionalSampling2Var));
 			}else{
 				
 			}

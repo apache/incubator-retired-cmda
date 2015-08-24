@@ -25,7 +25,6 @@ public class ConditionalSampling2Var {
 	private String bin_max2;
 	private String bin_n2;
 	private String customized2;
-	
 	private String startYearMonth = "";
 	private String endYearMonth = "";
 	private String selectMonths = "";
@@ -41,6 +40,10 @@ public class ConditionalSampling2Var {
 	private String image = "";
 	private String dataURL = "";
 	private String serviceResponseText = "";
+	
+	private String enableVarPlev1 = "";
+	private String enableVarPlev2 = "";
+	//env_var_plev1
 	
 	
 	public String getDataSourceP() {
@@ -258,7 +261,16 @@ public class ConditionalSampling2Var {
 	public void setServiceResponseText(String serviceResponseText) {
 		this.serviceResponseText = serviceResponseText;
 	}
-	
-	
-	
+	public String getEnableVarPlev1() {
+		return enableVarPlev1;
+	}
+	public void setEnableVarPlev1(String enableVarPlev1) {
+		this.enableVarPlev1 = enableVarPlev1;
+	}
+	public String getEnableVarPlev2() {
+		return enableVarPlev2;
+	}
+	public void setEnableVarPlev2(String enableVarPlev2) {
+		this.enableVarPlev2 = enableVarPlev2;
+	}
 }
