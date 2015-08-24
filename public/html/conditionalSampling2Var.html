@@ -311,7 +311,9 @@
         arglist = arglist.concat(binMax2);
         arglist = arglist.concat("&bin_n2=");
         arglist = arglist.concat(numBins2);
-
+        var purpose = $("#purpose").val();
+        arglist = arglist.concat("&purpose=");
+        arglist = arglist.concat(purpose);
         // alert("arglist: " + arglist);
 
         var xstate = document.getElementById('radioXLin').checked;
@@ -718,6 +720,15 @@ display option:
 <input type="radio" name="scale1" value="logarithmic" id="radioZLog">logarithmic
 </form>
 </td>
+</tr>
+
+<tr>
+  <td colspan="1">Execution purpose</td>
+  <td colspan="3">
+    <form>
+      <textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
+    </form>
+  </td>    
 </tr>
 
 <tr>
