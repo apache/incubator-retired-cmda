@@ -1,124 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script> -->
-  <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
-  <script type="text/javascript" src="js/jquery.flot.min.js"></script>
-  <script type="text/javascript" src="js/json2.js"></script>
-  <script type="text/javascript" src="js/xmisc.js"></script>
+  <meta charset="utf-8">
 
+  <!-- for Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <!-- still needed? -->
+  <script src="js/jquery.flot.min.js"></script>
+  <script src="js/json2.js"></script>
+  <script src="js/xmisc.js"></script>
+
+  <!-- cmac related -->
+  <link rel="stylesheet" href="common.css">
   <script src='js2/dataList2.js'></script>
   <script src='js2/varList.js'></script>
+  <script src='js2/common.js'></script>
 
-  <script type="text/javascript">
+  <title>correlationMap Service</title>
+
+  <script>
 
     var Response = null;
     var variable1 = "";
     var variable2 = "";
 
+    var naValue = "-999999";
 
     // called on load or reload
     window.onload = function() {
+      var str1 = data_block_str(1, 2, "Variable 1", 
+          "", "500");
+      document.getElementById("dataBlock1").innerHTML = str1;
+
+      str1 = data_block_str(2, 2, "Variable 2", 
+          "", "500");
+      document.getElementById("dataBlock2").innerHTML = str1;
+
       put_data(1);
       put_data(2);
       put_var(1);
       put_var(2);
-      select_var1(1);
-      select_var1(2);
+      select_var(1);
+      select_var(2);
+      time_range2();
+      //fillMonth();
 
-      // no data to download yet
       disable_download_button();
-    }
 
-    // disable download data button
-    function disable_download_button()
-    {
-      var x=document.getElementById("download_data");
-      x.disabled=true;
-    }
-
-    // enable download data button
-    function enable_download_button()
-    {
-      var x=document.getElementById("download_data");
-      x.disabled=false;
-    }
-
-    // disable pressure level box for 2D var
-    function disable_pres1(ID)
-    {
-      var x;
-      x=document.getElementById("pres"+ID);
-      x.value = "N/A";
-      x.disabled=true;
-    }
-
-    // enable pressure level box for 3D var
-    function enable_pres1(ID)
-    {
-      var x;
-      x=document.getElementById("pres"+ID);
-      x.value = "500";
-      x.disabled=false;
-    }
-
-    function put_data(ID){
-      var list1=document.getElementById("data"+ID);
-
-      for(var key in dataList) {
-        if (key.slice(0,5)==="group") {
-          var og = document.createElement("OPTGROUP");
-          og.setAttribute('label', dataList[key][0]);
-          list1.add(og);
-        } else {
-          og.appendChild(new Option(key,key));
-        }
-      }
-    }
-
-    function put_var(ID) {
-      var list1=document.getElementById("var"+ID);
-      for (var i=list1.length-1; i>=0; i--) {
-      list1.remove(i);
-      }
-
-      data_string =  document.getElementById("data"+ID).value;
-      var varList2 = dataList[data_string][1];  
-      for (var i=0; i<varList2.length; i++) {
-        var k = varList2[i];
-        list1.add(new Option(varList[k][0],k));
-      }
-    
-    }
-
-    // 
-    function select_var1(ID)
-    {
-      var var_string = $("#var"+ID).val();
-
-      // alert("var_string: " + var_string)
-
-      if (varList[var_string][2]===3) {
-        enable_pres1(ID);
-      } else {
-        disable_pres1(ID);
-      }
-
-      //alert("variable1: " + var_string);
-
-      var var_string1 = $("#var"+1).val();
-      var var_string2 = $("#var"+2).val();
-      var data_string1 = $("#data"+1).val();
-      var data_string2 = $("#data"+2).val();
-
-      var sTime = Math.max( Number(dataList[data_string1][2][var_string1][0]),
-                            Number(dataList[data_string2][2][var_string2][0]) );
-      var eTime = Math.min( Number(dataList[data_string1][2][var_string1][1]),
-                            Number(dataList[data_string2][2][var_string2][1]) );
-
-      $("#startYear").html("start year-month: (earliest:" + sTime + ")");
-      $("#endYear").html("end year-month: (latest:" + eTime + ")");
+      // select_all_months();
     }
 
     $(document).ready(function(){
@@ -424,142 +357,137 @@
     
   </script>
 </head>
+
 <body>
-
-<p>
-
-<table border="1">
-
-<tr>
-<td colspan="4">
-<center>
-<b>Service: Time-Lagged Correlation Map of Two Variables</b><br><br>
+<div class="container-fluid">
+<div class="row center1">
+<div class="col-sm-8 col-sm-offset-2 col-xs-12 color-head">
+<h3>Service: Time-Lagged Correlation Map of Two Variables</h3>
 This service generates a time-lagged correlation map between two specified variables. 
-<br>The two variables can be either a two-dimensional variable or a slice of a three-dimensional variable at a specific pressure level. <br><br>
-</center>
-</td>
-</tr>
+<br>The two variables can be either a two-dimensional variable or a slice of a three-dimensional variable at a specific pressure level.
+</div> <!-- col-sm -->
+<div class="col-sm-offset-2">
+</div> <!-- col-sm -->
+</div> <!-- row center1 -->
 
-<tr>
-<td colspan="2">
-<center>
-data1[t-lag]
-</center>
-</td>
+<div class="row level0">
+<div class="col-sm-12 col-lg-6 level0 color0">
+  <div id="dataBlock1">
+  </div>
+</div> <!-- col level0 -->
 
-<td colspan="2">
-<center>
-data2[t]
-</center>
-</td>
-</tr>
+<div class="col-sm-12 col-lg-6 level0 color1">
+  <div id="dataBlock2">
+  </div>
+</div> <!-- col level0 -->
 
-<tr>
-<td>source:</td>
-<td><select name="data1", id="data1" onchange="put_var(1); select_var1(1)">
-</select></td>
+<div class="color3">
+<div class="row center1 subtitle1" >
+Data Subsetting
+</div> <!-- row -->
 
-<td>source:</td>
-<td><select name="data2", id="data2" onchange="put_var(2); select_var1(2)">
-</select></td>
+<div class="row">
+  <div class="col-sm-4 right1">
+    <div id=startYear>start year-month:</div>
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="t0" value="2004-01" alt="start"/>
+  </div>
 
-</tr>
+  <div class="col-sm-4 right1">
+    <div id=endYear>end year-month:</div>
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="t1" value="2004-12" alt="start"/>
+  </div>
+</div> <!-- row -->
 
-<tr>
+<div class="row">
+  <div class="col-sm-4 right1">
+    start lon (deg):
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="lon0" value="0"/>
+  </div>
+  <div class="col-sm-4 right1">
+    end lon (deg):
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="lon1" value="360"/>
+  </div>
+</div> <!-- row -->
 
-<td>variable name:</td><td><select name="var1", id="var1" onchange="select_var1(1)">
-</select>
-</td>
+<div class="row">
+  <div class="col-sm-4 right1">
+    start lat (deg):
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="lat0" value="-90"/>
+  </div>
+  <div class="col-sm-4 right1">
+    end lat (deg):
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="lat1" value="90"/>
+  </div>
+</div> <!-- row -->
+</div> <!-- color3 -->
 
-<td>variable name:</td><td><select name="var2", id="var2" onchange="select_var1(2)">
-</select>
+<div class="color2">
+<div class="row">
+  <div class="col-sm-4 right1">
+    lag (month):
+  </div>
+  <div class="col-sm-8 left1">
+    <input id="laggedTime" value="0"/>  
+  </div>
+</div>
+</div> <!-- color2 -->
 
-</td>
+<div class="color3">
+<div class="row">
+  <div class="col-sm-4 right1">
+    Execution purpose:
+  </div> <!-- col -->
+  <div class="col-sm-8 left1">
+    <form>
+    <textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
+    </form>
+  </div> <!-- col -->
+</div> <!-- row -->
+</div> <!-- color2 -->
 
-</tr>
+<div class="color4">
+<div class="row ">
+  <div class="col-sm-6 center1">
+    <input id="correlationMap" type="submit" value="            Get  Plot            " style="height:28px"/>
+  </div>
+  <div class="col-sm-6 center1">
+    <form>
+      <input id="download_data" type="button" value="Download Data" style="height:28px"/>
+    </form>
+  </div>
+</div> <!-- row -->
+</div> <!-- color -->
 
-<tr>
+<div class="row" center1>
+  <div class="col-sm-12 center1">
+    <div id="Image">Image Here</div>
+  </div>
+</div> <!-- row -->
 
-<td>
-atmosphere pressure level (hPa) <br> or ocean pressure level (dbar)
-</td>
-<td>
-<input id="pres1" value="500" alt="pressure"/>
-</td>
+<div class="row" >
+  <div class="col-sm-12 center1">
+    <textarea readonly id="data_url" cols="150" rows="2">Data URL Here</textarea>
+  </div>
+</div> <!-- row -->
 
-<td>
-atmosphere pressure level (hPa) <br> or ocean pressure level (dbar)
-</td>
-<td>
-<input id="pres2" value="500" alt="pressure"/>
-</td>
+<div class="row" center1>
+  <div class="col-sm-12 center1">
+    <textarea id="Response" cols="150" rows="6">Service Response Text Here</textarea>
+  </div>
+</div> <!-- row -->
 
-</tr>
-
-<tr>
-</tr>
-
-<tr>
-<td id=startYear>start year-month:</td><td><input id="t0" value="2004-01" alt="start"/></td>
-<td id=endYear>end year-month:</td><td><input id="t1" value="2004-12" alt="end"/></td>
-</tr>
-
-
-<tr>
-<td>start lat (deg):</td><td><input id="lat0" value="-90"/></td>
-<td>end lat (deg):</td><td><input id="lat1" value="90"/></td>
-</tr>
-
-<tr>
-<td>start lon (deg):</td><td><input id="lon0" value="0"/></td>
-<td>end lon (deg):</td><td><input id="lon1" value="360"/></td>
-</tr>
-
-<tr>  
-<td></td>
-<td colspan="2"><center>lag (month):<input id="laggedTime" value="0"/></center></td><td></td></tr>
-</tr>
-
-<tr>
-<td colspan="1">
-Execution purpose
-</td>
-<td colspan="3">
-<form>
-<textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
-</form>
-</td>
-</tr>
-<tr>
-
-<tr>
-<td colspan="2" align="center"><input id="correlationMap" type="submit" value="            Get  Plot            " style="height:28px"/></td>
-<form>
-<td colspan="2" align="center"><input id="download_data" type="button" value="Download Data" style="height:28px"/>
-</td>
-</form>
-
-</tr>
-
-<tr>
-<td colspan="4">
-<div id="Image">Image Here</div>
-</td>
-</tr>
-
-<tr>
-<td colspan="4" align="center">
-<textarea readonly id="data_url" cols="130" rows="2">Data URL Here</textarea>
-</td>
-</tr>
-
-<tr>
-<td colspan="4" align="center">
-<textarea id="Response" cols="130" rows="6">Service Response Text Here</textarea>
-</td>
-</tr>
-
-</table>
-
+</div> <!-- container -->
 </body>
 </html>

@@ -3,6 +3,7 @@
 // enable_download data button
 // disable_pressure level box for 2D var
 // put_data__
+// data_block_str__
 // put_var__
 // is3D__
 // select_var__
@@ -67,6 +68,47 @@ function put_data(ID){
   }
 }
 
+// data_block_str__
+function data_block_str(ID, numTB, dataTitle, isRange, pressDf){
+var temp1= '';
+temp1 += '<div class="row ">\n'
+temp1 += '<div class="col-sm-12 center1 subtitle1">\n';
+temp1 += dataTitle + '\n';
+temp1 += '</div>\n';
+temp1 += '</div> <!-- row --> \n';
+
+temp1 += '<div class="row">\n';
+temp1 += ' <div class="col-sm-4 right1">\n';
+temp1 += '   source:' + '\n';
+temp1 += '  </div> <!-- col-sm-6 -->\n';
+temp1 += '  <div class="col-sm-8 left1">\n';
+temp1 += '    <select name="data' + ID + '", id="data' + ID;
+temp1 += '" onchange="put_var(' + ID + '); time_range' + numTB + '()"></select>\n';
+temp1 += '  </div> <!-- col-sm-6 level2-->\n';
+temp1 += '</div> <!-- row -->\n';
+
+temp1 += '<div class="row">\n';
+temp1 += '  <div class="col-sm-4 right1">\n';
+temp1 += '    variable name:\n';
+temp1 += '  </div> <!-- col-sm-6 level2-->\n';
+temp1 += '  <div class="col-sm-8 left1">\n';
+temp1 += '    <select name="var' + ID +'", id="var' + ID;
+temp1 += '" onchange="select_var(' + ID + '); time_range' + numTB + '()"> </select>\n';
+temp1 += '  </div> <!-- col-sm-6 level2-->\n';
+temp1 += '</div> <!-- row -->\n';
+
+temp1 += '<div class="row">\n';
+temp1 += '  <div class="col-sm-4 right1">\n';
+temp1 += '    pressure ' + isRange + '(atmosphere hPa) <br> or (ocean dbar):\n';
+temp1 += '  </div> <!-- col-sm-6 level2-->\n';
+temp1 += '  <div class="col-sm-8 left1">\n';
+temp1 += '    <input id="pres' + ID + '" value="' + pressDf + '" alt="pressure"/>\n';
+temp1 += '  </div> <!-- col-sm-6 level2-->\n';
+temp1 += '</div> <!-- row -->\n';
+// alert(temp1);
+return temp1;
+}
+
 // put_var__
 function put_var(ID) {
   var list1=document.getElementById("var"+ID);
@@ -104,7 +146,19 @@ function select_var(ID)
 
 
 // time_range__
+// this is identical to time_range1()
 function time_range() {
+  var var_string1 = $("#var"+1).val();
+  var data_string1 = $("#data"+1).val();
+
+  var sTime = dataList[data_string1][2][var_string1][0].toString();
+  var eTime = dataList[data_string1][2][var_string1][1].toString();
+
+  $("#startYear").html("start year-month: (earliest:" + sTime.slice(0,4) + "-" + sTime.slice(4,6) + ")");
+  $("#endYear").html("end year-month: (latest:" + eTime.slice(0,4) + "-" + eTime.slice(4,6) + ")");
+}
+
+function time_range1() {
   var var_string1 = $("#var"+1).val();
   var data_string1 = $("#data"+1).val();
 
@@ -186,12 +240,13 @@ function fillMonth() {
 <option id="spring">Spring:Mar-Apr-May</option> </select>';
   $("#monthSelect0").html(temp1); 
 
-  temp1 = ""; 
+  temp1 = '<form role="form">'; 
   for (var i=0; i<monthList.length; i++) {
     temp1 +=
-        '<input type="checkbox" id="' + monthList[i] + '" value="' + monthList[i] + '"/>' 
+        '<label"><input type="checkbox" id="' + monthList[i] + '" value="' + monthList[i] + '"/></label>' 
           +  monthList[i] + " ";
   }
+  temp1 += '</form>';
   $("#monthSelect").html(temp1); 
 }
 
@@ -302,7 +357,8 @@ function parse_pres(pres10) {
       var checkNan = 0;
       var pres2 = [];
       var temp1=pres10.split(",");
-      for (var i in temp1) {
+      //for (var i in temp1) {
+      for (var i=0; i<temp1.length; i++) {
         if (isNaN(Number(temp1[i]))) {
           checkNan = 1; 
         } else {

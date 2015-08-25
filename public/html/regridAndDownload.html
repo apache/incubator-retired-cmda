@@ -1,108 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script> -->
-  <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
-  <script type="text/javascript" src="js/jquery.flot.min.js"></script>
-  <script type="text/javascript" src="js/json2.js"></script>
-  <script type="text/javascript" src="js/xmisc.js"></script>
+  <meta charset="utf-8">
 
-  <script src='js2/dataList.js'></script>
+  <!-- for Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <!-- still needed? -->
+  <script src="js/jquery.flot.min.js"></script>
+  <script src="js/json2.js"></script>
+  <script src="js/xmisc.js"></script>
+
+  <!-- cmac related -->
+  <link rel="stylesheet" href="common.css">
+  <script src='js2/dataList2.js'></script>
   <script src='js2/varList.js'></script>
+  <script src='js2/common.js'></script>
 
-  <script type="text/javascript">
+  <title>regrid and download service</title>
 
+  <script>
     var Response = null;
     var variable1 = "";
     var variable2 = "";
 
+    var naValue = "-999999";
 
-    // called on load or reload
+    var idsV = {};
+    
+    idsV['lon0'] = "0";
+    idsV['lon1'] = "360";
+    idsV['lat0'] = "-90";
+    idsV['lat1'] = "90";
+    idsV['dlon'] = "1";
+    idsV['dlat'] = "1";
+    //idsV['t0'] = "2004-01";
+    //idsV['t1'] = "2004-12";
+
+    function setDlOriginal() {
+      var check1 = document.getElementById('dlOriginal').checked;
+      var ids = [
+                   'lon0', 
+                   'lon1',
+                   'dlon',
+                   'lat0', 
+                   'lat1',
+                   'dlat',
+                   //'t0',
+                   //'t1',
+                  ];
+      var temp1;
+      var temp2;
+      if (check1) {
+        //for (var i in ids) {
+        for (var i=0; i<ids.length; i++) {
+          temp2 = ids[i]; 
+          temp1 = document.getElementById(temp2);
+          idsV[temp2] = temp1.value; 
+          temp1.disabled = true;
+          temp1.value = "N/A" ;
+        }
+      } else {
+        for (var i=0; i<ids.length; i++) {
+            temp2 = ids[i]; 
+//  alert(temp2);
+            temp1 = document.getElementById(temp2);
+            temp1.disabled = false;
+            temp1.value = idsV[temp2];
+        }
+      } 
+    }
+
+     // called on load or reload
     window.onload = function() {
+      var str1 = data_block_str(1, 1, "Specify the Variable", 
+          "", "500");
+      document.getElementById("dataBlock1").innerHTML = str1;
+
       put_data(1);
       put_var(1);
-      select_var1(1);
+      select_var(1);
+      time_range1();
 
-      // no data to download yet
       disable_download_button();
-    }
-
-    // disable download data button
-    function disable_download_button()
-    {
-      var x=document.getElementById("download_data");
-      x.disabled=true;
-    }
-
-    // enable download data button
-    function enable_download_button()
-    {
-      var x=document.getElementById("download_data");
-      x.disabled=false;
-    }
-
-    // disable pressure level box for 2D var
-    function disable_pres1(ID)
-    {
-      var x;
-      x=document.getElementById("pres"+ID);
-      x.value = "N/A";
-      x.disabled=true;
-    }
-
-    // enable pressure level box for 3D var
-    function enable_pres1(ID)
-    {
-      var x;
-      x=document.getElementById("pres"+ID);
-      x.value = "";
-      x.disabled=false;
-    }
-
-    function put_data(ID){
-      var list1=document.getElementById("data"+ID);
-
-      for(var key in dataList) {
-        if (key.slice(0,5)==="group") {
-          var og = document.createElement("OPTGROUP");
-          og.setAttribute('label', dataList[key][0]);
-          list1.add(og);
-        } else {
-          og.appendChild(new Option(key,key));
-        }
-      }
-    }
-
-    function put_var(ID) {
-      var list1=document.getElementById("var"+ID);
-      for (var i=list1.length-1; i>=0; i--) {
-      list1.remove(i);
-      }
-
-      data_string =  document.getElementById("data"+ID).value;
-      var varList2 = dataList[data_string][1];  
-      for (var i=0; i<varList2.length; i++) {
-        var k = varList2[i];
-        list1.add(new Option(varList[k][0],k));
-      }
-    }
-
-    // 
-    function select_var1(ID)
-    {
-      var var_string;
-      var_string = $("#var"+ID).val();
-
-      // alert("var_string: " + var_string)
-
-      if (varList[var_string][2]===3) {
-        enable_pres1(ID);
-      } else {
-        disable_pres1(ID);
-      }
-
-      //alert("variable1: " + var_string);
     }
 
     $(document).ready(function(){
@@ -151,28 +134,11 @@
 
         // alert("arglist: " + arglist);
 
-        var pres10 = $("#pres1").val();
-        var pres1 = "";
-        // alert("pres10: " + pres10);
-
-        if (pres10=="") {pres1 = "-999999"; }
-        else {
-          if (!(isNaN(Number(pres10)))) { 
-            pres1 = pres10; 
-          } else {
-            var checkNan = 0;
-            var pres2 = [];
-            var temp1=pres10.split(",");
-            for (var i in temp1) {
-              if (isNaN(Number(temp1[i]))) {
-                checkNan = 1; 
-              } else {
-                pres2.push(Number(temp1[i]));
-              }
-            }
-            if (pres2.length>0) { pres1 = pres2.join(); }
-            else { pres1 = "-999999"; }
-          }
+        if (document.getElementById("dlOriginal").checked) {
+          pres1 = "-999999";
+        } else {
+          var pres10 = $("#pres1").val();
+          var pres1 = parse_pres(pres10);
         }
 
         // alert("pres1: " + pres1);
@@ -194,14 +160,21 @@
 
         // alert("arglist: " + arglist);
 
-        var lon0 = $("#lon0").val();
-        var lon1 = $("#lon1").val();
-        var dlon = $("#dlon").val();
-        var lat0 = $("#lat0").val();
-        var lat1 = $("#lat1").val();
-        var dlat = $("#dlat").val();
-        var purpose = $("#purpose").val();
-
+        if (document.getElementById("dlOriginal").checked) {
+          var lon0 = "-999999";
+          var lon1 = "-999999";
+          var dlon = "-999999";
+          var lat0 = "-999999";
+          var lat1 = "-999999";
+          var dlat = "-999999";
+        } else {
+          var lon0 = $("#lon0").val();
+          var lon1 = $("#lon1").val();
+          var dlon = $("#dlon").val();
+          var lat0 = $("#lat0").val();
+          var lat1 = $("#lat1").val();
+          var dlat = $("#dlat").val();
+        }
         arglist = arglist.concat("&lon1=");
         arglist = arglist.concat(lon0);
 
@@ -219,7 +192,8 @@
 
         arglist = arglist.concat("&dlat=");
         arglist = arglist.concat(dlat);
-        
+
+        var purpose = $("#purpose").val();
         arglist = arglist.concat("&purpose=");
         arglist = arglist.concat(purpose);
 
@@ -366,101 +340,131 @@
     
   </script>
 </head>
+
 <body>
-
-<p>
-
-<table border="1">
-
-<tr>
-<td colspan="4">
-<center>
-<b>Service: Regrid and Download</b><br><br>
+<div class="container-fluid">
+<div class="row center1">
+<div class="col-sm-8 col-sm-offset-2 col-xs-12 color-head">
+<h3>Service: Regrid and Download</h3>
 This service regrids a variable from a dataset according to the lat/lon/plev specified by the user, and mades the regridded data downloadable by the user. 
-<br><br>
-</center>
-</td>
-</tr>
+</div> <!-- col-sm -->
+<div class="col-sm-offset-2">
+</div> <!-- col-sm -->
+</div> <!-- row center1 -->
 
-<tr>
-<td>data source:</td><td><select name="data1", id="data1" onchange="put_var(1)">
-</select></td>
+<div class="row level0">
+<div class="col-sm-12 col-lg-12 level0 color0">
+  <div id="dataBlock1">
+  </div>
+</div> <!-- col level0 -->
+</div> <!-- row level0 -->
 
-<td>variable name:</td><td><select name="var1", id="var1" onchange="select_var1(1)">
-</select>
-</td>
-</tr>
+<div class="color3">
+<div class="row center1 subtitle1" >
+Data Subsetting
+</div> <!-- row -->
 
-<tr>
-<td colspan=4>
-atmosphere pressure level (hPa), or ocean pressure level (dbar)
-<!--
-<input id=pres1 size=50>
--->
-<input list="plev1" id=pres1 size=100>
-<datalist id="plev1">
-<option value="1000,800,500,300,200,100">
-<option value="1000,300,100">
-<option value="1000,100">
-<option value="500,200">
-</datalist>
-</td>
-</tr>
+<div class="row">
+  <div class="col-sm-4 right1">
+    <div id=startYear>start year-month:</div>
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="t0" value="2004-01" alt="start"/>
+  </div>
 
-<tr>
-<td>start year-month: <input id="t0" value="2004-01" alt="start"/></td>
-<td>end year-month: <input id="t1" value="2004-12" alt="end"/></td>
-<td colspan=2>
-</td>
-</tr>
+  <div class="col-sm-4 right1">
+    <div id=endYear>end year-month:</div>
+  </div>
+  <div class="col-sm-2 left1">
+    <input id="t1" value="2004-12" alt="start"/>
+  </div>
+</div> <!-- row -->
 
+<div class="row">
+  <div class="col-sm-4 right1">
+    start lon (deg):
+    <input id="lon0" value="0"/>
+  </div>
+  <div class="col-sm-4 right1">
+    end lon (deg):
+    <input id="lon1" value="360"/>
+  </div>
+  <div class="col-sm-4 right1">
+     grid size (deg):
+    <input id="dlon" value="1"/>
+  </div>
+</div> <!-- row -->
 
-<tr>
-<td width="25%">start lat (deg): <input size=5 id="lat0" value="-90"/></td>
-<td width="25%">end lat (deg): <input size=5 id="lat1" value="90"/></td>
-<td width="25%">grid size (deg): <input size=5 id="dlat" value="1.0"/></td>
-<td></td>
-</tr>
+<div class="row">
+  <div class="col-sm-4 right1">
+    start lat (deg):
+    <input id="lat0" value="-90"/>
+  </div>
+  <div class="col-sm-4 right1">
+    end lat (deg):
+    <input id="lat1" value="90"/>
+  </div>
+  <div class="col-sm-4 right1">
+     grid size (deg):
+    <input id="dlat" value="1"/>
+  </div>
+</div> <!-- row -->
 
-<tr>
-<td width="25%">start lon (deg): <input size=5 id="lon0" value="0"/></td>
-<td width="25%">end lon (deg): <input size=5 id="lon1" value="360"/></td>
-<td width="25%">grid size (deg): <input size=5 id="dlon" value="1.0"/></td>
-<td></td>
-</tr>
+<div class="row">
+  <div class="col-sm-4 right1">
+    download the original:
+  </div>
+  <div class="col-sm-8 left1">
+    <input onclick="setDlOriginal()" type="checkbox" id="dlOriginal">
+  </div>
+</div> <!-- row -->
 
-<tr>
-      <td colspan="1">Execution purpose</td>
-      <td colspan="3">
-        <form>
-          <textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
-        </form>
-      </td>    
-    </tr>
-<tr>
+</div> <!-- color3 -->
 
-<tr>
-<td colspan="2" align="center"><input id="action1" type="submit" value="            Get  Data            " style="height:28px"/></td>
-<form>
-<td colspan="2" align="center"><input id="download_data" type="button" value="Download Data" style="height:28px"/>
-</td>
-</form>
+<div class="color2">
+<div class="row">
+  <div class="col-sm-4 right1">
+    Execution purpose:
+  </div> <!-- col -->
+  <div class="col-sm-8 left1">
+    <form>
+    <textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
+    </form>
+  </div> <!-- col -->
+</div> <!-- row -->
+</div> <!-- color2 -->
 
-</tr>
+<div class="color4">
+<div class="row">
+  <div class="col-sm-6 center1">
+    <input id="action1" type="submit" value="            Get  Data            " style="height:28px"/>
+  </div>
+  <div class="col-sm-6 center1">
+    <form>
+      <input id="download_data" type="button" value="Download Data" style="height:28px"/>
+    </form>
+  </div>
+</div> <!-- row -->
+</div> <!-- color4 -->
+ 			
+<div class="row" center1>
+  <div class="col-sm-12 center1">
+    <div id="Image">Image Here</div>
+  </div>
+</div> <!-- row -->
 
-<tr>
-<td colspan="4" align="center">
-<textarea readonly id="data_url" cols="130" rows="2">Data URL Here</textarea>
-</td>
-</tr>
+<div class="row" >
+  <div class="col-sm-12 center1">
+    <textarea readonly id="data_url" cols="150" rows="2">Data URL Here</textarea>
+  </div>
+</div> <!-- row -->
 
-<tr>
-<td colspan="4" align="center">
-<textarea id="Response" cols="130" rows="6">Service Response Text Here</textarea>
-</td>
-</tr>
+<div class="row" center1>
+  <div class="col-sm-12 center1">
+    <textarea id="Response" cols="150" rows="6">Service Response Text Here</textarea>
+  </div>
+</div> <!-- row -->
 
-</table>
-
+</div> <!-- container -->
 </body>
 </html>
