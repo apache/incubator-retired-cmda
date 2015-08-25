@@ -200,6 +200,7 @@
         var lat0 = $("#lat0").val();
         var lat1 = $("#lat1").val();
         var dlat = $("#dlat").val();
+        var purpose = $("#purpose").val();
 
         arglist = arglist.concat("&lon1=");
         arglist = arglist.concat(lon0);
@@ -218,6 +219,9 @@
 
         arglist = arglist.concat("&dlat=");
         arglist = arglist.concat(dlat);
+        
+        arglist = arglist.concat("&purpose=");
+        arglist = arglist.concat(purpose);
 
         // alert("arglist: " + arglist);
 
@@ -424,6 +428,16 @@ atmosphere pressure level (hPa), or ocean pressure level (dbar)
 <td width="25%">grid size (deg): <input size=5 id="dlon" value="1.0"/></td>
 <td></td>
 </tr>
+
+<tr>
+      <td colspan="1">Execution purpose</td>
+      <td colspan="3">
+        <form>
+          <textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
+        </form>
+      </td>    
+    </tr>
+<tr>
 
 <tr>
 <td colspan="2" align="center"><input id="action1" type="submit" value="            Get  Data            " style="height:28px"/></td>
