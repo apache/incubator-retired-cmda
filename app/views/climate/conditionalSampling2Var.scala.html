@@ -119,6 +119,325 @@
      
     }
 
+	// disable pressure level box for 2D var
+    function disable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "N/A";
+      x.disabled=true;
+    }
+
+    // enable pressure level box for 3D var
+    function enable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "500";
+      x.disabled=false;
+    }
+    
+    function changeDataSource1() {
+    	var dataSource = $('#dataSource1').text();
+
+	    var x = document.getElementById("data1");
+
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    
+    function changeDataSource2() {
+    	var dataSource = $('#dataSource2').text();
+	    //dataSource = "NASA_QuikSCAT";
+	    var x = document.getElementById("data2");
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){ //////////////////////////////////
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    
+    function changeDataSource3() {
+    	var dataSource = $('#dataSource3').text();
+	    //dataSource = "NASA_QuikSCAT";
+	    var x = document.getElementById("data2");
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){ //////////////////////////////////
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    
+    function changeVariableName1(){
+        var var_string = $('#variableName1').text();
+        var data_string = $('#dataSource1').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        
+      
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var1");
+        
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+      	  
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    
+    function changeVariableName2(){
+        var var_string = $('#variableName2').text();
+        var data_string = $('#dataSource2').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        
+      
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var2");
+        
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+      	  
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    
+    function changeVariableName3(){
+        var var_string = $('#variableName3').text();
+        var data_string = $('#dataSource3').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        
+      
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var3");
+        
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+      	  
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    
     // disable customized input text boxes
     function setDefault(ID)
     {
@@ -622,8 +941,9 @@
 <div id="variableNameP" style="display: none;">@parameters.getVariableNameP()</div>
 <div id="variableNameE1" style="display: none;">@parameters.getVariableNameE1()</div>
 <div id="variableNameE2" style="display: none;">@parameters.getVariableNameE2()</div>
-<div id="pressureRangeP1" style="display: none;">@parameters.getPressureRangeP()</div>
-<div id="pressureRangeP2" style="display: none;">@parameters.getPressureRangeE1()</div>
+<div id="pressureRangeP" style="display: none;">@parameters.getPressureRangeP()</div>
+<div id="pressureRangeE1" style="display: none;">@parameters.getPressureRangeE1()</div>
+<div id="pressureRangeE2" style="display: none;">@parameters.getPressureRangeE2()</div>
 <div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
 <div id="endYearMonth" style="display: none;">@parameters.getEndYearMonth()</div>
 <div id="selectMonths" style="display: none;" >@parameters.getSelectMonths()</div>
@@ -687,7 +1007,7 @@ Physical Variable (sampled variable)
 atmosphere pressure range (hPa) <br> or ocean pressure range (dbar):
 </td>
 <td>
-<input id="pres1" value="200, 900" alt="pressure"/>
+<input id="pres1" value="@parameters.getPressureRangeP()" alt="pressure"/>
 </td>
 </tr>
 
@@ -717,7 +1037,7 @@ Environmental Variable 1 (sampling variable)
 atmosphere pressure level (hPa) <br> or ocean pressure level (dbar):
 </td>
 <td>
-<input id="pres2" value="500" alt="pressure"/>
+<input id="pres2" value="@parameters.getPressureRangeE1()" alt="pressure"/>
 </td>
 </tr>
 
@@ -734,9 +1054,9 @@ customized: <input onclick="setCustomized(1)" type="radio" name="default1" value
 <tr>
 <td colspan="2">
 <form> 
-Min: <input id="min1" value="" alt="" size=3/> 
-Max: <input id="max1" value="" alt="" size=3/>
-number of bins: <input id="bins1" value="" alt="" size=3/>
+Min: <input id="min1" value="@parameters.getBin_min1()" alt="" size=3/> 
+Max: <input id="max1" value="@parameters.getBin_max1()" alt="" size=3/>
+number of bins: <input id="bins1" value="@parameters.getBin_n1()" alt="" size=3/>
 </form> 
 </td>
 </tr>
@@ -763,7 +1083,7 @@ Environmental Variable 2 (sampling variable)
 atmosphere pressure level (hPa) <br> or ocean pressure level (dbar):
 </td>
 <td>
-<input id="pres3" value="500" alt="pressure"/>
+<input id="pres3" value="@parameters.getPressureRangeE2()" alt="pressure"/>
 </td>
 </tr>
 
@@ -780,16 +1100,16 @@ customized: <input onclick="setCustomized(2)" type="radio" name="default2" value
 <tr>
 <td colspan="2">
 <form> 
-Min: <input id="min2" value="" alt="" size=3/> 
-Max: <input id="max2" value="" alt="" size=3/>
+Min: <input id="min2" value="@parameters.getBin_min2()" alt="" size=3/> 
+Max: <input id="max2" value="@parameters.getBin_max2()" alt="" size=3/>
 number of bins: <input id="bins2" value="" alt="" size=3/>
 </form> 
 </td>
 </tr>
 
 <tr>
-<td id=startYear>start year-month:</td><td> <input id="t0" value="2004-01" alt="start"/></td>
-<td id=endYear>end year-month: </td><td><input id="t1" value="2004-12" alt="end"/></td>
+<td id=startYear>start year-month:</td><td> <input id="t0" value="@parameters.getStartYearMonth()" alt="start"/></td>
+<td id=endYear>end year-month: </td><td><input id="t1" value="@parameters.getEndYearMonth()" alt="end"/></td>
 </tr>
 
 <tr>
@@ -798,13 +1118,13 @@ number of bins: <input id="bins2" value="" alt="" size=3/>
 </tr>
 
 <tr>
-<td>start lat (deg):</td><td><input id="lat0" value="-90"/></td>
-<td>end lat (deg):</td><td><input id="lat1" value="90"/></td>
+<td>start lat (deg):</td><td><input id="lat0" value="@parameters.getStartLat()"/></td>
+<td>end lat (deg):</td><td><input id="lat1" value="@parameters.getEndLat()"/></td>
 </tr>
 
 <tr>
-<td>start lon (deg):</td><td><input id="lon0" value="0"/></td>
-<td>end lon (deg):</td><td><input id="lon1" value="360"/></td>
+<td>start lon (deg):</td><td><input id="lon0" value="@parameters.getStartLon()"/></td>
+<td>end lon (deg):</td><td><input id="lon1" value="@parameters.getEndLon()"/></td>
 </tr>
 
 <tr>
@@ -844,19 +1164,19 @@ display option:
 
 <tr>
 <td colspan="4">
-<div id="Image">Image Here</div>
+<div id="Image"><img src="@parameters.getImage()" width=680 /></div>
 </td>
 </tr>
 
 <tr>
 <td colspan="4" align="center">
-<textarea readonly id="data_url" cols="150" rows="2">Data URL Here</textarea>
+<textarea readonly id="data_url" cols="130" rows="2">@parameters.getDataURL()</textarea>
 </td>
 </tr>
 
 <tr>
 <td colspan="4" align="center">
-<textarea id="Response" cols="150" rows="6">Service Response Text Here</textarea>
+<textarea id="Response" cols="130" rows="6">@parameters.getServiceResponseText()</textarea>
 </td>
 </tr>
 
