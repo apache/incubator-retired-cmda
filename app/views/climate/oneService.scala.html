@@ -4,6 +4,11 @@
 
 @scripts = {
 <script type="text/javascript">
+
+	window.onload = function() {
+		var obj = document.getElementById("iframe");
+		resizeIframe(obj);
+	}
 	function resizeIframe(obj) {
 		obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
 	}
@@ -12,7 +17,7 @@
 
 @main("Service", scripts) {
 
-<iframe id="iframe" onload='javascript:resizeIframe(this);' width="100%"  src="@url" frameborder="0" scrolling="no" >
+<iframe id="iframe" width="100%"  src="@url" frameborder="0" >
 </iframe>
 
 }
