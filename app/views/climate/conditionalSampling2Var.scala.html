@@ -112,6 +112,7 @@
       var binNum1 = $('#binNum1').text();
       if(binMin1 == "-999999" && binMax1 == "-999999" && binNum1=="-999999"){
     	  $('#radioDef1').prop( "checked", true );
+    	  setDefault(1);
       }else{
     	  $('#radioCus1').prop( "checked", true );
     	  $('#min1').val(binMin1);
@@ -124,6 +125,7 @@
       var binNum2 = $('#binNum2').text();
       if(binMin2 == "-999999" && binMax2 == "-999999" && binNum2=="-999999"){
     	  $('#radioDef2').prop( "checked", true );
+    	  setDefault(2);
       }else{
     	  $('#radioCus2').prop( "checked", true );
     	  $('#min2').val(binMin2);
