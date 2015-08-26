@@ -332,6 +332,10 @@ public class ClimateService {
 			photo = "http://einstein.sv.cmu.edu:9002/static/diffPlot2V/8f156f328c641e68dd9a69b67fd154de/diffPlot.png";
 		}else if (url.contains("regridAndDownload.html")) {
 			photo = "/assets/images/regrid.jpg";
+		}else if (url.contains("correlationMap.html")) {
+			photo = "/assets/images/correlationMap.png";
+		}else if (url.contains("conditionalSampling2Var.html")) {
+			photo = "/assets/images/conditionalSampling2Var.jpeg";
 		}
 		else{
 			//photo = "http://i1-mac.softpedia-static.com/screenshots/Climate-Data-Analysis-Tools_1.png";
