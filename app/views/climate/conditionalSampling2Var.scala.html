@@ -52,9 +52,29 @@
       $('#pres3').val("N/A");
       $('#t0').val($('#startYearMonth').text());
       $('#t1').val($('#endYearMonth').text());
+     
+      
+      var enviVariableChoose1 = $('#enChoose1');
+      if(enviVariableChoose1 == "0"){
+    	  $('#radioDef1').prop("checked", true);
+    	  $('#radioCus1').prop("checked", false);
+      }else{
+    	  $('#radioDef1').prop("checked", false);
+    	  $('#radioCus1').prop("checked", true);
+      }
+      
+      var enviVariableChoose2 = $('#enChoose2');
+      if(enviVariableChoose2 == "0"){
+    	  $('#radioDef2').prop("checked", true);
+    	  $('#radioCus2').prop("checked", false);
+      }else{
+    	  $('#radioDef2').prop("checked", false);
+    	  $('#radioCus2').prop("checked", true);
+      }
+      
       var selectMonths = $('#selectMonths').text();
       $('#months option:contains('+selectMonths+')').prop({selected: true});
-      select_months();
+/*       select_months(); */
       select_monthsByPara();
       $('#lat0').val($('#startLat').text());
       $('#lat1').val($('#endLat').text());
@@ -90,22 +110,22 @@
       var binMin1 = $('#binMin1').text();
       var binMax1 = $('#binMax1').text();
       var binNum1 = $('#binNum1').text();
-      if(binMin1 == "-1" && binMax1 == "-1" && binNum1=="-1"){
-    	  $('#radioDef').prop( "checked", true );
+      if(binMin1 == "-999999" && binMax1 == "-999999" && binNum1=="-999999"){
+    	  $('#radioDef1').prop( "checked", true );
       }else{
-    	  $('#radioCus').prop( "checked", true );
-    	  $('#min1').val(binMin);
-          $('#max1').val(binMax);
-          $('#bins1').val(binNum);
+    	  $('#radioCus1').prop( "checked", true );
+    	  $('#min1').val(binMin1);
+          $('#max1').val(binMax1);
+          $('#bins1').val(binNum1);
       }
       
       var binMin2 = $('#binMin2').text();
       var binMax2 = $('#binMax2').text();
       var binNum2 = $('#binNum2').text();
-      if(binMin2 == "-1" && binMax2 == "-1" && binNum2=="-1"){
-    	  $('#radioDef').prop( "checked", true );
+      if(binMin2 == "-999999" && binMax2 == "-999999" && binNum2=="-999999"){
+    	  $('#radioDef2').prop( "checked", true );
       }else{
-    	  $('#radioCus').prop( "checked", true );
+    	  $('#radioCus2').prop( "checked", true );
     	  $('#min2').val(binMin2);
           $('#max2').val(binMax2);
           $('#bins2').val(binNum2);
@@ -116,9 +136,51 @@
       $('#Image').html('<img src="'+imageUrl+'" width=680 />');
       $('#data_url').html($('#dataURL').text());
       $('#Response').html($('serviceResponseText').text());
-     
+    
     }
 
+    function select_monthsByPara(){
+      	var monthsByPara = $('#monthsPara').text();
+      	console.log("HERE!!!!!!"+monthsByPara);
+      	if(monthsByPara.search("jan")>-1){
+      		document.getElementById('Jan').checked = true;
+      	}
+      	if(monthsByPara.search("feb")>-1){
+      		document.getElementById('Feb').checked = true;
+      		console.log("Feb!");
+      	}
+      	if(monthsByPara.search("mar")>-1){
+      		document.getElementById('Mar').checked = true;
+      	}
+      	if(monthsByPara.search("apr")>-1){
+      		document.getElementById('Apr').checked = true;
+      	}
+      	if(monthsByPara.search("may")>-1){
+      		document.getElementById('May').checked = true;
+      	}
+      	if(monthsByPara.search("jun")>-1){
+      		document.getElementById('Jun').checked = true;
+      	}
+      	if(monthsByPara.search("jul")>-1){
+      		document.getElementById('Jul').checked = true;
+      	}
+      	if(monthsByPara.search("aug")>-1){
+      		document.getElementById('Aug').checked = true;
+      	}
+      	if(monthsByPara.search("sep")>-1){
+      		document.getElementById('Sep').checked = true;
+      	}
+      	if(monthsByPara.search("oct")>-1){
+      		document.getElementById('Oct').checked = true;
+      	}
+      	if(monthsByPara.search("nov")>-1){
+      		document.getElementById('Nov').checked = true;
+      	}
+      	if(monthsByPara.search("dec")>-1){
+      		document.getElementById('Dec').checked = true;
+      	}
+      }
+    
 	// disable pressure level box for 2D var
     function disable_pres1(ID)
     {
@@ -138,7 +200,7 @@
     }
     
     function changeDataSource1() {
-    	var dataSource = $('#dataSource1').text();
+    	var dataSource = $('#dataSourceP').text();
 
 	    var x = document.getElementById("data1");
 
@@ -220,7 +282,7 @@
     }
     
     function changeDataSource2() {
-    	var dataSource = $('#dataSource2').text();
+    	var dataSource = $('#dataSourceE1').text();
 	    //dataSource = "NASA_QuikSCAT";
 	    var x = document.getElementById("data2");
 	    if(dataSource == "gfdl_esm2g" ){
@@ -301,7 +363,7 @@
     }
     
     function changeDataSource3() {
-    	var dataSource = $('#dataSource3').text();
+    	var dataSource = $('#dataSourceE2').text();
 	    //dataSource = "NASA_QuikSCAT";
 	    var x = document.getElementById("data2");
 	    if(dataSource == "gfdl_esm2g" ){
@@ -382,8 +444,8 @@
     }
     
     function changeVariableName1(){
-        var var_string = $('#variableName1').text();
-        var data_string = $('#dataSource1').text();
+        var var_string = $('#variableNameP').text();
+        var data_string = $('#dataSourceP').text();
         data_string = data_string.replace("_", "/").toUpperCase();
         
       
@@ -401,8 +463,8 @@
     }
     
     function changeVariableName2(){
-        var var_string = $('#variableName2').text();
-        var data_string = $('#dataSource2').text();
+        var var_string = $('#variableNameE1').text();
+        var data_string = $('#dataSourceE1').text();
         data_string = data_string.replace("_", "/").toUpperCase();
         
       
@@ -420,8 +482,8 @@
     }
     
     function changeVariableName3(){
-        var var_string = $('#variableName3').text();
-        var data_string = $('#dataSource3').text();
+        var var_string = $('#variableNameE2').text();
+        var data_string = $('#dataSourceE2').text();
         data_string = data_string.replace("_", "/").toUpperCase();
         
       
@@ -436,6 +498,62 @@
             	break;
             }
         }
+    }
+    
+ // select all months in the checkboxes
+    function select_all_months()
+    {
+        document.getElementById('Jan').checked = true;
+        document.getElementById('Feb').checked = true;
+        document.getElementById('Mar').checked = true;
+        document.getElementById('Apr').checked = true;
+        document.getElementById('May').checked = true;
+        document.getElementById('Jun').checked = true;
+        document.getElementById('Jul').checked = true;
+        document.getElementById('Aug').checked = true;
+        document.getElementById('Sep').checked = true;
+        document.getElementById('Oct').checked = true;
+        document.getElementById('Nov').checked = true;
+        document.getElementById('Dec').checked = true;
+    }
+
+    // see if no month is selected
+    function no_month_check()
+    {
+        if (document.getElementById('Jan').checked == false &&
+           document.getElementById('Feb').checked == false &&
+           document.getElementById('Mar').checked == false &&
+           document.getElementById('Apr').checked == false &&
+           document.getElementById('May').checked == false &&
+           document.getElementById('Jun').checked == false &&
+           document.getElementById('Jul').checked == false &&
+           document.getElementById('Aug').checked == false &&
+           document.getElementById('Sep').checked == false &&
+           document.getElementById('Oct').checked == false &&
+           document.getElementById('Nov').checked == false &&
+           document.getElementById('Dec').checked == false) {
+           // alert("No month check!");
+           return true;
+          }
+        else
+           return false;
+    }
+
+    // unselect all months in the checkboxes
+    function reset_months()
+    {
+        document.getElementById('Jan').checked = false;
+        document.getElementById('Feb').checked = false;
+        document.getElementById('Mar').checked = false;
+        document.getElementById('Apr').checked = false;
+        document.getElementById('May').checked = false;
+        document.getElementById('Jun').checked = false;
+        document.getElementById('Jul').checked = false;
+        document.getElementById('Aug').checked = false;
+        document.getElementById('Sep').checked = false;
+        document.getElementById('Oct').checked = false;
+        document.getElementById('Nov').checked = false;
+        document.getElementById('Dec').checked = false;
     }
     
     // disable customized input text boxes
@@ -466,6 +584,20 @@
        y.disabled=false;
        z.value = "";
        z.disabled=false;
+    }
+    
+ // getMonthStr__
+    function getMonthStr() {
+            // get months checked by client
+            var month_str = "";
+            for (var i=0; i<monthList.length; i++) {
+              var mm = document.getElementById(monthList[i]);
+              if (mm.checked == true) {
+                month_str += ","+(i+1);
+              }
+            }
+            month_str = month_str.substr(1);
+            return month_str;
     }
 
     $(document).ready(function(){
@@ -504,7 +636,7 @@
         // sample url: http://cmacws.jpl.nasa.gov:8090/svc/conditionalSampling?model1=ukmo_hadgem2-a&var1=ts&pres1=200&model2=ukmo_hadgem2-a&var2=clt&pres2=200&start_time=199001&end_time=199512&lon1=0&lon2=100&lat1=-29&lat2=29
         // form url string
         // var url = "http://cmacws.jpl.nasa.gov:8090/svc/conditionalSamp?";
-        var url = "http://" + window.location.hostname + ":8090/svc/conditionalSampling2Var?";
+        var url = "http://" + window.location.hostname + ":9002/svc/conditionalSampling2Var?";
         // alert("url: " + url);
 
         var d1 = $("#data1").val();
@@ -756,7 +888,7 @@
         // url = url + arglist;
         // alert("url: " + url);
 
-        var urlTimeBounds = "http://" + window.location.hostname + ":8090/svc/two_time_bounds?";
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/two_time_bounds?";
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
         arglistTB = arglistTB.concat("1");
@@ -935,39 +1067,42 @@
 	
 	@flash_message()   
 <p>
-<div id="dataSourceP" style="display: none;">@parameters.getDataSourceP()</div>
-<div id="dataSourceE1" style="display: none;">@parameters.getDataSourceE1()</div>
-<div id="dataSourceE2" style="display: none;">@parameters.getDataSourceE2()</div>
-<div id="variableNameP" style="display: none;">@parameters.getVariableNameP()</div>
-<div id="variableNameE1" style="display: none;">@parameters.getVariableNameE1()</div>
-<div id="variableNameE2" style="display: none;">@parameters.getVariableNameE2()</div>
-<div id="pressureRangeP" style="display: none;">@parameters.getPressureRangeP()</div>
-<div id="pressureRangeE1" style="display: none;">@parameters.getPressureRangeE1()</div>
-<div id="pressureRangeE2" style="display: none;">@parameters.getPressureRangeE2()</div>
-<div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
-<div id="endYearMonth" style="display: none;">@parameters.getEndYearMonth()</div>
-<div id="selectMonths" style="display: none;" >@parameters.getSelectMonths()</div>
+<div id="dataSourceP"  >@parameters.getDataSourceP()</div>
+<div id="dataSourceE1"  >@parameters.getDataSourceE1()</div>
+<div id="dataSourceE2"  >@parameters.getDataSourceE2()</div>
+<div id="variableNameP"  >@parameters.getVariableNameP()</div>
+<div id="variableNameE1"  >@parameters.getVariableNameE1()</div>
+<div id="variableNameE2"  >@parameters.getVariableNameE2()</div>
+<div id="pressureRangeP"  >@parameters.getPressureRangeP()</div>
+<div id="pressureRangeE1"  >@parameters.getPressureRangeE1()</div>
+<div id="pressureRangeE2"  >@parameters.getPressureRangeE2()</div>
+<div id="startYearMonth"  >@parameters.getStartYearMonth()</div>
+<div id="enChoose1"  >@parameters.getCustomized1</div>
+<div id="enChoose2"  >@parameters.getCustomized2</div>
 
-<div id="monthsPara" style="display: none;">@parameters.getMonth()</div>
-<div id="startLat" style="display: none;">@parameters.getStartLat()</div>
-<div id="endLat" style="display: none;">@parameters.getEndLat()</div>
-<div id="startLon" style="display: none;">@parameters.getStartLon()</div>
-<div id="endLon" style="display: none;">@parameters.getEndLon()</div>
-<div id="div_X" style="display: none;">@parameters.getX()</div>
-<div id="div_Y" style="display: none;">@parameters.getY()</div>
-<div id="div_Z" style="display: none;">@parameters.getZ()</div>
-<div id="binMin1" style="display: none;" >@parameters.getBin_min1()</div>
-<div id="binMax1" style="display: none;">@parameters.getBin_max1()</div>
-<div id="binNum1" style="display: none;">@parameters.getBin_n1()</div>
+<div id="endYearMonth"  >@parameters.getEndYearMonth()</div>
+<div id="selectMonths"   >@parameters.getSelectMonths()</div>
 
-<div id="binMin2" style="display: none;" >@parameters.getBin_min2()</div>
-<div id="binMax2" style="display: none;">@parameters.getBin_max2()</div>
-<div id="binNum2" style="display: none;">@parameters.getBin_n2()</div>
+<div id="monthsPara"  >@parameters.getMonth()</div>
+<div id="startLat"  >@parameters.getStartLat()</div>
+<div id="endLat"  >@parameters.getEndLat()</div>
+<div id="startLon"  >@parameters.getStartLon()</div>
+<div id="endLon"  >@parameters.getEndLon()</div>
+<div id="div_X"  >@parameters.getX()</div>
+<div id="div_Y"  >@parameters.getY()</div>
+<div id="div_Z"  >@parameters.getZ()</div>
+<div id="binMin1"   >@parameters.getBin_min1()</div>
+<div id="binMax1"  >@parameters.getBin_max1()</div>
+<div id="binNum1"  >@parameters.getBin_n1()</div>
 
-<div id="executionPurpose" style="display: none;">@parameters.getExecutionPurpose()</div>
-<div id="image" style="display: none;">@parameters.getImage()</div>
-<div id="dataURL" style="display: none;">@parameters.getDataURL()</div>
-<div id="serviceResponseText" style="display: none;">@parameters.getServiceResponseText()</div>
+<div id="binMin2"   >@parameters.getBin_min2()</div>
+<div id="binMax2"  >@parameters.getBin_max2()</div>
+<div id="binNum2"  >@parameters.getBin_n2()</div>
+
+<div id="executionPurpose"  >@parameters.getExecutionPurpose()</div>
+<div id="image"  >@parameters.getImage()</div>
+<div id="dataURL"  >@parameters.getDataURL()</div>
+<div id="serviceResponseText"  >@parameters.getServiceResponseText()</div>
 
 
 <table border="1">
@@ -1102,7 +1237,7 @@ customized: <input onclick="setCustomized(2)" type="radio" name="default2" value
 <form> 
 Min: <input id="min2" value="@parameters.getBin_min2()" alt="" size=3/> 
 Max: <input id="max2" value="@parameters.getBin_max2()" alt="" size=3/>
-number of bins: <input id="bins2" value="" alt="" size=3/>
+number of bins: <input id="bins2" value="@parameters.getBin_n2()" alt="" size=3/>
 </form> 
 </td>
 </tr>
