@@ -6,25 +6,28 @@ public class ConditionalSampling2Var {
 	// Physical Variable
 	private String dataSourceP = "";
 	private String variableNameP = "";
-	private String pressureRangeP = "";
+	private String pressureRange1 = "";
+	private String pressureRange2 = "";
 	
 	// Environmental Variable 1
 	private String dataSourceE1 = "";
 	private String variableNameE1 = "";
-	private String pressureRangeE1 = "";
 	private String bin_min1;
 	private String bin_max1;
 	private String bin_n1;
 	private String customized1;
+	private String enableVarPlev1 = "";
 	
 	// Environmental Variable 2
 	private String dataSourceE2 = "";
 	private String variableNameE2 = "";
-	private String pressureRangeE2 = "";
 	private String bin_min2;
 	private String bin_max2;
 	private String bin_n2;
 	private String customized2;
+	private String enableVarPlev2 = "";
+	
+	
 	private String startYearMonth = "";
 	private String endYearMonth = "";
 	private String selectMonths = "";
@@ -40,9 +43,7 @@ public class ConditionalSampling2Var {
 	private String image = "";
 	private String dataURL = "";
 	private String serviceResponseText = "";
-	
-	private String enableVarPlev1 = "";
-	private String enableVarPlev2 = "";
+
 	//env_var_plev1
 	
 	
@@ -58,11 +59,11 @@ public class ConditionalSampling2Var {
 	public void setVariableNameP(String variableNameP) {
 		this.variableNameP = variableNameP;
 	}
-	public String getPressureRangeP() {
-		return pressureRangeP;
+	public String getPressureRange1() {
+		return pressureRange1;
 	}
-	public void setPressureRangeP(String pressureRangeP) {
-		this.pressureRangeP = pressureRangeP;
+	public void setPressureRange1(String pressureRange1) {
+		this.pressureRange1 = pressureRange1;
 	}
 	public String getDataSourceE1() {
 		return dataSourceE1;
@@ -76,11 +77,11 @@ public class ConditionalSampling2Var {
 	public void setVariableNameE1(String variableNameE1) {
 		this.variableNameE1 = variableNameE1;
 	}
-	public String getPressureRangeE1() {
-		return pressureRangeE1;
+	public String getPressureRange2() {
+		return pressureRange2;
 	}
-	public void setPressureRangeE1(String pressureRangeE1) {
-		this.pressureRangeE1 = pressureRangeE1;
+	public void setPressureRange2(String pressureRange2) {
+		this.pressureRange2 = pressureRange2;
 	}
 	public String getBin_min1() {
 		return bin_min1;
@@ -117,12 +118,6 @@ public class ConditionalSampling2Var {
 	}
 	public void setVariableNameE2(String variableNameE2) {
 		this.variableNameE2 = variableNameE2;
-	}
-	public String getPressureRangeE2() {
-		return pressureRangeE2;
-	}
-	public void setPressureRangeE2(String pressureRangeE2) {
-		this.pressureRangeE2 = pressureRangeE2;
 	}
 	public String getBin_min2() {
 		return bin_min2;

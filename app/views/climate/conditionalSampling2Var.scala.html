@@ -47,9 +47,13 @@
 
       
       
-      $('#pres1').val("N/A");
+/*       $('#pres1').val("N/A");
       $('#pres2').val("N/A");
-      $('#pres3').val("N/A");
+      $('#pres3').val("N/A"); */
+      disable_pres(1);
+      disable_pres(2);
+      disable_pres(3);
+      
       $('#t0').val($('#startYearMonth').text());
       $('#t1').val($('#endYearMonth').text());
      
@@ -212,12 +216,44 @@
       }
     
 	// disable pressure level box for 2D var
-    function disable_pres1(ID)
+    function disable_pres(ID)
     {
       var x;
+      var var1 = $("#var"+ID).val();
       x=document.getElementById("pres"+ID);
-      x.value = "N/A";
-      x.disabled=true;
+      if(x.value == "-999999,-999999" && ID == 1){
+    	  x.value = "N/A";
+          x.disabled=true;
+      }else if(x.value == "-999999" && (ID == 2 || ID == 3)){
+    	  x.value = "N/A";
+          x.disabled=true;
+      }else{
+    	  if(ID == 1){
+	    	  	var split12 = x.value.split(",");
+	   	        var temp1 = split12[0];
+	   	        var temp2 = split12[1];
+	   	        // when variable is the 3D Ocean Salinity or Ocean Temperature
+	   	        if ( var1 == 'ot' || var1 == 'os') {
+	   	          temp1 = temp1 / 10000;  // convert from dbar on GUI
+	   	          temp2 = temp2 / 10000;  // convert from dbar on GUI
+	   	        } 
+	   	        // when variable2 is 3D atmosphere var
+	   	        else {
+	   	          temp1 = temp1 / 100;  // convert from hPa on GUI
+	   	          temp2 = temp2 / 100;  // convert from hPa on GUI
+	   	        }
+	   	        x.value = temp1 + "," + temp2;
+    	  }
+    	  else{
+    		  if ( var1 == 'ot' || var1 == 'os') {
+	   	          x.value = x.value / 10000;  // convert from dbar on GUI
+	   	        } 
+	   	        // when variable2 is 3D atmosphere var
+	   	        else {
+	   	        	x.value = x.value / 100;  // convert from hPa on GUI
+	   	        }
+    	  }
+      }
     }
 
     // enable pressure level box for 3D var
@@ -225,7 +261,6 @@
     {
       var x;
       x=document.getElementById("pres"+ID);
-      x.value = "500";
       x.disabled=false;
     }
     
@@ -1098,9 +1133,11 @@
 <div id="variableNameP" style="display: none;">@parameters.getVariableNameP()</div>
 <div id="variableNameE1" style="display: none;">@parameters.getVariableNameE1()</div>
 <div id="variableNameE2" style="display: none;">@parameters.getVariableNameE2()</div>
-<div id="pressureRangeP" style="display: none;">@parameters.getPressureRangeP()</div>
-<div id="pressureRangeE1" style="display: none;">@parameters.getPressureRangeE1()</div>
-<div id="pressureRangeE2" style="display: none;">@parameters.getPressureRangeE2()</div>
+<div id="pressureRange1" style="display: none;">@parameters.getPressureRange1()</div>
+<div id="pressureRange2" style="display: none;">@parameters.getPressureRange2()</div>
+<div id="env_var_plev1" style="display: none;">@parameters.getEnableVarPlev1()</div>
+<div id="env_var_plev2" style="display: none;">@parameters.getEnableVarPlev2()</div>
+
 <div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
 <div id="enChoose1" style="display: none;">@parameters.getCustomized1</div>
 <div id="enChoose2" style="display: none;">@parameters.getCustomized2</div>
@@ -1167,7 +1204,7 @@ Physical Variable (sampled variable)
 atmosphere pressure range (hPa) <br> or ocean pressure range (dbar):
 </td>
 <td>
-<input id="pres1" value="@parameters.getPressureRangeP()" alt="pressure"/>
+<input id="pres1" value="@{parameters.getPressureRange1()+','+parameters.getPressureRange2()}" alt="pressure"/>
 </td>
 </tr>
 
@@ -1197,7 +1234,7 @@ Environmental Variable 1 (sampling variable)
 atmosphere pressure level (hPa) <br> or ocean pressure level (dbar):
 </td>
 <td>
-<input id="pres2" value="@parameters.getPressureRangeE1()" alt="pressure"/>
+<input id="pres2" value="@parameters.getEnableVarPlev1()" alt="pressure"/>
 </td>
 </tr>
 
@@ -1243,7 +1280,7 @@ Environmental Variable 2 (sampling variable)
 atmosphere pressure level (hPa) <br> or ocean pressure level (dbar):
 </td>
 <td>
-<input id="pres3" value="@parameters.getPressureRangeE2()" alt="pressure"/>
+<input id="pres3" value="@parameters.getEnableVarPlev2()" alt="pressure"/>
 </td>
 </tr>
 

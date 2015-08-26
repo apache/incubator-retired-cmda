@@ -930,9 +930,9 @@ public class ClimateServiceController extends Controller {
 					}else if (parameterName.equals("var3")) {
 						conditionalSampling2Var.setVariableNameE2(parameterValue);
 					} else if (parameterName.equals("pres1")) {
-						conditionalSampling2Var.setPressureRangeP(parameterValue);
+						conditionalSampling2Var.setPressureRange1(parameterValue);
 					} else if (parameterName.equals("pres2")) {
-						conditionalSampling2Var.setPressureRangeE1(parameterValue);
+						conditionalSampling2Var.setPressureRange2(parameterValue);
 					} else if (parameterName.equals("startT")) {
 						conditionalSampling2Var.setStartYearMonth(parameterValue);
 					} else if (parameterName.equals("endT")) {
