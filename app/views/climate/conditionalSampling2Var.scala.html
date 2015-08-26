@@ -140,6 +140,34 @@
       $('#Response').html($('serviceResponseText').text());
     
     }
+    
+    function put_data(ID){
+        var list1=document.getElementById("data"+ID);
+
+        for(var key in dataList) {
+          if (key.slice(0,5)==="group") {
+            var og = document.createElement("OPTGROUP");
+            og.setAttribute('label', dataList[key][0]);
+            list1.add(og);
+          } else {
+            og.appendChild(new Option(key,key));
+          }
+        }
+      }
+
+      function put_var(ID) {
+        var list1=document.getElementById("var"+ID);
+        for (var i=list1.length-1; i>=0; i--) {
+        list1.remove(i);
+        }
+
+        data_string =  document.getElementById("data"+ID).value;
+        var varList2 = dataList[data_string][1];  
+        for (var i=0; i<varList2.length; i++) {
+          var k = varList2[i];
+          list1.add(new Option(varList[k][0],k));
+        }
+      }
 
     function select_monthsByPara(){
       	var monthsByPara = $('#monthsPara').text();
