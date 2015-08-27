@@ -11,7 +11,7 @@
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/xmisc.js")"></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/xmisc.js")'></script>
 	<script type="text/javascript">
 	
 	var Response = null;
@@ -78,7 +78,7 @@
       var binMin = $('#binMin').text();
       var binMax = $('#binMax').text();
       var binNum = $('#binNum').text();
-      if(binMin == "-1" && binMax == "-1" && binNum=="-1"){
+      if(binMin == "-999999" && binMax == "-999999" && binNum=="-999999"){
     	  $('#radioDef').prop( "checked", true );
       }else{
     	  $('#radioCus').prop( "checked", true );
