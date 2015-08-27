@@ -14,10 +14,11 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
 <script type="text/javascript"
 	src='@routes.Assets.at("javascripts/json2.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/xmisc.js")'></script>
-<script type="text/javascript"
-	src='@routes.Assets.at("javascripts/varList.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/dataList.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("jhtml/js/xmisc.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("html/js2/varList.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("html/js2/dataList2.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("html/js2/common.js")'></script>
+
 <script type="text/javascript">
 
     
@@ -36,7 +37,12 @@
 
       $('#t0').val($('#startYearMonth').text());
       $('#t1').val($('#endYearMonth').text());
-      $('#pres1').val($('#pressureLevel').text());
+      
+      if($('#pressureLevel').text() == "-999999"){
+      	disable_pres1(1);
+      }else{
+      	$('#pres1').val($('#pressureLevel').text());
+      }
 
       $('#lat0').val($('#startLat').text());
       $('#lat1').val($('#endLat').text());
