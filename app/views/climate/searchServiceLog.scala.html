@@ -78,7 +78,7 @@
 				var dataS = $("#dataSource").val();
 				var varName = $("#variableName").val();
 				var exectionPurpose = $("#exectionPurpose").val();
-				var userId = $("#userId").val();
+				/* var userId = $("#userId").val(); */
 				var executionStartTime = $("#executionStartTime").val();
 				var executionEndTime = $("#executionEndTime").val();
 				var dataSetStartTime = $("#dataSetStartTime").val();
@@ -97,9 +97,9 @@
 				if(exectionPurpose!="" && exectionPurpose!=null){
 					$("#content").append(" Exection Purpose = "+exectionPurpose);	
 				}
-				if(userId!="" && userId!=null){
+				/* if(userId!="" && userId!=null){
 					$("#content").append(" UserId = "+userId);	
-				}
+				} */
 				if(executionStartTime!="" && executionStartTime!=null){
 					$("#content").append(" Execution Start Time = "+executionStartTime);	
 				}
@@ -144,9 +144,9 @@
     	<div class = "form-group">
     		@inputText(serviceLogForm("Execution Purpose"),'class -> "form-control", 'id -> "exectionPurpose", '_label -> Messages("Execution Purpose"), 'placeholder -> "test", 'size->70) 
        	</div>
-       	<div class = "form-group">
+       	<!-- <div class = "form-group">
        		@inputText(serviceLogForm("User Id"),'class -> "form-control", 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->70)
-	    </div>
+	    </div> -->
 	    <div class = "form-group">
 	    	@inputText(serviceLogForm("Execution Start Time"),'class -> "form-control", 'id -> "executionStartTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
 	    	@inputText(serviceLogForm("Execution End Time"),'class -> "form-control", 'id -> "executionEndTime", '_label -> Messages("Execution End Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
