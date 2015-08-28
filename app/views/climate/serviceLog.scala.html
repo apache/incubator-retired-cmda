@@ -24,13 +24,13 @@
      -->
     @helper.form(routes.AccountController.getSearchServiceLog()) {
     <div class = "container">
-    	<div class = "col-sm-offset-2 col-sm-3">
-    		@inputText(serviceLogForm("User Id"),  'class -> "form-control", 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123")
+    	<div class = "col-sm-offset-2 col-sm-1">
+    		<!-- @inputText(serviceLogForm("User Id"),  'class -> "form-control", 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123") -->
     	</div>
-    	<div class = "col-sm-3" >
+    	<div class = "col-sm-4" >
     		@inputText(serviceLogForm("Start Time"), 'class -> "form-control", 'id -> "startTime", 'type -> "datetime-local", '_label -> Messages("Execution Start Time"))
     	</div>
-    	<div class = "col-sm-3">
+    	<div class = "col-sm-4">
 	    	@inputText(serviceLogForm("End Time"),  'class -> "form-control", 'id -> "endTime", 'type -> "datetime-local", '_label -> Messages("Execution End Time"))
     	</div>
     	<input class="btn btn-success" type="submit" value="Search" style="margin-top:23px">
@@ -41,7 +41,7 @@
     <thead>
 	<tr>
 		<th style = "vertical-align: top;" class="col-sm-4">Service Name</td>
-		<th style = "vertical-align: top;" class="col-sm-2">User Name</td>
+<!-- 		<th style = "vertical-align: top;" class="col-sm-2">User Name</td> -->
 		<th style = "vertical-align: top;" class="col-sm-2">Purpose</td>
 		<th style = "vertical-align: top;" class="col-sm-2">Execution Start Time</td>
 		<th style = "vertical-align: top;" class="col-sm-2">Execution End Time</td>		
@@ -56,7 +56,7 @@
 	@for(serviceLog <- serviceLogs) {
 	<tr>
 	<td><font size="2">@serviceLog.getServiceName</font></td>
-	<td><font size="2">@serviceLog.getUserId</font></td>
+<!-- 	<td><font size="2">@serviceLog.getUserId</font></td> -->
 	<td><font size="2">@serviceLog.getPurpose</font></td>
 	<td><font size="2">@serviceLog.getExecutionStartTime</font></td>
 	<td><font size="2">@serviceLog.getExecutionEndTime</font></td>
