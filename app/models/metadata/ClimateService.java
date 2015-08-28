@@ -313,7 +313,7 @@ public class ClimateService {
 
 	public void setPhoto(){
 		if(url.contains("threeDimVarVertical.html")){
-			photo = "http://einstein.sv.cmu.edu:9002/static/threeDimVerticalProfile/1e5b8302e09cd004656782de398d8adf/nasa_airs_ta_200401_200412_Annual.jpeg";
+			photo = "/assets/images/3DVerticalProfile.jpeg";
 		}else if(url.contains("twoDimZonalMean.html")){
 			photo = "http://einstein.sv.cmu.edu:9002/static/twoDimZonalMean/65778f88e3e057738423aa7183f5ee54/nasa_modis_clt_200401_200412_Annual.jpeg";
 		}else if(url.contains("twoDimMap.html")){
@@ -323,19 +323,19 @@ public class ClimateService {
 		}else if(url.contains("scatterPlot2Vars.html")){
 			photo = "http://einstein.sv.cmu.edu:9002/static/scatterPlot2V/121dc4b30a4cbe1594cc5ff0636ecd9a/scatter.png";
 		}else if(url.contains("conditionalSampling.html")){
-			photo = "http://einstein.sv.cmu.edu:9002/static/conditionalSampling/2971e0cc4afad1b6d5bcb2c0cc36739f/cccma_canesm2_pr_200401_200412_Annual_sortedBy_cccma_canesm2_pr.jpeg";
+			photo = "/assets/images/ConditionalSampling1Variable.jpeg";
 		}else if(url.contains("twoDimTimeSeries.html")){
 			photo = "http://einstein.sv.cmu.edu:9002/static/timeSeries2D/c33969385d344d3c5b10e1e610642cb7/nasa_modis_clt_200401_200412_lon0_360deg_lat-90_90deg.jpeg";
 		}else if(url.contains("threeDimZonalMean.html")){
 			photo = "http://einstein.sv.cmu.edu:9002/static/threeDimZonalMean/e4e120045d2bb589eed371e1ca08fd99/nasa_airs_ta_200401_200412_Annual.jpeg";
 		}else if(url.contains("diffPlot2Vars.html")){
-			photo = "http://einstein.sv.cmu.edu:9002/static/diffPlot2V/8f156f328c641e68dd9a69b67fd154de/diffPlot.png";
+			photo = "/assets/images/DifferencePlot.png";
 		}else if (url.contains("regridAndDownload.html")) {
 			photo = "/assets/images/regrid.jpg";
 		}else if (url.contains("correlationMap.html")) {
-			photo = "/assets/images/correlationMap.png";
+			photo = "/assets/images/CorrelationMap.png";
 		}else if (url.contains("conditionalSampling2Var.html")) {
-			photo = "/assets/images/conditionalSampling2Var.jpeg";
+			photo = "/assets/images/conditionalSampling2Variables.jpeg";
 		}
 		else{
 			//photo = "http://i1-mac.softpedia-static.com/screenshots/Climate-Data-Analysis-Tools_1.png";
