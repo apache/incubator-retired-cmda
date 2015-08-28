@@ -369,7 +369,7 @@ public class AccountController extends Controller {
 			queryJson.put("executionEndTime", end.getTime());
 		}
 		//System.out.println("start"+startTime);
-		System.out.println(queryJson.toString());
+		//System.out.println(queryJson.toString());
 		JsonNode response = APICall.postAPI("http://localhost:9034/workflow/generateWorkflowJson", queryJson);
 //		Application.flashMsg(response);
 		String resStr = response.toString();
