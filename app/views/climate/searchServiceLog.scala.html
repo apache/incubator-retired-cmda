@@ -9,120 +9,144 @@
   	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 	<script type="text/javascript">
 	$(function() {
-	    var availableTags = [
-	      "NASA/MODIS",
-	      "NASA/AMSRE",
-	      "NASA/TRMM",
-	      "NASA/GPCP",
-	      "NASA/QuikSCAT",
-	      "NASA/AVISO",
-	      "NASA/GRACE",
-	      "NOAA/NODC",
-	      "NASA/CERES",
-	      "CCCMA/CANESM2",
+	    var availableTags = [	      
+	      "ARGO/ARGO",
+	      "CCCMA/CANAM4",
+	      "CSIRO/MK3.6",
+	      "ECMWF/interim",
+	      "GFDL/CM3",
 	      "GFDL/ESM2G",
 	      "GISS/E2-H",
 	      "GISS/E2-R",
-	      "NCAR/CAM5",
-	      "NCC/NORESM",
-	      "UKMO/HadGEM2-ES",
-	      "CCCMA/CANAM4",
-	      "CSIRO/MK3.6",
-	      "GFDL/CM3",
 	      "IPSL/CM5A-LR",
 	      "MIROC/MIROC5",
+	      "NASA/AIRS",
+	      "NASA/AMSRE",
+	      "NASA/AVISO",
+	      "NASA/CERES",
+	      "NASA/GPCP",
+	      "NASA/GRACE",
+	      "NASA/MLS",
+	      "NASA/MODIS",
+	      "NASA/QuikSCAT",
+	      "NASA/TRMM",
+	      "NCAR/CAM5",
+	      "NCC/NORESM",
+	      "NOAA/NODC",
 	      "UKMO/HadGEM2-A",
-	      "ECMWF/interim"
+	      "UKMO/HadGEM2-ES"
 	    ];
-	    var availableTagsVariableName = [
-	       "Total Cloud Fraction",
-	       "Leaf Area Index",
-	       "Surface Temperature",
-	       "Sea Surface Temperature",
-	       "Precipitation Flux",
-	       "Eastward Near-Surface Wind",
-	       "Northward Near-Surface Wind",
-	       "Near-Surface Wind Speed",
-	       "Sea Surface Height",
-	       "Equivalent Water Height Over Land",
-	       "Equivalent Water Height Over Ocean",
-	       "Ocean Heat Content Anomaly within 700 m Depth",
-	       "Ocean Heat Content Anomaly within 2000 m Depth",
-	       "Surface Downwelling Longwave Radiation",
-	       "Surface Downwelling Shortwave Radiation",
-	       "Surface Upwelling Longwave Radiation",
-	       "Surface Upwelling Shortwave Radiation",
-	       "Surface Downwelling Clear-Sky Longwave Radiation",
-	       "Surface Downwelling Clear-Sky Shortwave Radiation",
-	       "Surface Upwelling Clear-Sky Shortwave Radiation",
-	       "TOA Incident Shortwave Radiation",
-	       "TOA Outgoing Clear-Sky Longwave Radiation",
-	       "TOA Outgoing Longwave Radiation",
-	       "TOA Outgoing Clear-Sky Shortwave Radiation",
-	       "TOA Outgoing Shortwave Radiation"
-	    ];
-	    $( "#dataSource" ).autocomplete({
-	      source: availableTags
-	    });
-	    $( "#variableName" ).autocomplete({
-		  source: availableTagsVariableName
+	    var availableTagsVariableName = ["Air Temperature",
+					"Cloud Ice Water Content", "Cloud Liquid Water Content",
+					"Eastward Near-Surface Wind",
+					"Equivalent Water Height Over Land",
+					"Equivalent Water Height Over Ocean", "Leaf Area Index",
+					"Near-Surface Air Temperature",
+					"Near-Surface Relative Humidity",
+					"Near-Surface Wind Speed", "Northward Near-Surface Wind",
+					"Ocean Heat Content Anomaly within 2000 m Depth",
+					"Ocean Heat Content Anomaly within 700 m Depth",
+					"Ocean Salinity", "Ocean Temperature",
+					"Precipitation Flux", "Precipitation", "Relative Humidity",
+					"Sea Surface Height", "Sea Surface Temperature",
+					"Specific Humidity",
+					"Surface Downwelling Clear-Sky Longwave Radiation",
+					"Surface Downwelling Clear-Sky Shortwave Radiation",
+					"Surface Downwelling Longwave Radiation",
+					"Surface Downwelling Shortwave Radiation",
+					"Surface Temperature",
+					"Surface Upwelling Clear-Sky Shortwave Radiation",
+					"Surface Upwelling Longwave Radiation",
+					"Surface Upwelling Shortwave Radiation",
+					"TOA Incident Shortwave Radiation",
+					"TOA Outgoing Clear-Sky Longwave Radiation",
+					"TOA Outgoing Clear-Sky Shortwave Radiation",
+					"TOA Outgoing Longwave Radiation",
+					"TOA Outgoing Shortwave Radiation", "Total Cloud Fraction",
+					"Vertical Wind Velocity" ];
+			$("#dataSource").autocomplete({
+				source : availableTags
+			});
+			$("#variableName").autocomplete({
+				source : availableTagsVariableName
+			});
 		});
-	  });
-	
-	$(document).ready(function(){
-		$( "#preview" ).click(function() {
-			var target = document.getElementById("show");
-			if(target.style.display=="none"){
-				target.style.display="block";
-				$( "#preview" ).text("Hide");
-				var dataS = $("#dataSource").val();
-				var varName = $("#variableName").val();
-				var exectionPurpose = $("#exectionPurpose").val();
-				/* var userId = $("#userId").val(); */
-				var executionStartTime = $("#executionStartTime").val();
-				var executionEndTime = $("#executionEndTime").val();
-				var dataSetStartTime = $("#dataSetStartTime").val();
-				var dataSetEndTime = $("#dataSetEndTime").val();
-				
-				/* var startLon = $("#startLon").val();
-				var endLon = $("#endLon").val();
-				var startPre = $("#startPre").val();
-				var endPre = $("#endPre").val(); */
-				if(dataS!=""){
-					$("#content").append(" Data Source = "+dataS);	
-				}
-				if(varName!="" && varName!=null){
-					$("#content").append(" Variable Name = "+varName);	
-				}
-				if(exectionPurpose!="" && exectionPurpose!=null){
-					$("#content").append(" Exection Purpose = "+exectionPurpose);	
-				}
-				/* if(userId!="" && userId!=null){
-					$("#content").append(" UserId = "+userId);	
-				} */
-				if(executionStartTime!="" && executionStartTime!=null){
-					$("#content").append(" Execution Start Time = "+executionStartTime);	
-				}
-				if(executionEndTime!="" && executionEndTime!=null){
-					$("#content").append("Execution End Time = "+executionEndTime);	
-				}
-				if(dataSetStartTime!="" && dataSetStartTime!=null){
-					$("#content").append(" DataSet Start Time = "+dataSetStartTime);	
-				}
-				if(dataSetEndTime!="" && dataSetEndTime!=null){
-					$("#content").append(" DataSet End Time = "+dataSetEndTime);	
-				}
-				
-				
-				
-			}else {
-				$("#content").val('');	
-                target.style.display="none";
-                $( "#preview" ).text("Preview");
-            }
-		});
-	});
-		
+
+		$(document).ready(
+				function() {
+					$("#preview").click(
+							function() {
+								var target = document.getElementById("show");
+								if (target.style.display == "none") {
+									target.style.display = "block";
+									$("#preview").text("Hide");
+									var dataS = $("#dataSource").val();
+									var varName = $("#variableName").val();
+									var exectionPurpose = $("#exectionPurpose")
+											.val();
+									/* var userId = $("#userId").val(); */
+									var executionStartTime = $(
+											"#executionStartTime").val();
+									var executionEndTime = $(
+											"#executionEndTime").val();
+									var dataSetStartTime = $(
+											"#dataSetStartTime").val();
+									var dataSetEndTime = $("#dataSetEndTime")
+											.val();
+
+									/* var startLon = $("#startLon").val();
+									var endLon = $("#endLon").val();
+									var startPre = $("#startPre").val();
+									var endPre = $("#endPre").val(); */
+									if (dataS != "") {
+										$("#content").append(
+												" Data Source = " + dataS);
+									}
+									if (varName != "" && varName != null) {
+										$("#content").append(
+												" Variable Name = " + varName);
+									}
+									if (exectionPurpose != ""
+											&& exectionPurpose != null) {
+										$("#content").append(
+												" Exection Purpose = "
+														+ exectionPurpose);
+									}
+									/* if(userId!="" && userId!=null){
+										$("#content").append(" UserId = "+userId);	
+									} */
+									if (executionStartTime != ""
+											&& executionStartTime != null) {
+										$("#content").append(
+												" Execution Start Time = "
+														+ executionStartTime);
+									}
+									if (executionEndTime != ""
+											&& executionEndTime != null) {
+										$("#content").append(
+												"Execution End Time = "
+														+ executionEndTime);
+									}
+									if (dataSetStartTime != ""
+											&& dataSetStartTime != null) {
+										$("#content").append(
+												" DataSet Start Time = "
+														+ dataSetStartTime);
+									}
+									if (dataSetEndTime != ""
+											&& dataSetEndTime != null) {
+										$("#content").append(
+												" DataSet End Time = "
+														+ dataSetEndTime);
+									}
+
+								} else {
+									$("#content").val('');
+									target.style.display = "none";
+									$("#preview").text("Preview");
+								}
+							});
+				});
 	</script>
 }
 

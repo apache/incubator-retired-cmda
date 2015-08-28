@@ -85,7 +85,7 @@ public class AccountController extends Controller {
 			//Logger.info("data "+dataSource);
 			variableName = dc.field("Variable Name").value();
 			executionPurpose = dc.field("Execution Purpose").value();
-			userId = dc.field("User Id").value().replace(" ", "%20");
+			//userId = dc.field("User Id").value().replace(" ", "%20");
 			//Logger.info("data "+test);
 			//startTime = TimeConvert.datetoTimeStamp(dc.field("Start Time").value());
 			//endTime = TimeConvert.datetoTimeStamp(dc.field("End Time").value());
@@ -93,8 +93,8 @@ public class AccountController extends Controller {
 			endTime = dc.field("Execution End Time").value();
 //			startLatitude = dc.field("Start Latitude").value();
 //			endLatitude = dc.field("End Latitude").value();
-			dataSetStartTime = dc.field("DataSet Start Time").value();
-			dataSetEndTime = dc.field("DataSet End Time").value();
+			dataSetStartTime = dc.field("Dataset Start Time").value();
+			dataSetEndTime = dc.field("Dataset End Time").value();
 
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
@@ -115,56 +115,88 @@ public class AccountController extends Controller {
 				}
 			}
 
-			if (variableName.equals("Total Cloud Fraction")) {
-				variableName = "clt";
-			} else if (variableName.equals("Leaf Area Index")) {
-				variableName = "lai";
-			} else if (variableName.equals("Surface Temperature")) {
-				variableName = "ts";
-			} else if (variableName.equals("Sea Surface Temperature")) {
-				variableName = "tos";
-			} else if (variableName.equals("Precipitation Flux")) {
-				variableName = "pr";
+			if (variableName.equals("Air Temperature")) {
+				variableName = "ta";
+			} else if (variableName.equals("Cloud Ice Water Content")) {
+				variableName = "cli";
+			} else if (variableName.equals("Cloud Liquid Water Content")) {
+				variableName = "clw";
 			} else if (variableName.equals("Eastward Near-Surface Wind")) {
 				variableName = "uas";
-			} else if (variableName.equals("Northward Near-Surface Wind")) {
-				variableName = "vas";
-			} else if (variableName.equals("Near-Surface Wind Speed")) {
-				variableName = "sfcWind";
-			} else if (variableName.equals("Sea Surface Height")) {
-				variableName = "zos";
 			} else if (variableName.equals("Equivalent Water Height Over Land")) {
 				variableName = "zl";
-			} else if (variableName.equals("Equivalent Water Height Over Ocean")) {
+			} else if (variableName
+					.equals("Equivalent Water Height Over Ocean")) {
 				variableName = "zo";
-			} else if (variableName.equals("Ocean Heat Content Anomaly within 700 m Depth")) {
-				variableName = "ohc700";
-			} else if (variableName.equals("Ocean Heat Content Anomaly within 2000 m Depth")) {
+			} else if (variableName.equals("Leaf Area Index")) {
+				variableName = "lai";
+			} else if (variableName.equals("Near-Surface Air Temperature")) {
+				variableName = "tas";
+			} else if (variableName.equals("Near-Surface Relative Humidity")) {
+				variableName = "hurs";
+			} else if (variableName.equals("Near-Surface Wind Speed")) {
+				variableName = "sfcWind";
+			} else if (variableName.equals("Northward Near-Surface Wind")) {
+				variableName = "vas";
+			} else if (variableName
+					.equals("Ocean Heat Content Anomaly within 2000 m Depth")) {
 				variableName = "ohc2000";
-			} else if (variableName.equals("Surface Downwelling Longwave Radiation")) {
-				variableName = "rlds";
-			} else if (variableName.equals("Surface Downwelling Shortwave Radiation")) {
-				variableName = "rsds";
-			} else if (variableName.equals("Surface Upwelling Longwave Radiation")) {
-				variableName = "rlus";
-			} else if (variableName.equals("Surface Upwelling Shortwave Radiation")) {
-				variableName = "rsus";
-			} else if (variableName.equals("Surface Downwelling Clear-Sky Longwave Radiation")) {
+			} else if (variableName
+					.equals("Ocean Heat Content Anomaly within 700 m Depth")) {
+				variableName = "ohc700";
+			} else if (variableName.equals("Ocean Salinity")) {
+				variableName = "os";
+			} else if (variableName.equals("Ocean Temperature")) {
+				variableName = "ot";
+			} else if (variableName.equals("Precipitation Flux")) {
+				variableName = "pr";
+			} else if (variableName.equals("Relative Humidity")) {
+				variableName = "hur";
+			} else if (variableName.equals("Sea Surface Height")) {
+				variableName = "zos";
+			} else if (variableName.equals("Sea Surface Temperature")) {
+				variableName = "tos";
+			} else if (variableName.equals("Specific Humidity")) {
+				variableName = "hus";
+			} else if (variableName
+					.equals("Surface Downwelling Clear-Sky Longwave Radiation")) {
 				variableName = "rldscs";
-			} else if (variableName.equals("Surface Downwelling Clear-Sky Shortwave Radiation")) {
+			} else if (variableName
+					.equals("Surface Downwelling Clear-Sky Shortwave Radiation")) {
 				variableName = "rsdscs";
-			} else if (variableName.equals("Surface Upwelling Clear-Sky Shortwave Radiation")) {
+			} else if (variableName
+					.equals("Surface Downwelling Longwave Radiation")) {
+				variableName = "rlds";
+			} else if (variableName
+					.equals("Surface Downwelling Shortwave Radiation")) {
+				variableName = "rsds";
+			} else if (variableName.equals("Surface Temperature")) {
+				variableName = "ts";
+			} else if (variableName
+					.equals("Surface Upwelling Clear-Sky Shortwave Radiation")) {
 				variableName = "rsuscs";
+			} else if (variableName
+					.equals("Surface Upwelling Longwave Radiation")) {
+				variableName = "rlus";
+			} else if (variableName
+					.equals("Surface Upwelling Shortwave Radiation")) {
+				variableName = "rsus";
 			} else if (variableName.equals("TOA Incident Shortwave Radiation")) {
 				variableName = "rsdt";
-			} else if (variableName.equals("TOA Outgoing Clear-Sky Longwave Radiation")) {
+			} else if (variableName
+					.equals("TOA Outgoing Clear-Sky Longwave Radiation")) {
 				variableName = "rlutcs";
+			} else if (variableName
+					.equals("TOA Outgoing Clear-Sky Shortwave Radiation")) {
+				variableName = "rsutcs";
 			} else if (variableName.equals("TOA Outgoing Longwave Radiation")) {
 				variableName = "rlut";
-			} else if (variableName.equals("TOA Outgoing Clear-Sky Shortwave Radiation")) {
-				variableName = "rsutcs";
 			} else if (variableName.equals("TOA Outgoing Shortwave Radiation")) {
 				variableName = "rsut";
+			} else if (variableName.equals("Total Cloud Fraction")) {
+				variableName = "clt";
+			} else if (variableName.equals("Vertical Wind Velocity")) {
+				variableName = "wap";
 			}
 
 		} catch (IllegalStateException e) {
@@ -192,12 +224,11 @@ public class AccountController extends Controller {
 // deprecated one
 	public static Result getSearchServiceLog() {
 		Form<ServiceLog> dc = serviceLogForm.bindFromRequest();
-		ObjectNode jsonData = Json.newObject();
-		String userId = "123", startTime = "", endTime = "";
+		String userId = "", startTime = "", endTime = "";
 		Date start=null, end=null;
 		try {
 
-			userId = dc.field("User Id").value().replace(" ", "%20");
+			//userId = dc.field("User Id").value().replace(" ", "%20");
 			startTime = dc.field("Start Time").value();
 			endTime = dc.field("End Time").value();
 			Logger.info(""+startTime);
@@ -231,8 +262,6 @@ public class AccountController extends Controller {
 			Application.flashMsg(APICall.createResponse(ResponseType.UNKNOWN));
 		}
 
-		String dataSetStartTime;
-		String dataSetEndTime;
 		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, start, end, null, null, null, null);
 		return ok(searchLogResult.render(response));
 	}

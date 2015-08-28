@@ -520,6 +520,7 @@ public class ServiceLog {
 			}
 		}
 
+		System.out.println(queryJson);
 		JsonNode serviceLogNode = APICall.postAPI(EXECUTION_LOG_QUERY, queryJson);
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
