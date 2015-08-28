@@ -333,7 +333,7 @@ public class ClimateService {
 		}else if (url.contains("regridAndDownload.html")) {
 			photo = "/assets/images/regrid.jpg";
 		}else if (url.contains("correlationMap.html")) {
-			photo = "/assets/images/CorrelationMap.png";
+			photo = "/assets/images/correlationMap.png";
 		}else if (url.contains("conditionalSampling2Var.html")) {
 			photo = "/assets/images/conditionalSampling2Variables.jpeg";
 		}
