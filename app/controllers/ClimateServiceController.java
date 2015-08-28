@@ -418,7 +418,7 @@ public class ClimateServiceController extends Controller {
 //				twoDVarMap.setDataURL(response.path("dataUrl").textValue());
 //				return ok(views.html.climate.twoDVariableMap.render(twoDVarMap));
 //			}
-				else if (serviceName.equals("Conditional-Sampling"))
+				else if (serviceName.equals("Conditional-Sampling-with-One-Variable"))
 				{    //Old ID 21
 					for (int i = 0; i < responseConfigItems.size(); i++) {
 						String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
@@ -727,7 +727,7 @@ public class ClimateServiceController extends Controller {
 					diffPlotTwoTimeAvg.setImage(response.path("plotUrl").textValue());
 					diffPlotTwoTimeAvg.setDataUrl(response.path("dataUrl").textValue());
 					return ok(views.html.climate.DifferencePlotTwoTimeAveragedVariables.render(diffPlotTwoTimeAvg));
-			}else if (serviceName.equals("3-D-Variable-Average-Vertical-4Profile")){ //"18")){
+			}else if (serviceName.equals("3-D-Variable-Average-Vertical-Profile")){ //"18")){
 					for (int i = 0; i < responseConfigItems.size(); i++) {
 						String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
 						String parameterValue = responseConfigItems.get(i).path("value").textValue();
@@ -911,7 +911,7 @@ public class ClimateServiceController extends Controller {
 				correlationMap.setDataURL(response.path("dataUrl").textValue());
 				return ok(views.html.climate.correlationMap.render(correlationMap));
 			
-			}else if (serviceName.equals("Conditional-Sampling-for-2-Variables")){
+			}else if (serviceName.equals("Conditional-Sampling-for-Two-Variables")){
 				for (int i = 0; i < responseConfigItems.size(); i++) {
 					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
 					String parameterValue = responseConfigItems.get(i).path("value").textValue();
