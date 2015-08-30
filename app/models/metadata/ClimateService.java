@@ -321,11 +321,11 @@ public class ClimateService {
 		}else if(url.contains("twoDimSlice3D.html")){
 			photo = "http://einstein.sv.cmu.edu:9002/static/twoDimSlice3D/ba6b08d54048d9c8349185d2606d3638/nasa_airs_ta_200401_200412_Annual.jpeg";
 		}else if(url.contains("scatterPlot2Vars.html")){
-			photo = "http://einstein.sv.cmu.edu:9002/static/scatterPlot2V/121dc4b30a4cbe1594cc5ff0636ecd9a/scatter.png";
+			photo = "/assets/images/ScatterPlot.png";
 		}else if(url.contains("conditionalSampling.html")){
 			photo = "/assets/images/ConditionalSampling1Variable.jpeg";
 		}else if(url.contains("twoDimTimeSeries.html")){
-			photo = "http://einstein.sv.cmu.edu:9002/static/timeSeries2D/c33969385d344d3c5b10e1e610642cb7/nasa_modis_clt_200401_200412_lon0_360deg_lat-90_90deg.jpeg";
+			photo = "/assets/images/TimeSeriesPlot.jpeg";
 		}else if(url.contains("threeDimZonalMean.html")){
 			photo = "http://einstein.sv.cmu.edu:9002/static/threeDimZonalMean/e4e120045d2bb589eed371e1ca08fd99/nasa_airs_ta_200401_200412_Annual.jpeg";
 		}else if(url.contains("diffPlot2Vars.html")){
