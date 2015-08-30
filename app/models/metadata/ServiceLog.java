@@ -1,4 +1,4 @@
-package models.metadata;
+ package models.metadata;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -520,6 +520,7 @@ public class ServiceLog {
 			}
 		}
 
+		//System.out.println(queryJson);
 		JsonNode serviceLogNode = APICall.postAPI(EXECUTION_LOG_QUERY, queryJson);
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
