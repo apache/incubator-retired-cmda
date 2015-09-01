@@ -41,7 +41,7 @@
     <thead>
 	<tr>
 		<th style = "vertical-align: top;" class="col-sm-4">Service Name</td>
-<!-- 		<th style = "vertical-align: top;" class="col-sm-2">User Name</td> -->
+ 		<th style = "vertical-align: top;" class="col-sm-2">User Name</td> 
 		<th style = "vertical-align: top;" class="col-sm-2">Purpose</td>
 		<th style = "vertical-align: top;" class="col-sm-2">Execution Start Time</td>
 		<th style = "vertical-align: top;" class="col-sm-2">Execution End Time</td>		
@@ -56,7 +56,7 @@
 	@for(serviceLog <- serviceLogs) {
 	<tr>
 	<td><font size="2">@serviceLog.getServiceName</font></td>
-<!-- 	<td><font size="2">@serviceLog.getUserId</font></td> -->
+ 	<td><font size="2">@serviceLog.getUserId</font></td>
 	<td><font size="2">@serviceLog.getPurpose</font></td>
 	<td><font size="2">@serviceLog.getExecutionStartTime</font></td>
 	<td><font size="2">@serviceLog.getExecutionEndTime</font></td>
