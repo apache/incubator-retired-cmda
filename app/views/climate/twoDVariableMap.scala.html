@@ -11,7 +11,7 @@
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/xmisc.js")"></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/xmisc.js")'></script>
 	<script type="text/javascript">
 	var Response = null;
     var variable = "";
@@ -27,7 +27,11 @@
       z.disabled=false;
       
       changeDataSource();
+      select_data();
       changeVariableName();
+      select_var();
+      
+      
       $('#t0').val($('#startYearMonth').text());
       $('#t1').val($('#endYearMonth').text());
       var selectMonths = $('#selectMonths').text();
@@ -53,8 +57,7 @@
       $('#data_url').html($('#dataURL').text());
       $('#Response').html($('serviceResponseText').text());
       
-      select_data();
-      select_var();
+      
     }
     
     function changeDataSource(){
