@@ -1,4 +1,0 @@
-#!/bin/sh
-
-/home/svc/install/bin/epd ./pythonWrapper $*
-
