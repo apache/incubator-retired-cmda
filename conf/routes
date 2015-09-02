@@ -20,11 +20,6 @@ POST        /syncData                                            controllers.Acc
 GET 		/searchAndGenerateWorkflow							 controllers.AccountController.getSearchAndGenerateWorkflow()
 GET 		/generateWorkflowGetData							 controllers.AccountController.getJsonData()
 
-# Authentication
-GET         /login                                               controllers.Application.login()
-POST        /login                                               controllers.Application.authenticate()
-GET         /logout                                              controllers.Application.logout()
-
 # BugReporting
 GET         /bugs                                                controllers.BugReportController.reports()
 GET         /newReport                                           controllers.BugReportController.newReport()
