@@ -32,9 +32,6 @@ GET         /bug/list                                            controllers.Bug
 POST        /delete/report                                       controllers.BugReportController.deleteReport()
 POST        /solve/report                                        controllers.BugReportController.solveReport()
 
-# Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                                        controllers.Assets.at(path="/public", file)
-
 # About Us
 GET         /aboutus                                             controllers.AboutusController.aboutus()
 GET         /aboutProject                                        controllers.AboutusController.aboutProject()
@@ -42,7 +39,6 @@ GET         /aboutProject                                        controllers.Abo
 # Climate Model
 GET		/climate			controllers.ClimateServiceController.home(email ?= null, vfile ?= null, dataset ?= null)
 GET		/climate/tutorial		controllers.ClimateServiceController.tutorial()
-GET		/climate/accountSummary		controllers.ClimateServiceController.accountSummary(userName ?= null)
 GET		/climate/climateServices	controllers.ClimateServiceController.climateServices()
 GET		/climate/mostRecentlyAddedClimateServices	controllers.ClimateServiceController.mostRecentlyAddedClimateServices()
 GET		/climate/mostRecentlyUsedClimateServices	controllers.ClimateServiceController.mostRecentlyUsedClimateServices()
@@ -57,15 +53,9 @@ POST    /climate/delete/serviceLog   controllers.ClimateServiceController.delete
 GET		/climate/oneService		controllers.ClimateServiceController.oneService(url ?= null)
 
 #Keyword search
-GET 	    /climate/dataSets/						controllers.dataSetController.datasetList()
-GET         /climate/dataSets/*id                    controllers.KeywordSearchController.getDataSetList(id)
+GET 	    /climate/dataSets						controllers.dataSetController.datasetList()
 GET			/climate/searchDataSet 					 controllers.dataSetController.searchDataset()
 GET 		/climate/getSearchResult				 controllers.dataSetController.getSearchResult()
-GET         /climate/recommendation						controllers.KeywordSearchController.searchPage()
-POST        /climate/recommendation/keywordSearch                      controllers.KeywordSearchController.keywordSearch()
-GET         /climate/recommendation/displayResult/*id                  controllers.KeywordSearchController.displayResult(id)
-POST        /climate/recommendation/selectedKeywordSearch              controllers.KeywordSearchController.selectedKeywordSearch()
-GET         /climate/keywordTree/                       controllers.KeywordSearchController.getKeywordTree(id :String)
 
-#for pages
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+#Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               				controllers.Assets.at(path="/public", file)

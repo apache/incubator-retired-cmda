@@ -43,9 +43,6 @@ public class AccountController extends Controller {
 	final static Form<ServiceLog> serviceLogForm = Form
 			.form(ServiceLog.class);
 
-	public static Result accountSummary(String userName) {
-		return ok(accountSummary.render(userName));
-	}
 
 	public static Result getServiceLog() {
 		return ok(serviceLog.render(ServiceLog.all(),

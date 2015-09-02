@@ -61,10 +61,6 @@ public class ClimateServiceController extends Controller {
 		return ok(tutorial.render());
 	}
 
-	public static Result accountSummary(String userName) {
-		return ok(accountSummary.render(userName));
-	}
-
 	public static Result climateServices() {
 		return ok(climateServices.render(ClimateService.all(),
 				climateServiceForm));
