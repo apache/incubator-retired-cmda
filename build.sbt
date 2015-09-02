@@ -1,4 +1,4 @@
-name := "CMUSDS"
+name := "ApacheCMDA_Frontend"
 
 version := "1.0-SNAPSHOT"
 
