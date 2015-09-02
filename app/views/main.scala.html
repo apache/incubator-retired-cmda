@@ -1,91 +1,15 @@
-@(title: String, moreScripts: Html = Html(""))(content: Html) 
-
+@(title: String)(content: Html)
 
 <!DOCTYPE html>
 
 <html>
-<head>
-
-<title>@title</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet"
-	href='@routes.Assets.at("stylesheets/bootstrap.css")'>
-<link rel="stylesheet"
-	href='@routes.Assets.at("stylesheets/navbar-fixed-top.css")'>
-<link rel="stylesheet"
-	href='@routes.Assets.at("stylesheets/custom.css")'>
-<link rel="stylesheet" media="screen"
-	href='@routes.Assets.at("stylesheets/main.css")'>
-<link rel="shortcut icon" type="image/png"
-	href='@routes.Assets.at("images/favicon.png")'>
-
-
-
-<link
-	href='@routes.Assets.at("stylesheets/bootstrap-editable.css")'
-	rel="stylesheet" />
-<!--[if (!IE)|(gte IE 8)]><!-->
-  <link href='@routes.Assets.at("stylesheets/visualsearch-datauri.css")' media="screen" rel="stylesheet" type="text/css" />
-<!--<![endif]-->
-<!--[if lte IE 7]><!-->
-  <link href='@routes.Assets.at("stylesheets/visualsearch.css")' media="screen" rel="stylesheet" type="text/css" />
-<!--<![endif]-->
-
-<script src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'
-	type="text/javascript"></script>
-<script src='@routes.Assets.at("javascripts/jquery-ui-1.10.4.min.js")'
-	type="text/javascript"></script>
-	
-<script src='@routes.Assets.at("javascripts/bootstrap.min.js")'
-	type="text/javascript"></script>
-<script src='@routes.Assets.at("javascripts/bootstrap-editable.min.js")' 
-	type="text/javascript"></script>
-	
-<script src='@routes.Assets.at("javascripts/underscore-1.5.2.js")' 
-	type="text/javascript"></script>
-<script src='@routes.Assets.at("javascripts/backbone-1.1.0.js")' 
-	type="text/javascript"></script>
-<script src='@routes.Assets.at("javascripts/visualsearch.js")' 
-	type="text/javascript"></script>
-@moreScripts
-</head>
-
-<body>
-	@header()
-	<div class="container">
-
-		@content
-
-		<!-- Footer -->
-		<div class="footer">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="row">
-						<p class="text-muted" style="text-align: left;"https://github.com/sdscmusv">
-							<img src='@routes.Assets.at("images/github.png")'
-								style="width: 32px;"></a> Follow and contribute to this
-							project on <a href="https://github.com/cmusv-sc/ArchF2013-Project3-FT">Github</a>
-						</p>
-					</div>
-					<div class="row">
-						<p class="text-muted" style="text-align: left;"@routes.BugReportController.reports()">
-							<img src='@routes.Assets.at("images/bug.png")'
-								style="width: 32px;"></a> Any issues? Please report bugs <a
-								href="@routes.BugReportController.reports()">here</a>
-						</p>
-					</div>
-				</div>
-				<div class="col-lg-6 col-lg-offset-3">
-					<p class="text-muted" style="text-align: right; font-size: 14px;">&copy;
-						Carnegie Mellon University - Silicon Valley ; NASA Jet Propulsion Laboratory 2015</p>
-				</div>
-			</div>
-		</div>
-
-	</div>
-
-</body>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/hello.js")" type="text/javascript"></script>
+    </head>
+    <body>
+        @content
+    </body>
 </html>
