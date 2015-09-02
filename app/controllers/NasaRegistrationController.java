@@ -25,19 +25,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import util.APICall;
 import util.APICall.ResponseType;
-import views.html.index;
-import views.html.sensors;
 import views.html.registration.*;
-import views.html.estimator.*;
 import views.html.climate.*;
-import views.html.climate.tutorial;
 import util.*;
-import models.metadata.ClimateService;
-import models.metadata.NasaRMdata;
-import models.metadata.Sensor;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.JsonNode;

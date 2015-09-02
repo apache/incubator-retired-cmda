@@ -35,39 +35,9 @@ POST        /solve/report                                        controllers.Bug
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                        controllers.Assets.at(path="/public", file)
 
-# devices
-GET         /devices                                             controllers.DeviceController.devices()
-POST        /new/devices                                         controllers.DeviceController.newDevice()
-POST        /delete/devices                                      controllers.DeviceController.deleteDevice()
-POST        /edit/devices                                        controllers.DeviceController.editDevice()
-
-# sensors
-GET         /sensors                                             controllers.SensorController.sensors()
-POST        /new/sensors                                         controllers.SensorController.newSensor()
-POST        /delete/sensors                                      controllers.SensorController.deleteSensor()
-POST        /edit/sensors                                        controllers.SensorController.editSensor()
-
-# sensor_categories
-GET         /sensorCategories                                    controllers.SensorCategoryController.sensorCategories()
-POST        /new/sensorCategories                                controllers.SensorCategoryController.newSensorCategory()
-POST        /delete/sensorCategories                             controllers.SensorCategoryController.deleteSensorCategory()
-POST        /download/sensorCategories                           controllers.SensorCategoryController.downloadSensorCategory()
-POST        /edit/sensorCategories                               controllers.SensorCategoryController.editSensorCategory()
-
-# dashboard
-GET         /dashboard                                           controllers.DashboardController.dashboard()
-
 # About Us
 GET         /aboutus                                             controllers.AboutusController.aboutus()
 GET         /aboutProject                                        controllers.AboutusController.aboutProject()
-
-# sensor reading
-GET         /sensorReading                                       controllers.SensorReadingController.sensorReadings()
-POST        /getSensorReadings                                   controllers.SensorReadingController.getSensorReadingsWithinRange()
-POST        /getSensorReadingsAtTimestamp                        controllers.SensorReadingController.getSensorReadingsAtTimestamp()
-POST        /getLatestSensorReadings                             controllers.SensorReadingController.getLatestSensorReadings()
-
-
 
 
 # Estimator recommendation
