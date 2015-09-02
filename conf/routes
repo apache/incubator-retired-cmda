@@ -39,33 +39,9 @@ GET         /assets/*file                                        controllers.Ass
 GET         /aboutus                                             controllers.AboutusController.aboutus()
 GET         /aboutProject                                        controllers.AboutusController.aboutProject()
 
-
-# Estimator recommendation
-GET         /estimator                                           controllers.EstimateController.estimate(email ?= null, vfile ?= null, dataset ?= null)
-GET         /estimator/tutorial                                  controllers.EstimateController.tutorial()
-GET         /estimator/login                                     controllers.EstimateController.login()
-POST        /estimator/login                                     controllers.EstimateController.authenticate()
-GET         /estimator/logout                                    controllers.EstimateController.logout()
-GET         /estimator/accountSummary                            controllers.EstimateController.accountSummary(userName ?= null)
-
-# Estimator Registration
-GET         /scientist/register                                  controllers.NasaRegistrationController.registrationForm()
-POST        /scientist/register/publish                          controllers.NasaRegistrationController.submit()
-GET         /scientist/updateUser                                controllers.NasaRegistrationController.updateForm()
-POST        /estimator/updateUser/update                         controllers.NasaRegistrationController.update()
-GET         /scientist/deleteUser                                controllers.NasaRegistrationController.deleteForm()
-POST        /scientist/deleteUser/delete                         controllers.NasaRegistrationController.delete()
-GET         /estimator/adminPage                                 controllers.NasaRegistrationController.adminPage()
-GET			/scientist/allUsers									 controllers.NasaRegistrationController.getAllUsers()
-GET		    /scientist/addUser									 controllers.NasaRegistrationController.addUser()
-GET      	/scientist/addUserForm 								 controllers.NasaRegistrationController.addUserForm()
-
 # Climate Model
 GET		/climate			controllers.ClimateServiceController.home(email ?= null, vfile ?= null, dataset ?= null)
 GET		/climate/tutorial		controllers.ClimateServiceController.tutorial()
-GET		/climate/login		controllers.ClimateServiceController.login()
-POST    /climate/login        controllers.ClimateServiceController.authenticate()
-GET     /climate/logout       controllers.ClimateServiceController.logout()
 GET		/climate/accountSummary		controllers.ClimateServiceController.accountSummary(userName ?= null)
 GET		/climate/climateServices	controllers.ClimateServiceController.climateServices()
 GET		/climate/mostRecentlyAddedClimateServices	controllers.ClimateServiceController.mostRecentlyAddedClimateServices()

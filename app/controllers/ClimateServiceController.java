@@ -3,8 +3,6 @@ package controllers;
 import static play.data.Form.form;
 import models.DataSet;
 import models.BugReport;
-import models.NasaRegistration;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -50,9 +48,6 @@ public class ClimateServiceController extends Controller {
 	final static Form<ClimateService> climateServiceForm = Form
 			.form(ClimateService.class);
 
-	public static Result estimate(String email, String vfile, String dataset) {
-		return ok(estimate.render(email, vfile, dataset));
-	}
 	
 	public static Result home(String email, String vfile, String dataset) {
 		return ok(home.render(email, vfile, dataset));
@@ -1085,68 +1080,4 @@ public class ClimateServiceController extends Controller {
 		return ok(oneService.render("/assets/html/" + url));
 	}
 
-	// -- Authentication
-	public static class Login {
-
-
-		public String username;
-		public String password;
-
-		public String validate() {
-			if (username == null || password == null)
-				return "Invalid username or password";
-
-
-			return null;
-		}
-
-	}
-
-	/**
-	 * Login page.
-	 */
-
-	public static Result login() {
-		return ok(login.render(form(Login.class)));
-	}
-
-	/** Handle login form submission. */
-
-	/**
-	 * Handle login form submission.
-	 */
-	public static Result authenticate() {
-		Form<Login> loginForm = form(Login.class).bindFromRequest();
-		/*
-		 * if (loginForm.hasErrors()){ System.out.println("Test"); return
-		 * badRequest(login.render(loginForm)); } else {
-		 */
-		session("username", loginForm.get().username);
-		System.out.println("Email:" + loginForm.field("username").value());
-		if (loginForm.get().username.equals("admin")) {
-			System.out.println("Admin arena");
-			// session("username", loginForm.field("username").value());
-			return redirect(routes.NasaRegistrationController.adminPage());
-		} else {
-			// session("username", loginForm.field("username").value());
-			String userName = NasaRegistration.getUserInfo(
-					loginForm.field("username").value(),
-					loginForm.field("password").value());
-			System.out.println("Value:" + userName);
-			if (userName != null) {
-				System.out.println("passed get User info");
-				return redirect(routes.EstimateController
-						.accountSummary(userName));
-			} else
-				return redirect(routes.EstimateController.authenticate());
-			// Retrieve value from API and check against userName and password.
-
-		}
-	}
-
-	public static Result logout() {
-		session().clear();
-		flash("success", "You've been logged out");
-		return redirect(routes.EstimateController.estimate(null, null, null));
-	}
 }
