@@ -717,7 +717,7 @@ public class ClimateServiceController extends Controller {
 					diffPlotTwoTimeAvg.setExecutionPurpose(response.path("purpose").textValue());
 					diffPlotTwoTimeAvg.setImage(response.path("plotUrl").textValue());
 					diffPlotTwoTimeAvg.setDataUrl(response.path("dataUrl").textValue());
-					return ok(views.html.climate.DifferencePlotTwoTimeAveragedVariables.render(diffPlotTwoTimeAvg));
+					return ok(views.html.climate.differencePlotTwoTimeAveragedVariables.render(diffPlotTwoTimeAvg));
 			}else if (serviceName.equals("3-D-Variable-Average-Vertical-Profile")){ //"18")){
 					for (int i = 0; i < responseConfigItems.size(); i++) {
 						String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
