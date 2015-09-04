@@ -835,6 +835,39 @@
       });
     });
   </script>
+}
+
+@main("Parameters of ConfId", scripts){ @flash_message()   
+	 
+<p>
+<div id="dataSource" style="display: none;">@parameters.getDataSource()</div>
+<div id="variableName" style="display: none;">@parameters.getVariableName()</div>
+<div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
+<div id="endYearMonth" style="display: none;">@parameters.getEndYearMonth()</div>
+<div id="selectMonths" style="display: none;">@parameters.getSelectMonths()</div>
+<div id="monthsPara" style="display: none;">@parameters.getMonth()</div>
+<div id="startLat" style="display: none;">@parameters.getStartLat()</div>
+<div id="endLat" style="display: none;">@parameters.getEndLat()</div>
+<div id="variableScale" style="display: none;">@parameters.getVariableScale()</div>
+<div id="executionPurpose" style="display: none;">@parameters.getExecutionPurpose()</div>
+<div id="image" style="display: none;">@parameters.getImage()</div>
+<div id="dataURL" style="display: none;">@parameters.getDataURL()</div>
+<div id="serviceResponseText" style="display: none;">@parameters.getServiceResponseText()</div>
+<table border="1" align="center">
+
+<tr>
+<td colspan="4">
+<center>
+<b>Service: 2-D Variable Zonal Mean</b> <br><br>
+This service generates a graph of a 2-dimensional variable's zonal mean with time averaing. <br>
+Select a data source (model or observation), a variable name, and a time range below.<br><br>
+</center>
+</td>
+</tr>
+
+<tr>
+<td>data source:</td><td><select name="data", id="data" onchange="select_data()">
+<!-- <option>NASA/obs4MIPs</option>  -->
 <optgroup label="Observation">
 	<option>NASA/MODIS</option>
 	<option>NASA/AMSRE</option>
