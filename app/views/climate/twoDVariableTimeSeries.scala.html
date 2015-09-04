@@ -6,10 +6,13 @@
 <script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
 <script type="text/javascript"
 	src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
-<script type="text/javascript" src="https:
-	<script type="
-	text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
-<script type="text/javascript" src="@routes.Assets.at("javascripts/xmisc.js")"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+<script type="
+	text/javascript"
+	src='@routes.Assets.at("javascripts/json2.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/xmisc.js")'></script>
 <script type="text/javascript">
 	var Response = null;
     var variable = "";
@@ -536,7 +539,7 @@
         $("#Response").html("Calculating ...");
         $("#data_url").html("Calculating ...");
         $("#Image").html("");
-        var url = "http:
+        var url = "http://" + window.location.hostname + ":9002/svc/timeSeries2D?";
         var d1 = $("#data").val();
         var model1 = d1.replace("/", "_");
         var arglist = "";
@@ -575,7 +578,7 @@
         arglist = arglist.concat("&purpose=");
         arglist = arglist.concat(purpose);
         url = url + encodeURI(arglist);
-        var urlTimeBounds = "http:
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/time_bounds?";
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
         arglistTB = arglistTB.concat("1");
@@ -686,12 +689,11 @@
 	<tr>
 		<td colspan="4">
 			<center>
-				<b>Service: 2-D Variable Time Series</b><br>
-				<br> This service generates a graph of a 2-dimensional
-				variable's time series with monthly averaged values. <br>
-				Select a data source (model or observation), a variable name, a time
-				range, and a spatial range below.<br>
-				<br>
+				<b>Service: 2-D Variable Time Series</b><br> <br> This
+				service generates a graph of a 2-dimensional variable's time series
+				with monthly averaged values. <br> Select a data source (model
+				or observation), a variable name, a time range, and a spatial range
+				below.<br> <br>
 			</center>
 		</td>
 	</tr>
