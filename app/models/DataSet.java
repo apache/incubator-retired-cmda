@@ -22,14 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import scala.Console;
-import models.metadata.ClimateService;
-import models.metadata.ServiceLog;
 import util.APICall;
 import util.Constants;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -177,13 +171,11 @@ public class DataSet {
 
 		JsonNode dataSetNode = APICall.callAPI(GET_ALL_DATASET);
 
-		// if no value is returned or error or is not json array
 		if (dataSetNode == null || dataSetNode.has("error")
 				|| !dataSetNode.isArray()) {
 			return dataSets;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < dataSetNode.size(); i++) {
 			JsonNode json = dataSetNode.path(i);
 			DataSet dataset = new DataSet();
@@ -198,31 +190,14 @@ public class DataSet {
 			dataset.setSource(json.get("source").asText());
 			dataset.setStatus(json.get("status").asText());
 			dataset.setResponsiblePerson(json.get("responsiblePerson").asText());
-//			dataset.setComments(json.get(""));
 			dataset.setDataSourceName(json.get("dataSourceNameinWebInterface").asText());
-//			Console.print("aaa"+dataset.getDataSourceName());
 			dataset.setVariableName(json.get("variableNameInWebInterface").asText());
 			dataset.setDataSourceInput(json.get("dataSourceInputParameterToCallScienceApplicationCode").asText());
 			dataset.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
-			
-//!!!!!!fake start/end time value
-			
-//			if (json.get("endTime") != null) {
-//				dataset.setEndTime(json.get("endTime").asText());
-//			} else {
-//				dataset.setEndTime(null);
-//			}
-//			if (json.get("startTime") != null) {
-//				dataset.setStartTime(json.get("startTime").asText());
-//			} else {
-//				dataset.setEndTime(null);
-//			}
-			
-			
 			String startTime = json.findPath("startTime").asText();
 			String endTime = json.findPath("endTime").asText();
-			
 			Date tmpTime = null;
+			
 			try {
 				tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(startTime);
 				
@@ -230,7 +205,7 @@ public class DataSet {
 					dataset.setStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 				}
 		    } catch (ParseException e){	    
-//		    	e.printStackTrace();
+
 		    }
 			
 			try {
@@ -240,13 +215,8 @@ public class DataSet {
 					dataset.setEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 				}
 		    } catch (ParseException e){	    
-//		    	e.printStackTrace();
+
 		    }
-			
-			
-//			dataset.setEndTime("201508");
-//			dataset.setStartTime("201507");
-			
 			dataSets.add(dataset);
 		}
 		return dataSets;
@@ -262,36 +232,21 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 		queryJson.put("instrument", instrument);
 		queryJson.put("physicalVariable", physicalVariable);
 		queryJson.put("gridDimension", gridDimension);
+		
 		if (dataSetEndTime != null) {
 			queryJson.put("dataSetEndTime", dataSetEndTime.getTime());
 		}
+		
 		if (dataSetStartTime != null) {
 			queryJson.put("dataSetStartTime", dataSetStartTime.getTime());
 		}
-		
-//		if (dataSetName != null && !dataSetName.isEmpty()) {
-//			queryJson.put("name", dataSetName);
-//		}
-//		if (agency != null && !agency.isEmpty()) {
-//			queryJson.put("agencyId", agency);
-//		}
-//		if (instrument != null && !instrument.isEmpty()) {
-//			queryJson.put("instrument", instrument);
-//		}
-//		if (physicalVariable != null && !physicalVariable.isEmpty()) {
-//			queryJson.put("physicalVariable", physicalVariable);
-//		}
-//		if (gridDimension != null && !gridDimension.isEmpty()) {
-//			queryJson.put("gridDimension", gridDimension);
-//		}
-		
 		JsonNode dataSetNode = APICall.postAPI(DATASET_QUERY, queryJson);
+		
 		if (dataSetNode == null || dataSetNode.has("error")
 				|| !dataSetNode.isArray()) {
 			return dataset;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < dataSetNode.size(); i++) {
 			JsonNode json = dataSetNode.path(i);
 			DataSet newDataSet = deserializeJsonToDataSet(json);
@@ -302,14 +257,6 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 
 	private static DataSet deserializeJsonToDataSet(JsonNode json) {
 		DataSet newDataSet = new DataSet();
-//		newDataSet.setDataSetName(json.get(
-//				"name").asText());
-//		newDataSet.setAgencyId(json.get(
-//				"agencyId").asText());
-//		newDataSet.setInstrument(json.get("instrument").get("name").asText());
-//		newDataSet.setPhysicalVariable(json.get("physicalVariable").asText());
-//		newDataSet.setGridDimension(json.get("gridDimension").asText());
-		
 		newDataSet.setId(json.get("id").asText());
 		newDataSet.setDataSetName(json.get("name").asText());
 		newDataSet.setAgencyId(json.get("agencyId").asText());
@@ -321,9 +268,7 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 		newDataSet.setSource(json.get("source").asText());
 		newDataSet.setStatus(json.get("status").asText());
 		newDataSet.setResponsiblePerson(json.get("responsiblePerson").asText());
-//		dataset.setComments(json.get(""));
 		newDataSet.setDataSourceName(json.get("dataSourceNameinWebInterface").asText());
-//		Console.print("aaa"+dataset.getDataSourceName());
 		newDataSet.setVariableName(json.get("variableNameInWebInterface").asText());
 		newDataSet.setDataSourceInput(json.get("dataSourceInputParameterToCallScienceApplicationCode").asText());
 		newDataSet.setVariableNameInput(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
@@ -349,13 +294,6 @@ public static List<DataSet> queryDataSet(String dataSetName, String agency, Stri
 	    } catch (ParseException e){	    
 	    	
 	    }
-
-		
-//!!!!!!fake start/end time value		
-//		newDataSet.setEndTime(json.get("dataSetEndTime").asText());
-//		newDataSet.setStartTime(json.get("dataSetStartTime").asText());
-		
-	
 		return newDataSet;
 	}
 }

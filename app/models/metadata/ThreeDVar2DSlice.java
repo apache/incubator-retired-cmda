@@ -92,9 +92,7 @@ public class ThreeDVar2DSlice {
 		this.selectMonths = selectMonths;
 	}
 	public void changeSelectMonths(){
-//		if(month.isEmpty()){
-//			this.selectMonths = "select none";
-//		}
+
 		if(month.contains("1")&&month.contains("2")&&month.contains("3")&&month.contains("4")&&month.contains("5")&&month.contains("6")&&month.contains("7")&&month.contains("8")&&month.contains("9")&&month.contains("10")&&month.contains("11")&&month.contains("12")){
 			this.selectMonths = "select all";
 		}
@@ -136,7 +134,6 @@ public class ThreeDVar2DSlice {
 	public void setEndLat(String endLat) {
 		this.endLat = endLat;
 	}
-	
 	public String getExecutionPurpose() {
 		return executionPurpose;
 	}

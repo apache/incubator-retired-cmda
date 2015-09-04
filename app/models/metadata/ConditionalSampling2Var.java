@@ -60,9 +60,6 @@ public class ConditionalSampling2Var {
 	private String image = "";
 	private String dataURL = "";
 	private String serviceResponseText = "";
-
-	//env_var_plev1
-	
 	
 	public String getDataSourceP() {
 		return dataSourceP;

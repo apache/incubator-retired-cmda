@@ -23,7 +23,6 @@ import play.libs.WS;
 import play.libs.F.Function;
 import play.libs.F.Promise;
 import scala.Console;
-
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -44,7 +43,7 @@ public class APICall {
 						if (response.getStatus() == 200
 								|| response.getStatus() == 201) {
 							return response.asJson();
-						} else { // no response from the server
+						} else {
 							Logger.info(""+response.getStatus());
 							return createResponse(ResponseType.GETERROR);
 						}
@@ -63,7 +62,6 @@ public class APICall {
 		Promise<WS.Response> responsePromise = WS
 				.url(apiString).setQueryParameter(paraName, para).get();
 		Console.print(responsePromise.get());
-//		System.out.println(responsePromise.toString());
 		final Promise<JsonNode> bodyPromise = responsePromise
 				.map(new Function<WS.Response, JsonNode>() {
 					@Override
@@ -72,7 +70,7 @@ public class APICall {
 						if (response.getStatus() == 200
 								|| response.getStatus() == 201) {
 							return response.asJson();
-						} else { // no response from the server
+						} else {
 							Logger.info(""+response.getStatus());
 							return createResponse(ResponseType.GETERROR);
 						}
@@ -100,10 +98,9 @@ public class APICall {
 								return response.asJson();
 							}
 							catch (Exception e){
-								//If response is in Json format, return as json, otherwise just plain success
 								return createResponse(ResponseType.SUCCESS);
 							}
-						} else { // other response status from the server
+						} else {
 							return createResponse(ResponseType.SAVEERROR);
 						}
 					}
@@ -115,7 +112,6 @@ public class APICall {
 		}
 	}
 
-	/* Right now, only deviceType and device use PUT HTTP request*/
 	public static JsonNode putAPI(String apiString, JsonNode jsonData) {
 		Promise<WS.Response> responsePromise = WS.url(apiString).put(jsonData);
 		final Promise<JsonNode> bodyPromise = responsePromise
@@ -127,7 +123,7 @@ public class APICall {
 								.getStatus() == 200)
 								&& !response.getBody().contains("not")) {
 							return createResponse(ResponseType.SUCCESS);
-						} else { // other response status from the server
+						} else { 
 							return createResponse(ResponseType.SAVEERROR);
 						}
 					}
@@ -150,7 +146,7 @@ public class APICall {
 								.getStatus() == 201)
 								&& !response.getBody().contains("not")) {
 							return createResponse(ResponseType.SUCCESS);
-						} else { // no response from the server
+						} else {
 							return createResponse(ResponseType.DELETEERROR);
 						}
 					}

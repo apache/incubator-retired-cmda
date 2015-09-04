@@ -20,9 +20,7 @@ package models.metadata;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import util.APICall;
 import util.Constants;
 
@@ -146,13 +144,11 @@ public class ClimateService {
 		JsonNode climateServicesNode = APICall
 				.callAPI(GET_CLIMATE_SERVICES_CALL);
 
-		// if no value is returned or error or is not json array
 		if (climateServicesNode == null || climateServicesNode.has("error")
 				|| !climateServicesNode.isArray()) {
 			return climateServices;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < climateServicesNode.size(); i++) {
 			JsonNode json = climateServicesNode.path(i);
 			ClimateService newService = new ClimateService();
@@ -176,14 +172,11 @@ public class ClimateService {
 
 		JsonNode climateServicesNode = APICall
 				.callAPI(GET_MOST_RECENTLY_ADDED_CLIMATE_SERVICES_CALL);
-		//System.out.print(GET_MOST_RECENTLY_ADDED_CLIMATE_SERVICES_CALL);
-		// if no value is returned or error or is not json array
 		if (climateServicesNode == null || climateServicesNode.has("error")
 				|| !climateServicesNode.isArray()) {
 			return climateServices;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < climateServicesNode.size(); i++) {
 			JsonNode json = climateServicesNode.path(i);
 			ClimateService newService = new ClimateService();
@@ -192,7 +185,6 @@ public class ClimateService {
 					"name").asText());
 			newService.setPurpose(json.findPath("purpose").asText());
 			newService.setUrl(json.findPath("url").asText());
-			//newService.setCreateTime(json.findPath("createTime").asText());
 			newService.setScenario(json.findPath("scenario").asText());
 			newService.setVersion(json.findPath("versionNo").asText());
 			newService.setRootservice(json.findPath("rootServiceId").asText());
@@ -208,13 +200,11 @@ public class ClimateService {
 		JsonNode climateServicesNode = APICall
 				.callAPI(GET_MOST_RECENTLY_USED_CLIMATE_SERVICES_CALL);
 
-		// if no value is returned or error or is not json array
 		if (climateServicesNode == null || climateServicesNode.has("error")
 				|| !climateServicesNode.isArray()) {
 			return climateServices;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < climateServicesNode.size(); i++) {
 			JsonNode json = climateServicesNode.path(i);
 			ClimateService newService = new ClimateService();
@@ -223,7 +213,6 @@ public class ClimateService {
 					"name").asText());
 			newService.setPurpose(json.findPath("purpose").asText());
 			newService.setUrl(json.findPath("url").asText());
-			//newService.setCreateTime(json.findPath("createTime").asText());
 			newService.setScenario(json.findPath("scenario").asText());
 			newService.setVersion(json.findPath("versionNo").asText());
 			newService.setRootservice(json.findPath("rootServiceId").asText());
@@ -239,13 +228,11 @@ public class ClimateService {
 		JsonNode climateServicesNode = APICall
 				.callAPI(GET_MOST_POPULAR_CLIMATE_SERVICES_CALL);
 
-		// if no value is returned or error or is not json array
 		if (climateServicesNode == null || climateServicesNode.has("error")
 				|| !climateServicesNode.isArray()) {
 			return climateServices;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < climateServicesNode.size(); i++) {
 			JsonNode json = climateServicesNode.path(i);
 			ClimateService newService = new ClimateService();
@@ -254,7 +241,6 @@ public class ClimateService {
 					"name").asText());
 			newService.setPurpose(json.findPath("purpose").asText());
 			newService.setUrl(json.findPath("url").asText());
-			//newService.setCreateTime(json.findPath("createTime").asText());
 			newService.setScenario(json.findPath("scenario").asText());
 			newService.setVersion(json.findPath("versionNo").asText());
 			newService.setRootservice(json.findPath("rootServiceId").asText());
@@ -339,7 +325,6 @@ public class ClimateService {
 			photo = "/assets/images/conditionalSampling2Variables.jpeg";
 		}
 		else{
-			//photo = "http://i1-mac.softpedia-static.com/screenshots/Climate-Data-Analysis-Tools_1.png";
 			photo = "http://upload.wikimedia.org/wikipedia/commons/3/33/White_square_with_question_mark.png";
 		}
 	}

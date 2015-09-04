@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.Logger;
 import util.APICall;
 import util.Constants;
-
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -155,13 +154,11 @@ public class ServiceLog {
 		JsonNode serviceLogNode = APICall
 				.callAPI(GET_ALL_SERVICE_LOG);
 
-		// if no value is returned or error or is not json array
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 
@@ -181,18 +178,12 @@ public class ServiceLog {
 		newServiceLog.setPurpose(json.get("purpose").asText());
 		newServiceLog.setUserId(json.get("user").get("firstName").asText()+" "+json.get("user").get("lastName").asText());
 		newServiceLog.setServiceConfigurationId(json.get("serviceConfiguration").get("id").asText());
-//		newServiceLog.setExecutionStartTime(json.findPath("executionStartTime").asText());
-//		newServiceLog.setExecutionEndTime(json.findPath("executionEndTime").asText());
-//		newServiceLog.setDataSetStartTime(json.findPath("datasetStudyStartTime").asText());
-//		newServiceLog.setDataSetEndTime(json.findPath("datasetStudyEndTime").asText());
-		
 		String executionStartTime = json.findPath("executionStartTime").asText();
-		String executionEndTime = json.findPath("executionEndTime").asText();
-		
+		String executionEndTime = json.findPath("executionEndTime").asText();	
 		String datasetStudyStartTime = json.findPath("datasetStudyStartTime").asText();
 		String datasetStudyEndTime = json.findPath("datasetStudyEndTime").asText();
-		
 		Date tmpTime = null;
+		
 		try {
 			tmpTime = (new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")).parse(executionStartTime);		
 			if (tmpTime != null) {
@@ -216,7 +207,7 @@ public class ServiceLog {
 				newServiceLog.setDataSetStartTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 			}
 	    } catch (ParseException e){	    
-//	    	e.printStackTrace();
+
 	    }
 		
 		try {
@@ -226,19 +217,10 @@ public class ServiceLog {
 				newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmpTime));
 			}
 	    } catch (ParseException e){	    
-//	    	e.printStackTrace();
+
 	    }
-		
-		
-//		tmptime = null;
-//		try {
-//			tmptime = (new SimpleDateFormat("YYYY-MM-DD HH:MM:SS")).parse(json.findPath("datasetStudyEndTime").asText());
-//	    } catch (ParseException e){	    
-//	    	e.printStackTrace();
-//	    }
-//		newServiceLog.setDataSetEndTime(new SimpleDateFormat("YYYYMM").format(tmptime));
-		
-		newServiceLog.setDatasetLogId(json.findPath("datasetLogId").asText());	//Not used variavle, use original code for now to set this to an empyy string
+
+		newServiceLog.setDatasetLogId(json.findPath("datasetLogId").asText());
 
 		return newServiceLog;
 	}
@@ -259,15 +241,11 @@ public class ServiceLog {
 
 		JsonNode serviceLogNode = APICall
 				.callAPI("http://localhost:9008/searchServiceLogsWithParameter/model/"+dataSource+"/json");
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
-		//Logger.info(serviceLogNode.toString());
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
@@ -281,15 +259,13 @@ public class ServiceLog {
 
 		JsonNode serviceLogNode = APICall
 				.callAPI("http://localhost:9008/searchServiceLogsWithParameter/var/"+variableName+"/json");
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
+
 		Logger.info(serviceLogNode.toString());
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
@@ -303,15 +279,12 @@ public class ServiceLog {
 
 		JsonNode serviceLogNode = APICall
 				.callAPIParameter("http://localhost:9008/getExecutionLogByPurpose", "purpose", purpose);
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
+
 		Logger.info(serviceLogNode.toString());
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
-
-		// parse the json string into object
 		
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
@@ -326,15 +299,12 @@ public class ServiceLog {
 
 		JsonNode serviceLogNode = APICall
 				.callAPI("http://localhost:9008/searchServiceLogsWithParameter/" + userId + "/json");
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
 		Logger.info(serviceLogNode.toString());
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
@@ -348,15 +318,12 @@ public class ServiceLog {
 
 		JsonNode serviceLogNode = APICall
 				.callAPI("http://localhost:9008/searchServiceLogsWithParameterRange/startT/"+start+"/endT/"+end+"/json");
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
 		Logger.info(serviceLogNode.toString());
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
@@ -370,15 +337,13 @@ public class ServiceLog {
 
 		JsonNode serviceLogNode = APICall
 				.callAPI("http://localhost:9008/searchServiceLogsWithParameterRange/start%20lat%20(deg)/" + start + "/end%20lat%20(deg)/" + end + "/json");
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
+
 		Logger.info(serviceLogNode.toString());
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
@@ -410,15 +375,13 @@ public class ServiceLog {
 		}
 		JsonNode serviceLogNode = APICall
 				.callAPI("http://localhost:9008/searchServiceLogsWithMultipleParameter/userid/" + userId + "/datasource/" + dataSource + "/variablename/" + variableName + "/startyearmonth/" + startTime + "/endyearmonth/" + endTime + "/executionpurpose/" + executionPurpose + "/json");
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
+
 		Logger.info(serviceLogNode.toString());
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
@@ -427,7 +390,6 @@ public class ServiceLog {
 		return serviceLog;
 	}
 
-	//simple search function on top of the table of service execution log
 	public static List<ServiceLog> search(String userId, long startTime, long endTime) {
 
 		List<ServiceLog> serviceLog = new ArrayList<ServiceLog>();
@@ -437,16 +399,12 @@ public class ServiceLog {
 
 		JsonNode serviceLogNode = APICall
 				.callAPI(GET_A_SERVICE_LOG + userId + "/" + startTime + "" + "/" + endTime + "" + "/" + util.Constants.FORMAT);
-//		JsonNode serviceLogNode = APICall
-//				.callAPI("http://localhost:9008/getServiceExecutionLogs/123/1415904302/1415904357/json");
-		//Logger.debug(GET_A_SERVICE_LOG + userId+ "/" +startTime + "" + "/" +endTime + "" + "/" + util.Constants.FORMAT);
-		// if no value is returned or error or is not json array
+
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
@@ -529,14 +487,12 @@ public class ServiceLog {
 			}
 		}
 
-		//System.out.println(queryJson);
 		JsonNode serviceLogNode = APICall.postAPI(EXECUTION_LOG_QUERY, queryJson);
 		if (serviceLogNode == null || serviceLogNode.has("error")
 				|| !serviceLogNode.isArray()) {
 			return serviceLog;
 		}
 
-		// parse the json string into object
 		for (int i = 0; i < serviceLogNode.size(); i++) {
 			JsonNode json = serviceLogNode.path(i);
 			ServiceLog newServiceLog = deserializeJsonToServiceLog(json);
