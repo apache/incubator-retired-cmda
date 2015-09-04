@@ -508,7 +508,7 @@
 	@flash_message()   
 	 
     <h1 style="margin-left:490px">Search Dataset</h1>
-    @helper.form(routes.dataSetController.getSearchResult()) {
+    @helper.form(routes.DatasetController.getSearchResult()) {
     	<div class="ui-widget col-sm-offset-3 col-sm-7">
     	<div class = "form-group">
     		@inputText(dataSetForm("Dataset Name"), 'class -> "form-control", 'id -> "dataSetName", '_label -> Messages("Dataset Name"), 'placeholder -> "ARGO Ocean Temperature", 'size->70) 

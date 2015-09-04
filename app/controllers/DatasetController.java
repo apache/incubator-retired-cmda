@@ -30,7 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class dataSetController extends Controller{
+public class DatasetController extends Controller{
 	final static Form<DataSet> dataSetForm = Form
 			.form(DataSet.class);
 	
