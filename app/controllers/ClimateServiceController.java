@@ -1,11 +1,7 @@
 package controllers;
 
-import static play.data.Form.form;
-import models.DataSet;
-import models.BugReport;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import models.metadata.ClimateService;
 import models.metadata.DiffPlotTwoTimeAveragedVar;
 import models.metadata.RegridAndDownload;
@@ -31,16 +27,13 @@ import util.APICall.ResponseType;
 import util.Constants;
 import views.html.climate.*;
 import play.data.DynamicForm;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ClimateServiceController extends Controller {
@@ -48,7 +41,6 @@ public class ClimateServiceController extends Controller {
 	final static Form<ClimateService> climateServiceForm = Form
 			.form(ClimateService.class);
 
-	
 	public static Result home(String email, String vfile, String dataset) {
 		return ok(home.render(email, vfile, dataset));
 	}
@@ -83,32 +75,26 @@ public class ClimateServiceController extends Controller {
 
 	public static Result newClimateService() {
 		Form<ClimateService> dc = climateServiceForm.bindFromRequest();
-
 		ObjectNode jsonData = Json.newObject();
 		try {
 
 			String originalClimateServiceName = dc.field("Name").value();
 			String newClimateServiceName = originalClimateServiceName.replace(' ', '-');
 
-			// name should not contain spaces
 			if (newClimateServiceName != null && !newClimateServiceName.isEmpty()) {
 				jsonData.put("name", newClimateServiceName);
 			}
-			jsonData.put("creatorId", 1);    //TODO, since we don't have login/account id yet use a default val
+			
+			jsonData.put("creatorId", 1);
 			jsonData.put("purpose", dc.field("Purpose").value());
 			jsonData.put("url", dc.field("Url").value());
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-			//get current date time with Date()
 			Date date = new Date();
 			jsonData.put("createTime", dateFormat.format(date));
 			jsonData.put("scenario", dc.field("Scenario").value());
 			jsonData.put("versionNo", dc.field("Version").value());
 			jsonData.put("rootServiceId", dc.field("Root_Service").value());
-
-			// create the item by calling the API
 			JsonNode response = ClimateService.create(jsonData);
-
-			// flash the response message
 			Application.flashMsg(response);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -131,9 +117,8 @@ public class ClimateServiceController extends Controller {
 			if (climateServiceName != null && !climateServiceName.isEmpty()) {
 				jsonData.put("name", climateServiceName);
 			}
-
-			// if not found, it is an empty ClimateService
 			ClimateService originalService = ClimateService.findServiceByName(climateServiceName);
+			
 			if (originalService == null) {
 				Application.flashMsg(APICall.createResponse(ResponseType.UNKNOWN));
 				return notFound("not found original climateService " + climateServiceName);
@@ -144,22 +129,22 @@ public class ClimateServiceController extends Controller {
 			jsonData.put("url", originalService.getUrl());
 			jsonData.put("scenario", originalService.getScenario());
 			jsonData.put("versionNo", originalService.getVersion());
+			
 			if (originalService.getRootservice() != null)
+				
 				jsonData.put("rootServiceId", originalService.getRootservice());
-
 			String editField = df.field("name").value();
+			
 			if (editField != null && !editField.isEmpty()) {
 				jsonData.put(editField, df.field("value").value());
 			}
+			
 			if (editField == null || editField.isEmpty()) {
 				Application.flashMsg(APICall.createResponse(ResponseType.UNKNOWN));
 				return notFound("not found edit field");
 			}
 
-			// Call the edit() method
 			JsonNode response = ClimateService.edit(climateServiceName, jsonData);
-
-			// flash the response message
 			Application.flashMsg(response);
 
 		} catch (IllegalStateException e) {
@@ -174,10 +159,8 @@ public class ClimateServiceController extends Controller {
 
 	}
 
-	//get parameters of a service log by serviceConfigurationId
 	public static Result getConfigurationByConfId() {
 		String output = "";
-
 		TwoDVarMap twoDVarMap = new TwoDVarMap();
 		TwoDVarZonalMean twoDVarZonalMean = new TwoDVarZonalMean();
 		ScatterHistogramTwoVar scatterHistogram = new ScatterHistogramTwoVar();
@@ -200,16 +183,10 @@ public class ClimateServiceController extends Controller {
 				return notFound("confId is null or empty");
 			}
 
-			// Call API
-			//JsonNode response = APICall.callAPI("http://localhost:9008/getConfigurationByConId/json");
 			JsonNode response = APICall.callAPI(Constants.NEW_BACKEND + Constants.SERVICE_EXECUTION_LOG + Constants.SERVICE_EXECUTION_LOG_GET + logId);
-
 			int configurationId = response.path("serviceConfiguration").path("id").asInt();
-
 			JsonNode responseConfigItems = APICall.callAPI(Constants.NEW_BACKEND + Constants.CONFIG_ITEM + Constants.GET_CONFIG_ITEMS_BY_CONFIG + configurationId);
-//			Console.print(responseSpec.toString());
 			String serviceName = response.path("climateService").path("name").asText();
-
 			//TODO:
 			if (serviceName.equals("2-D-Variable-Zonal-Mean")) {
 				//TODO: DO NOT USE node.findPath(key)!!!!!  use find(key) instead to get your immediate children if you know the json structure (and we do).
@@ -218,21 +195,16 @@ public class ClimateServiceController extends Controller {
 					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
 					String parameterValue = responseConfigItems.get(i).path("value").textValue();
 
-					//	String parameterName = response.get(i).path("parameterPurpose").textValue();
 					if (parameterName.equals("data source")) {
 						twoDVarZonalMean.setDataSource(parameterValue);
-
 					} else if (parameterName.equals("variable name")) {
 						twoDVarZonalMean.setVariableName(parameterValue);
-
 					} else if (parameterName.equals("start year-month")) {
 						twoDVarZonalMean.setStartYearMonth(parameterValue);
-
 					} else if (parameterName.equals("end year-month")) {
 						twoDVarZonalMean.setEndYearMonth(parameterValue);
 					} else if (parameterName.equals("select months")) {
 						String[] months = parameterValue.split(",");
-
 						for (int j = 0; j < months.length; j++) {
 							if (months[j].equals("1")) {
 								twoDVarZonalMean.addMonth("jan");
@@ -259,7 +231,6 @@ public class ClimateServiceController extends Controller {
 							} else if (months[j].equals("12")) {
 								twoDVarZonalMean.addMonth("dec");
 							}
-
 						}
 						twoDVarZonalMean.changeSelectMonths();
 					} else if (parameterName.equals("start lat (deg)")) {
@@ -275,24 +246,20 @@ public class ClimateServiceController extends Controller {
 				twoDVarZonalMean.setDataURL(response.path("dataUrl").textValue());
 				return ok(views.html.climate.twoDVariableZonelMean.render(twoDVarZonalMean));
 			}
-			else if (serviceName.equals("2-D-Variable-Map")) {//Old ID 12
+			else if (serviceName.equals("2-D-Variable-Map")) {
 				for (int i = 0; i < responseConfigItems.size(); i++) {
 					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
 					String parameterValue = responseConfigItems.get(i).path("value").textValue();
 					if (parameterName.equals("model")) {
 						twoDVarMap.setDataSource(parameterValue);
-
 					} else if (parameterName.equals("var")) {
 						twoDVarMap.setVariableName(parameterValue);
-
 					} else if (parameterName.equals("startT")) {
 						twoDVarMap.setStartYearMonth(parameterValue);
-
 					} else if (parameterName.equals("endT")) {
 						twoDVarMap.setEndYearMonth(parameterValue);
 					} else if (parameterName.equals("months")) {
 						String[] months = parameterValue.split(",");
-
 						for (int j = 0; j < months.length; j++) {
 							if (months[j].equals("1")) {
 								twoDVarMap.addMonth("jan");
@@ -338,207 +305,123 @@ public class ClimateServiceController extends Controller {
 				twoDVarMap.setDataURL(response.path("dataUrl").textValue());
 				return ok(views.html.climate.twoDVariableMap.render(twoDVarMap));
 			}
-			//Old ID 21
-//			else if (serviceName.equals("2-D-Variable-Map")){
-//				for(int i=0; i<response.size(); i++){
-//					String parameterName = responseConfigItems.get(i).get("parameter").get("purpose").textValue();
-//					String parameterValue = responseConfigItems.get(i).get("value").textValue();
-//					if(parameterName.equals("model2")){
-//						para_21.setDataSourceE(parameterValue);
-//						
-//					}else if(parameterName.equals("model1")){
-//						para_21.setDataSourceP(parameterValue);
-//						
-//					}else if(parameterName.equals("var2")){
-//						para_21.setVariableNameE(parameterValue);
-//						
-//					}else if(parameterName.equals("var1")){
-//						para_21.setVariableNameP(parameterValue);
-//					}else if(parameterName.equals("pre1")){
-//						para_21.setPressureRangeP(parameterValue);
-//					}
-//					else if(parameterName.equals("pre2")){
-//						para_21.setPressureRangeE(parameterValue);
-//					}else if(parameterName.equals("startT")){
-//						para_21.setStartYearMonth(parameterValue);
-//					}else if(parameterName.equals("endT")){
-//						para_21.setEndYearMonth(parameterValue);
-//					}else if(parameterName.equals("lon1")){
-//						para_21.setStartLon(parameterValue);
-//					}else if(parameterName.equals("lon2")){
-//						para_21.setEndLon(parameterValue);
-//					}else if(parameterName.equals("lat1")){
-//						Console.print("aaa"+parameterValue);
-//						para_21.setStartLat(parameterValue);
-//					}else if(parameterName.equals("lat2")){
-//						para_21.setEndLat(parameterValue);
-//					}else if(parameterName.equals("months")){
-//						String[] months = parameterValue.split(",");
-//						
-//						for(int j=0; j<months.length; j++){
-//							if(months[j].equals("1")){
-//								para_21.addMonth("jan");
-//							}else if(months[j].equals("2")){
-//								para_21.addMonth("feb");
-//							}else if(months[j].equals("3")){
-//								para_21.addMonth("mar");
-//							}else if(months[j].equals("4")){
-//								para_21.addMonth("apr");
-//							}else if(months[j].equals("5")){
-//								para_21.addMonth("may");
-//							}else if(months[j].equals("6")){
-//								para_21.addMonth("jun");
-//							}else if(months[j].equals("7")){
-//								para_21.addMonth("jul");
-//							}else if(months[j].equals("8")){
-//								para_21.addMonth("aug");
-//							}else if(months[j].equals("9")){
-//								para_21.addMonth("sep");
-//							}else if(months[j].equals("10")){
-//								para_21.addMonth("oct");
-//							}else if(months[j].equals("11")){
-//								para_21.addMonth("nov");
-//							}else if(months[j].equals("12")){
-//								para_21.addMonth("dec");
-//							}
-//						}
-//					}
-//				}
-//				twoDVarMap.setExecutionPurpose(response.path("purpose").textValue());
-//				twoDVarMap.setImage(response.path("plotUrl").textValue());
-//				twoDVarMap.setDataURL(response.path("dataUrl").textValue());
-//				return ok(views.html.climate.twoDVariableMap.render(twoDVarMap));
-//			}
-				else if (serviceName.equals("Conditional-Sampling-with-One-Variable"))
-				{    //Old ID 21
-					for (int i = 0; i < responseConfigItems.size(); i++) {
-						String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
-						String parameterValue = responseConfigItems.get(i).path("value").textValue();
-						if (parameterName.equals("model2")) {
-							conditionalSampling.setDataSourceE(parameterValue);
-
-						} else if (parameterName.equals("model1")) {
-							conditionalSampling.setDataSourceP(parameterValue);
-
-						} else if (parameterName.equals("var2")) {
-							conditionalSampling.setVariableNameE(parameterValue);
-
-						} else if (parameterName.equals("var1")) {
-							conditionalSampling.setVariableNameP(parameterValue);
-						} else if (parameterName.equals("pre1")) {
-							conditionalSampling.setPressureRangeP(parameterValue);
-						} else if (parameterName.equals("pre2")) {
-							conditionalSampling.setPressureRangeE(parameterValue);
-						} else if (parameterName.equals("startT")) {
-							conditionalSampling.setStartYearMonth(parameterValue);
-						} else if (parameterName.equals("endT")) {
-							conditionalSampling.setEndYearMonth(parameterValue);
-						} else if (parameterName.equals("lon1")) {
-							conditionalSampling.setStartLon(parameterValue);
-						} else if (parameterName.equals("lon2")) {
-							conditionalSampling.setEndLon(parameterValue);
-						} else if (parameterName.equals("lat1")) {
-							conditionalSampling.setStartLat(parameterValue);
-						} else if (parameterName.equals("lat2")) {
-							conditionalSampling.setEndLat(parameterValue);
-						} else if (parameterName.equals("months")) {
-							String[] months = parameterValue.split(",");
-
-							for (int j = 0; j < months.length; j++) {
-								if (months[j].equals("1")) {
-									conditionalSampling.addMonth("jan");
-								} else if (months[j].equals("2")) {
-									conditionalSampling.addMonth("feb");
-								} else if (months[j].equals("3")) {
-									conditionalSampling.addMonth("mar");
-								} else if (months[j].equals("4")) {
-									conditionalSampling.addMonth("apr");
-								} else if (months[j].equals("5")) {
-									conditionalSampling.addMonth("may");
-								} else if (months[j].equals("6")) {
-									conditionalSampling.addMonth("jun");
-								} else if (months[j].equals("7")) {
-									conditionalSampling.addMonth("jul");
-								} else if (months[j].equals("8")) {
-									conditionalSampling.addMonth("aug");
-								} else if (months[j].equals("9")) {
-									conditionalSampling.addMonth("sep");
-								} else if (months[j].equals("10")) {
-									conditionalSampling.addMonth("oct");
-								} else if (months[j].equals("11")) {
-									conditionalSampling.addMonth("nov");
-								} else if (months[j].equals("12")) {
-									conditionalSampling.addMonth("dec");
-								}
-
+			else if (serviceName.equals("Conditional-Sampling-with-One-Variable")){
+				for (int i = 0; i < responseConfigItems.size(); i++) {
+					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
+					String parameterValue = responseConfigItems.get(i).path("value").textValue();
+					if (parameterName.equals("model2")) {
+						conditionalSampling.setDataSourceE(parameterValue);
+					} else if (parameterName.equals("model1")) {
+						conditionalSampling.setDataSourceP(parameterValue);
+					} else if (parameterName.equals("var2")) {
+						conditionalSampling.setVariableNameE(parameterValue);
+					} else if (parameterName.equals("var1")) {
+						conditionalSampling.setVariableNameP(parameterValue);
+					} else if (parameterName.equals("pre1")) {
+						conditionalSampling.setPressureRangeP(parameterValue);
+					} else if (parameterName.equals("pre2")) {
+						conditionalSampling.setPressureRangeE(parameterValue);
+					} else if (parameterName.equals("startT")) {
+						conditionalSampling.setStartYearMonth(parameterValue);
+					} else if (parameterName.equals("endT")) {
+						conditionalSampling.setEndYearMonth(parameterValue);
+					} else if (parameterName.equals("lon1")) {
+						conditionalSampling.setStartLon(parameterValue);
+					} else if (parameterName.equals("lon2")) {
+						conditionalSampling.setEndLon(parameterValue);
+					} else if (parameterName.equals("lat1")) {
+						conditionalSampling.setStartLat(parameterValue);
+					} else if (parameterName.equals("lat2")) {
+						conditionalSampling.setEndLat(parameterValue);
+					} else if (parameterName.equals("months")) {
+						String[] months = parameterValue.split(",");
+						for (int j = 0; j < months.length; j++) {
+							if (months[j].equals("1")) {
+								conditionalSampling.addMonth("jan");
+							} else if (months[j].equals("2")) {
+								conditionalSampling.addMonth("feb");
+							} else if (months[j].equals("3")) {
+								conditionalSampling.addMonth("mar");
+							} else if (months[j].equals("4")) {
+								conditionalSampling.addMonth("apr");
+							} else if (months[j].equals("5")) {
+								conditionalSampling.addMonth("may");
+							} else if (months[j].equals("6")) {
+								conditionalSampling.addMonth("jun");
+							} else if (months[j].equals("7")) {
+								conditionalSampling.addMonth("jul");
+							} else if (months[j].equals("8")) {
+								conditionalSampling.addMonth("aug");
+							} else if (months[j].equals("9")) {
+								conditionalSampling.addMonth("sep");
+							} else if (months[j].equals("10")) {
+								conditionalSampling.addMonth("oct");
+							} else if (months[j].equals("11")) {
+								conditionalSampling.addMonth("nov");
+							} else if (months[j].equals("12")) {
+								conditionalSampling.addMonth("dec");
 							}
-							conditionalSampling.changeSelectMonths();
-						} else if (parameterName.equals("bin_min")) {
-							conditionalSampling.setBin_min(parameterValue);
-						} else if (parameterName.equals("bin_max")) {
-							conditionalSampling.setBin_max(parameterValue);
-						} else if (parameterName.equals("bin_n")) {
-							conditionalSampling.setBin_n(parameterValue);
-						} else if (parameterName.equals("displayOpt")) {
-							int paramBit=Integer.parseInt(parameterValue);
-							int bitmaskX = 0x1;
-							int bitmaskY = 0x2;
-							int bitmaskZ = 0x4;
-
-							conditionalSampling.setX(Integer.toString(paramBit & bitmaskX, 2));
-							conditionalSampling.setY(Integer.toString((paramBit & bitmaskY)>>1, 2));
-							conditionalSampling.setZ(Integer.toString((paramBit & bitmaskZ)>>2, 2));
 
 						}
+						conditionalSampling.changeSelectMonths();
+					} else if (parameterName.equals("bin_min")) {
+						conditionalSampling.setBin_min(parameterValue);
+					} else if (parameterName.equals("bin_max")) {
+						conditionalSampling.setBin_max(parameterValue);
+					} else if (parameterName.equals("bin_n")) {
+						conditionalSampling.setBin_n(parameterValue);
+					} else if (parameterName.equals("displayOpt")) {
+						int paramBit=Integer.parseInt(parameterValue);
+						int bitmaskX = 0x1;
+						int bitmaskY = 0x2;
+						int bitmaskZ = 0x4;
+						conditionalSampling.setX(Integer.toString(paramBit & bitmaskX, 2));
+						conditionalSampling.setY(Integer.toString((paramBit & bitmaskY)>>1, 2));
+						conditionalSampling.setZ(Integer.toString((paramBit & bitmaskZ)>>2, 2));
 					}
-					conditionalSampling.setExecutionPurpose(response.path("purpose").textValue());
-					conditionalSampling.setImage(response.path("plotUrl").textValue());
-					conditionalSampling.setDataURL(response.path("dataUrl").textValue());
-					return ok(views.html.climate.conditionalSampling.render(conditionalSampling));
-				}else if (serviceName.equals("2-D-Variable-Time-Series")){    //Old ID 1595
-					for (int i = 0; i < responseConfigItems.size(); i++) {
-						String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
-						String parameterValue = responseConfigItems.get(i).path("value").textValue();
-						if (parameterName.equals("model")) {
-							twoDVarTimeSeries.setDataSource(parameterValue);
-
-						} else if (parameterName.equals("var")) {
-							twoDVarTimeSeries.setVariableName(parameterValue);
-
-						} else if (parameterName.equals("startT")) {
-							twoDVarTimeSeries.setStartYearMonth(parameterValue);
-
-						} else if (parameterName.equals("endT")) {
-							twoDVarTimeSeries.setEndYearMonth(parameterValue);
-						} else if (parameterName.equals("lat1")) {
-							twoDVarTimeSeries.setStartLat(parameterValue);
-						} else if (parameterName.equals("lat2")) {
-							twoDVarTimeSeries.setEndLat(parameterValue);
-						} else if (parameterName.equals("lon1")) {
-							twoDVarTimeSeries.setStartLon(parameterValue);
-						} else if (parameterName.equals("lon2")) {
-							twoDVarTimeSeries.setEndLon(parameterValue);
-						} else if (parameterName.equals("scale")) {
-							twoDVarTimeSeries.setVariableScale(parameterValue);
-						}
+				}
+				conditionalSampling.setExecutionPurpose(response.path("purpose").textValue());
+				conditionalSampling.setImage(response.path("plotUrl").textValue());
+				conditionalSampling.setDataURL(response.path("dataUrl").textValue());
+				return ok(views.html.climate.conditionalSampling.render(conditionalSampling));
+			}else if (serviceName.equals("2-D-Variable-Time-Series")){
+				for (int i = 0; i < responseConfigItems.size(); i++) {
+					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
+					String parameterValue = responseConfigItems.get(i).path("value").textValue();
+					if (parameterName.equals("model")) {
+						twoDVarTimeSeries.setDataSource(parameterValue);
+					} else if (parameterName.equals("var")) {
+						twoDVarTimeSeries.setVariableName(parameterValue);
+					} else if (parameterName.equals("startT")) {
+						twoDVarTimeSeries.setStartYearMonth(parameterValue);
+					} else if (parameterName.equals("endT")) {
+						twoDVarTimeSeries.setEndYearMonth(parameterValue);
+					} else if (parameterName.equals("lat1")) {
+						twoDVarTimeSeries.setStartLat(parameterValue);
+					} else if (parameterName.equals("lat2")) {
+						twoDVarTimeSeries.setEndLat(parameterValue);
+					} else if (parameterName.equals("lon1")) {
+						twoDVarTimeSeries.setStartLon(parameterValue);
+					} else if (parameterName.equals("lon2")) {
+						twoDVarTimeSeries.setEndLon(parameterValue);
+					} else if (parameterName.equals("scale")) {
+						twoDVarTimeSeries.setVariableScale(parameterValue);
 					}
-					twoDVarTimeSeries.setExecutionPurpose(response.path("purpose").textValue());
-					twoDVarTimeSeries.setImage(response.path("plotUrl").textValue());
-					twoDVarTimeSeries.setDataURL(response.path("dataUrl").textValue());
-					return ok(views.html.climate.twoDVariableTimeSeries.render(twoDVarTimeSeries));
-			}else if (serviceName.equals("Regrid-and-Download")){    //NEW ONE the 10th
+				}
+				twoDVarTimeSeries.setExecutionPurpose(response.path("purpose").textValue());
+				twoDVarTimeSeries.setImage(response.path("plotUrl").textValue());
+				twoDVarTimeSeries.setDataURL(response.path("dataUrl").textValue());
+				return ok(views.html.climate.twoDVariableTimeSeries.render(twoDVarTimeSeries));
+			}else if (serviceName.equals("Regrid-and-Download")){
 				for (int i = 0; i < responseConfigItems.size(); i++) {
 					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
 					String parameterValue = responseConfigItems.get(i).path("value").textValue();
 					if (parameterName.equals("model")) {
 						regridAndDownload.setDataSource(parameterValue);
-
 					} else if (parameterName.equals("var")) {
 						regridAndDownload.setVariableName(parameterValue);
-
 					} else if (parameterName.equals("startT")) {
 						regridAndDownload.setStartYearMonth(parameterValue);
-
 					} else if (parameterName.equals("endT")) {
 						regridAndDownload.setEndYearMonth(parameterValue);
 					} else if (parameterName.equals("lat1")) {
@@ -562,85 +445,78 @@ public class ClimateServiceController extends Controller {
 				regridAndDownload.setDataURL(response.path("dataUrl").textValue());
 				return ok(views.html.climate.regridAndDownload.render(regridAndDownload));
 			}else if (serviceName.equals("3-D-Variable-Zonal-Mean")){
-					// old ID 1597
-					String press1 = "";
-					String press2 = "";
-					for (int i = 0; i < responseConfigItems.size(); i++) {
-						String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
-						String parameterValue = responseConfigItems.get(i).path("value").textValue();
-						if (parameterName.equals("model")) {
-							threeDVarZonalMean.setDataSource(parameterValue);
-
-						} else if (parameterName.equals("var")) {
-							threeDVarZonalMean.setVariableName(parameterValue);
-
-						} else if (parameterName.equals("startT")) {
-							threeDVarZonalMean.setStartYearMonth(parameterValue);
-
-						} else if (parameterName.equals("endT")) {
-							threeDVarZonalMean.setEndYearMonth(parameterValue);
-						} else if (parameterName.equals("lat1")) {
-							threeDVarZonalMean.setStartLat(parameterValue);
-						} else if (parameterName.equals("lat2")) {
-							threeDVarZonalMean.setEndLat(parameterValue);
-						} else if (parameterName.equals("pres1")) {
-							press1 = parameterValue;
-							//Console.println(press1);
-						} else if (parameterName.equals("pres2")) {
-							press2 = parameterValue;
-
-						} else if (parameterName.equals("months")) {
-							String[] months = parameterValue.split(",");
-
-							for (int j = 0; j < months.length; j++) {
-								if (months[j].equals("1")) {
-									threeDVarZonalMean.addMonth("jan");
-								} else if (months[j].equals("2")) {
-									threeDVarZonalMean.addMonth("feb");
-								} else if (months[j].equals("3")) {
-									threeDVarZonalMean.addMonth("mar");
-								} else if (months[j].equals("4")) {
-									threeDVarZonalMean.addMonth("apr");
-								} else if (months[j].equals("5")) {
-									threeDVarZonalMean.addMonth("may");
-								} else if (months[j].equals("6")) {
-									threeDVarZonalMean.addMonth("jun");
-								} else if (months[j].equals("7")) {
-									threeDVarZonalMean.addMonth("jul");
-								} else if (months[j].equals("8")) {
-									threeDVarZonalMean.addMonth("aug");
-								} else if (months[j].equals("9")) {
-									threeDVarZonalMean.addMonth("sep");
-								} else if (months[j].equals("10")) {
-									threeDVarZonalMean.addMonth("oct");
-								} else if (months[j].equals("11")) {
-									threeDVarZonalMean.addMonth("nov");
-								} else if (months[j].equals("12")) {
-									threeDVarZonalMean.addMonth("dec");
-								}
-							}
-						} else if (parameterName.equals("scale")) {
-							if (parameterValue.equals("2")) {
-								threeDVarZonalMean.setPressureScale("2");
-								threeDVarZonalMean.setColorScale("0");
-							} else if (parameterValue.equals("0")) {
-								threeDVarZonalMean.setPressureScale("0");
-								threeDVarZonalMean.setColorScale("0");
-							} else if (parameterValue.equals("4")) {
-								threeDVarZonalMean.setPressureScale("0");
-								threeDVarZonalMean.setColorScale("4");
-							} else if (parameterValue.equals("6")) {
-								threeDVarZonalMean.setPressureScale("2");
-								threeDVarZonalMean.setColorScale("4");
+				String press1 = "";
+				String press2 = "";
+				for (int i = 0; i < responseConfigItems.size(); i++) {
+					String parameterName = responseConfigItems.get(i).path("parameter").path("purpose").textValue();
+					String parameterValue = responseConfigItems.get(i).path("value").textValue();
+					if (parameterName.equals("model")) {
+						threeDVarZonalMean.setDataSource(parameterValue);
+					} else if (parameterName.equals("var")) {
+						threeDVarZonalMean.setVariableName(parameterValue);
+					} else if (parameterName.equals("startT")) {
+						threeDVarZonalMean.setStartYearMonth(parameterValue);
+					} else if (parameterName.equals("endT")) {
+						threeDVarZonalMean.setEndYearMonth(parameterValue);
+					} else if (parameterName.equals("lat1")) {
+						threeDVarZonalMean.setStartLat(parameterValue);
+					} else if (parameterName.equals("lat2")) {
+						threeDVarZonalMean.setEndLat(parameterValue);
+					} else if (parameterName.equals("pres1")) {
+						press1 = parameterValue;
+					} else if (parameterName.equals("pres2")) {
+						press2 = parameterValue;
+					} else if (parameterName.equals("months")) {
+						String[] months = parameterValue.split(",");
+						for (int j = 0; j < months.length; j++) {
+							if (months[j].equals("1")) {
+								threeDVarZonalMean.addMonth("jan");
+							} else if (months[j].equals("2")) {
+								threeDVarZonalMean.addMonth("feb");
+							} else if (months[j].equals("3")) {
+								threeDVarZonalMean.addMonth("mar");
+							} else if (months[j].equals("4")) {
+								threeDVarZonalMean.addMonth("apr");
+							} else if (months[j].equals("5")) {
+								threeDVarZonalMean.addMonth("may");
+							} else if (months[j].equals("6")) {
+								threeDVarZonalMean.addMonth("jun");
+							} else if (months[j].equals("7")) {
+								threeDVarZonalMean.addMonth("jul");
+							} else if (months[j].equals("8")) {
+								threeDVarZonalMean.addMonth("aug");
+							} else if (months[j].equals("9")) {
+								threeDVarZonalMean.addMonth("sep");
+							} else if (months[j].equals("10")) {
+								threeDVarZonalMean.addMonth("oct");
+							} else if (months[j].equals("11")) {
+								threeDVarZonalMean.addMonth("nov");
+							} else if (months[j].equals("12")) {
+								threeDVarZonalMean.addMonth("dec");
 							}
 						}
+					} else if (parameterName.equals("scale")) {
+						if (parameterValue.equals("2")) {
+							threeDVarZonalMean.setPressureScale("2");
+							threeDVarZonalMean.setColorScale("0");
+						} else if (parameterValue.equals("0")) {
+							threeDVarZonalMean.setPressureScale("0");
+							threeDVarZonalMean.setColorScale("0");
+						} else if (parameterValue.equals("4")) {
+							threeDVarZonalMean.setPressureScale("0");
+							threeDVarZonalMean.setColorScale("4");
+						} else if (parameterValue.equals("6")) {
+							threeDVarZonalMean.setPressureScale("2");
+							threeDVarZonalMean.setColorScale("4");
+						}
 					}
-					if (!press1.isEmpty() & !press2.isEmpty())
-						threeDVarZonalMean.setPressureRange("" + (Integer.parseInt(press1) / 100) + "," + (Integer.parseInt(press2) / 100));
-					threeDVarZonalMean.setExecutionPurpose(response.path("purpose").textValue());
-					threeDVarZonalMean.setImage(response.path("plotUrl").textValue());
-					threeDVarZonalMean.setDataURL(response.path("dataUrl").textValue());
-					return ok(views.html.climate.threeDVariableZonalMean.render(threeDVarZonalMean));
+				}
+				if (!press1.isEmpty() & !press2.isEmpty())
+					threeDVarZonalMean.setPressureRange("" + (Integer.parseInt(press1) / 100) + "," + (Integer.parseInt(press2) / 100));
+				threeDVarZonalMean.setExecutionPurpose(response.path("purpose").textValue());
+				threeDVarZonalMean.setImage(response.path("plotUrl").textValue());
+				threeDVarZonalMean.setDataURL(response.path("dataUrl").textValue());
+				return ok(views.html.climate.threeDVariableZonalMean.render(threeDVarZonalMean));
 			}else if (serviceName.equals("Scatter-and-Histogram-Plot-of-Two-Variables")){                    //"19")){
 					scatterHistogram.setPressureLevel1("N/A");
 					scatterHistogram.setPressureLevel2("N/A");
@@ -687,13 +563,10 @@ public class ClimateServiceController extends Controller {
 						String parameterValue = responseConfigItems.get(i).path("value").textValue();
 						if (parameterName.equals("model1")) {
 							diffPlotTwoTimeAvg.setSource1(parameterValue);
-
 						} else if (parameterName.equals("model2")) {
 							diffPlotTwoTimeAvg.setSource2(parameterValue);
-
 						} else if (parameterName.equals("var1")) {
 							diffPlotTwoTimeAvg.setVaribaleName1(parameterValue);
-
 						} else if (parameterName.equals("var2")) {
 							diffPlotTwoTimeAvg.setVaribaleName2(parameterValue);
 						} else if (parameterName.equals("pre1")) {
@@ -724,10 +597,8 @@ public class ClimateServiceController extends Controller {
 						String parameterValue = responseConfigItems.get(i).path("value").textValue();
 						if (parameterName.equals("model")) {
 							threeDVarAvgVertical.setDataSource(parameterValue);
-
 						} else if (parameterName.equals("var")) {
 							threeDVarAvgVertical.setVariableName(parameterValue);
-
 						} else if (parameterName.equals("startT")) {
 							threeDVarAvgVertical.setStartYearMonth(parameterValue);
 						} else if (parameterName.equals("endT")) {
@@ -742,7 +613,6 @@ public class ClimateServiceController extends Controller {
 							threeDVarAvgVertical.setEndLat(parameterValue);
 						} else if (parameterName.equals("months")) {
 							String[] months = parameterValue.split(",");
-
 							for (int j = 0; j < months.length; j++) {
 								if (months[j].equals("1")) {
 									threeDVarAvgVertical.addMonth("jan");
@@ -769,7 +639,6 @@ public class ClimateServiceController extends Controller {
 								} else if (months[j].equals("12")) {
 									threeDVarAvgVertical.addMonth("dec");
 								}
-
 							}
 							threeDVarAvgVertical.changeSelectMonths();
 						} else if (parameterName.equals("scale")) {
@@ -799,10 +668,8 @@ public class ClimateServiceController extends Controller {
 						String parameterValue = responseConfigItems.get(i).path("value").textValue();
 						if (parameterName.equals("model")) {
 							threeDVar2DSlice.setDataSource(parameterValue);
-
 						} else if (parameterName.equals("var")) {
 							threeDVar2DSlice.setVariableName(parameterValue);
-
 						} else if (parameterName.equals("pr")) {
 							threeDVar2DSlice.setPressureLevel(parameterValue);
 						} else if (parameterName.equals("startT")) {
@@ -819,7 +686,6 @@ public class ClimateServiceController extends Controller {
 							threeDVar2DSlice.setEndLat(parameterValue);
 						} else if (parameterName.equals("months")) {
 							String[] months = parameterValue.split(",");
-
 							for (int j = 0; j < months.length; j++) {
 								if (months[j].equals("1")) {
 									threeDVar2DSlice.addMonth("jan");
@@ -846,12 +712,10 @@ public class ClimateServiceController extends Controller {
 								} else if (months[j].equals("12")) {
 									threeDVar2DSlice.addMonth("dec");
 								}
-
 							}
 							threeDVar2DSlice.changeSelectMonths();
 						} else if (parameterName.equals("scale")) {
 							threeDVar2DSlice.setColorScale(parameterValue);
-
 						}
 					}
 					threeDVar2DSlice.setExecutionPurpose(response.path("purpose").textValue());
@@ -868,13 +732,10 @@ public class ClimateServiceController extends Controller {
 					String parameterValue = responseConfigItems.get(i).path("value").textValue();
 					if (parameterName.equals("model1")) {
 						correlationMap.setSource1(parameterValue);
-						
 					} else if (parameterName.equals("model2")) {
 						correlationMap.setSource2(parameterValue);
-
 					} else if (parameterName.equals("var1")) {
 						correlationMap.setVariableName1(parameterValue);
-
 					} else if (parameterName.equals("var2")) {
 						correlationMap.setVariableName2(parameterValue);
 					} else if (parameterName.equals("pres1")) {
@@ -910,15 +771,13 @@ public class ClimateServiceController extends Controller {
 						conditionalSampling2Var.setDataSourceP(parameterValue);
 					} else if (parameterName.equals("model2")) {
 						conditionalSampling2Var.setDataSourceE1(parameterValue);
-					}else if (parameterName.equals("model3")) {
+					} else if (parameterName.equals("model3")) {
 						conditionalSampling2Var.setDataSourceE2(parameterValue);
-
-					}else if (parameterName.equals("var1")) {
+					} else if (parameterName.equals("var1")) {
 						conditionalSampling2Var.setVariableNameP(parameterValue);
-
 					} else if (parameterName.equals("var2")) {
 						conditionalSampling2Var.setVariableNameE1(parameterValue);
-					}else if (parameterName.equals("var3")) {
+					} else if (parameterName.equals("var3")) {
 						conditionalSampling2Var.setVariableNameE2(parameterValue);
 					} else if (parameterName.equals("pres1")) {
 						conditionalSampling2Var.setPressureRange1(parameterValue);
@@ -938,7 +797,6 @@ public class ClimateServiceController extends Controller {
 						conditionalSampling2Var.setEndLat(parameterValue);
 					} else if (parameterName.equals("months")) {
 						String[] months = parameterValue.split(",");
-
 						for (int j = 0; j < months.length; j++) {
 							if (months[j].equals("1")) {
 								conditionalSampling2Var.addMonth("jan");
@@ -965,7 +823,6 @@ public class ClimateServiceController extends Controller {
 							} else if (months[j].equals("12")) {
 								conditionalSampling2Var.addMonth("dec");
 							}
-
 						}
 						conditionalSampling2Var.changeSelectMonths();
 					} else if (parameterName.equals("bin_min1")) {
@@ -974,7 +831,7 @@ public class ClimateServiceController extends Controller {
 						conditionalSampling2Var.setBin_max1(parameterValue);
 					} else if (parameterName.equals("bin_n1")) {
 						conditionalSampling2Var.setBin_n1(parameterValue);
-					}else if (parameterName.equals("bin_min2")) {
+					} else if (parameterName.equals("bin_min2")) {
 						conditionalSampling2Var.setBin_min2(parameterValue);
 					} else if (parameterName.equals("bin_max2")) {
 						conditionalSampling2Var.setBin_max2(parameterValue);
@@ -989,11 +846,9 @@ public class ClimateServiceController extends Controller {
 						int bitmaskX = 0x1;
 						int bitmaskY = 0x2;
 						int bitmaskZ = 0x4;
-
 						conditionalSampling2Var.setX(Integer.toString(paramBit & bitmaskX, 2));
 						conditionalSampling2Var.setY(Integer.toString((paramBit & bitmaskY)>>1, 2));
 						conditionalSampling2Var.setZ(Integer.toString((paramBit & bitmaskZ)>>2, 2));
-
 					}
 				}
 				conditionalSampling2Var.setExecutionPurpose(response.path("purpose").textValue());
@@ -1003,11 +858,8 @@ public class ClimateServiceController extends Controller {
 			}else{
 				
 			}
-
-			// flash the response message
 			Application.flashMsg(response);
 			Application.flashMsg(response);
-
 		}catch (IllegalStateException e) {
 			e.printStackTrace();
 			Application.flashMsg(APICall
@@ -1025,15 +877,8 @@ public class ClimateServiceController extends Controller {
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		String climateServiceId = df.field("idHolder").value();
 		Logger.debug(climateServiceId);
-
-		// return a text message
-
-		// Call the delete() method
 		JsonNode response = ClimateService.delete(climateServiceId);
-
-		// flash the response message
 		Application.flashMsg(response);
-
 		return redirect("/climate/climateServices");
 	}
 
@@ -1041,21 +886,13 @@ public class ClimateServiceController extends Controller {
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		String confId = df.field("idHolder").value();
 		Logger.debug(confId);
-
-		// return a text message
-
-		// Call the delete() method
 		JsonNode response = ServiceLog.deleteServiceLog(confId);
-
-		// flash the response message
 		Application.flashMsg(response);
-
 		return redirect("/serviceLog");
 	}
 
 	public static Result downloadClimateService() {
 		List<ClimateService> user = ClimateService.all();
-		// 1. Convert Java object to JSON format
 		ObjectMapper mapper = new ObjectMapper();
 		File file = new File("user.json");
 		try {
@@ -1064,7 +901,6 @@ public class ClimateServiceController extends Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		response().setContentType("application/x-download");
 		response().setHeader("Content-disposition",
 				"attachment; filename=user.json");
@@ -1072,7 +908,6 @@ public class ClimateServiceController extends Controller {
 	}
 	
 	public static Result oneService(String url) {
-		
 		return ok(oneService.render("/assets/html/" + url));
 	}
 
