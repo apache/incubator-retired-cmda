@@ -273,7 +273,7 @@ public class ClimateServiceController extends Controller {
 				twoDVarZonalMean.setExecutionPurpose(response.path("purpose").textValue());
 				twoDVarZonalMean.setImage(response.path("plotUrl").textValue());
 				twoDVarZonalMean.setDataURL(response.path("dataUrl").textValue());
-				return ok(views.html.climate.TwoDVariableZonelMean.render(twoDVarZonalMean));
+				return ok(views.html.climate.twoDVariableZonelMean.render(twoDVarZonalMean));
 			}
 			else if (serviceName.equals("2-D-Variable-Map")) {//Old ID 12
 				for (int i = 0; i < responseConfigItems.size(); i++) {
