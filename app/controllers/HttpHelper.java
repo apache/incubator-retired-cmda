@@ -13,8 +13,6 @@ import com.google.gson.JsonObject;
 public class HttpHelper {
 	public static String HttpUserReg(String urlStr, JsonObject jsonObj, String operation)
 			throws Exception {
-		// String URLStr = "http://einstein.sv.cmu.edu:9000/addContestUser";
-
         if (operation.equals("post")) {
             System.out.println("Reached inside post");
             return httpPost(urlStr, jsonObj.toString());
@@ -37,16 +35,11 @@ public class HttpHelper {
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("Accept", "application/json");
         conn.setDoOutput(true);
-
-        // Create the form content
         OutputStream out = conn.getOutputStream();
         Writer writer = new OutputStreamWriter(out, "UTF-8");
-
         writer.write(jsonString);
-
         writer.close();
         out.close();
-
         return getHttpResponse(conn, 200);
 	}
 
@@ -58,27 +51,20 @@ public class HttpHelper {
         conn.setRequestProperty("Content-Type", "text/plain");
         conn.setRequestProperty("Accept", "application/json");
         conn.setDoOutput(true);
-
-        // Create the form content
         OutputStream out = conn.getOutputStream();
         Writer writer = new OutputStreamWriter(out, "UTF-8");
-
         writer.write(textString);
-
         writer.close();
         out.close();
-
         return getHttpResponse(conn, 200);
     }
+    
 	public static String httpDelete(String urlStr)
 			throws Exception {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
-        // conn.setRequestProperty("Content-Type", "application/json");
-        // conn.setRequestProperty("Accept", "application/json");
         conn.setDoOutput(true);
-
         conn.connect();
         return getHttpResponse(conn, 201);
 	}
@@ -89,9 +75,7 @@ public class HttpHelper {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoOutput(true);
-
         conn.connect();
-
         return getHttpResponse(conn, 200);
     }
 
@@ -102,7 +86,6 @@ public class HttpHelper {
             throw new IOException(conn.getResponseMessage());
         }
 
-        // Buffer the result into a string
         BufferedReader rd = new BufferedReader(new InputStreamReader(
                 conn.getInputStream()));
         StringBuilder sb = new StringBuilder();
@@ -111,7 +94,6 @@ public class HttpHelper {
             sb.append(line);
         }
         rd.close();
-
         conn.disconnect();
         return sb.toString();
     }

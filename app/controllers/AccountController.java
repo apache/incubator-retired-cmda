@@ -1,55 +1,33 @@
 package controllers;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-//import com.gargoylesoftware.htmlunit.javascript.host.Console;
-
-
-
-
-
-import models.metadata.ClimateService;
 import models.metadata.ServiceLog;
-
-import org.apache.commons.collections.map.HashedMap;
-
 import play.Logger;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.*;
-import scala.Console;
 import util.APICall;
 import util.APICall.ResponseType;
-import util.TimeConvert;
 import views.html.climate.*;
-
-/******************************************************************************
- * TODO: Change the name of the controller to support; Later to service execution log
- ******************************************************************************/
-
-
 
 public class AccountController extends Controller {
 
 	final static Form<ServiceLog> serviceLogForm = Form
 			.form(ServiceLog.class);
 
-
 	public static Result getServiceLog() {
 		return ok(serviceLog.render(ServiceLog.all(),
 				serviceLogForm));
 	}
 	
-	// Sync userId according to purpose
 	public static Result syncData(){
 		return ok(serviceLog.render(ServiceLog.syncDataByPurpose(),
 				serviceLogForm));
@@ -59,8 +37,6 @@ public class AccountController extends Controller {
 		return ok(searchServiceLog.render(serviceLogForm));
 	}
 
-	
-//this is  the one we are using now	
 	public static Result getSearchServiceLogOneDimension() {
 		Form<ServiceLog> dc = serviceLogForm.bindFromRequest();
 		ObjectNode jsonData = Json.newObject();
@@ -70,29 +46,18 @@ public class AccountController extends Controller {
 		String userId = "";
 		String startTime = "";
 		String endTime = "";
-		
 		String dataSetStartTime = "";
 		String dataSetEndTime = "";
-		
-//		String startLatitude = "";
-//		String endLatitude = "";
 		Date executionStartTime = null, executionEndTime= null;
+		
 		try {
 			dataSource = dc.field("Data Source").value().replace("/", "_");
-			//Logger.info("data "+dataSource);
 			variableName = dc.field("Variable Name").value();
 			executionPurpose = dc.field("Execution Purpose").value();
-			//userId = dc.field("User Id").value().replace(" ", "%20");
-			//Logger.info("data "+test);
-			//startTime = TimeConvert.datetoTimeStamp(dc.field("Start Time").value());
-			//endTime = TimeConvert.datetoTimeStamp(dc.field("End Time").value());
 			startTime = dc.field("Execution Start Time").value();
 			endTime = dc.field("Execution End Time").value();
-//			startLatitude = dc.field("Start Latitude").value();
-//			endLatitude = dc.field("End Latitude").value();
 			dataSetStartTime = dc.field("Dataset Start Time").value();
 			dataSetEndTime = dc.field("Dataset End Time").value();
-
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
 			if (!startTime.isEmpty()) {
@@ -103,6 +68,7 @@ public class AccountController extends Controller {
 					return badRequest("Wrong Date Format :" + startTime);
 				}
 			}
+			
 			if (!endTime.isEmpty()) {
 				try {
 					executionEndTime = simpleDateFormat.parse(endTime);
@@ -205,33 +171,26 @@ public class AccountController extends Controller {
 			Application.flashMsg(APICall.createResponse(ResponseType.UNKNOWN));
 		}
 
-		//Data source and variable names are parameters
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("model", dataSource);
 		parameters.put("var", variableName);
 		parameters.put("startT", dataSetStartTime);
 		parameters.put("endT", dataSetEndTime);
-		
 		List<ServiceLog> response = ServiceLog.queryExecutionLogs(userId, executionStartTime, executionEndTime, executionPurpose, dataSetStartTime, dataSetEndTime, parameters);
 		return ok(searchLogResult.render(response));
 
 	}
 
-	
-// deprecated one
 	public static Result getSearchServiceLog() {
 		Form<ServiceLog> dc = serviceLogForm.bindFromRequest();
 		String userId = "", startTime = "", endTime = "";
 		Date start=null, end=null;
+		
 		try {
-
-			//userId = dc.field("User Id").value().replace(" ", "%20");
 			startTime = dc.field("Start Time").value();
 			endTime = dc.field("End Time").value();
 			Logger.info(""+startTime);
 			Logger.info(""+endTime);
-
-
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 			if (!startTime.isEmpty()) {
@@ -242,6 +201,7 @@ public class AccountController extends Controller {
 					return badRequest("Wrong Date Format :" + startTime);
 				}
 			}
+			
 			if (!endTime.isEmpty()) {
 				try {
 					end = simpleDateFormat.parse(endTime);
@@ -275,8 +235,6 @@ public class AccountController extends Controller {
 			endTime = dc.field("End Time").value();
 			Logger.info(""+startTime);
 			Logger.info(""+endTime);
-
-
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
 			if (!startTime.isEmpty()) {
@@ -287,6 +245,7 @@ public class AccountController extends Controller {
 					return badRequest("Wrong Date Format :" + startTime);
 				}
 			}
+			
 			if (!endTime.isEmpty()) {
 				try {
 					end = simpleDateFormat.parse(endTime);
@@ -295,6 +254,7 @@ public class AccountController extends Controller {
 					return badRequest("Wrong Date Format :" + endTime);
 				}
 			}
+			
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 			Application.flashMsg(APICall
@@ -321,12 +281,9 @@ public class AccountController extends Controller {
 
 			userId = dc.field("User Id").value().replace(" ", "%20");
 			startTime = dc.field("Start Time").value();
-			//System.out.println("test"+startTime);
 			endTime = dc.field("End Time").value();
 			Logger.info(""+startTime);
 			Logger.info(""+endTime);
-
-
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
 			if (!startTime.isEmpty()) {
@@ -337,6 +294,7 @@ public class AccountController extends Controller {
 					return badRequest("Wrong Date Format :" + startTime);
 				}
 			}
+			
 			if (!endTime.isEmpty()) {
 				try {
 					end = simpleDateFormat.parse(endTime);
@@ -345,6 +303,7 @@ public class AccountController extends Controller {
 					return badRequest("Wrong Date Format :" + endTime);
 				}
 			}
+			
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 			Application.flashMsg(APICall
@@ -365,12 +324,8 @@ public class AccountController extends Controller {
 		if (end != null) {
 			queryJson.put("executionEndTime", end.getTime());
 		}
-		//System.out.println("start"+startTime);
-		//System.out.println(queryJson.toString());
 		JsonNode response = APICall.postAPI("http://localhost:9034/workflow/generateWorkflowJson", queryJson);
-//		Application.flashMsg(response);
 		String resStr = response.toString();
-		
 		List<ServiceLog> responseList = ServiceLog.queryExecutionLogs(userId, start, end, null, null, null, null);
 		return ok(searchLogResultWorkflow.render(responseList,userId, startTime, endTime, resStr));
 	}
@@ -386,11 +341,13 @@ public class AccountController extends Controller {
 		String resStr = response.toString();
 		return ok(views.html.climate.recommend.render(resStr));
 	}
+	
 	public static Result getDatasetRecommend() {
 		JsonNode response = APICall.callAPI("http://einstein.sv.cmu.edu:9026/api/dgraph");
 		String resStr = response.toString();
 		return ok(views.html.climate.dataRecommend.render(resStr));
 	}
+	
 	public static Result getScientistRecommend() {
 		JsonNode response = APICall.callAPI("http://einstein.sv.cmu.edu:9026/api/scgraph");
 		String resStr = response.toString();

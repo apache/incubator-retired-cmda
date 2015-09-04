@@ -28,7 +28,7 @@ POST        /delete/report                                       controllers.Bug
 POST        /solve/report                                        controllers.BugReportController.solveReport()
 
 # About Us
-GET         /aboutus                                             controllers.AboutusController.aboutus()
+GET         /aboutus                                             controllers.AboutusController.aboutUs()
 GET         /aboutProject                                        controllers.AboutusController.aboutProject()
 
 # Climate Model
