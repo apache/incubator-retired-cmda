@@ -6,7 +6,7 @@
 <script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
 <script type="text/javascript"
 	src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
-<script type="text/javascript" src="https:
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
 	<script type="
 	text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
 <script type="text/javascript"
@@ -609,7 +609,7 @@
         $("#Response").html("Calculating ...");
         $("#data_url").html("Calculating ...");
         $("#Image").html("");
-        var url = "http:
+        var url = "http://" + window.location.hostname + ":9002/svc/conditionalSampling2Var?";
         var d1 = $("#data1").val();
         var model1 = d1.replace("/", "_");
         model1 = model1.toLowerCase();
@@ -771,7 +771,7 @@
         arglist = arglist.concat("&displayOpt=");
         arglist = arglist.concat(dispOptString);
         url = url + encodeURI(arglist);
-        var urlTimeBounds = "http:
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/two_time_bounds?";
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
         arglistTB = arglistTB.concat("1");
