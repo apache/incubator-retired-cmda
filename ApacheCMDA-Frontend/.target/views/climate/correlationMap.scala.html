@@ -1,0 +1,662 @@
+@*******************************************************************************
+ * Licensed to the Apache Software Foundation (ASF) under one or more		   *
+ * contributor license agreements.  See the NOTICE file distributed with	   *
+ * this work for additional information regarding copyright ownership.         *
+ * The ASF licenses this file to You under the Apache License, Version 2.0     *
+ * (the "License"); you may not use this file except in compliance with        *
+ * the License.  You may obtain a copy of the License at                       *
+ *                                                                             *
+ *    http://www.apache.org/licenses/LICENSE-2.0                               *
+ *																			   *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.											   *
+ *******************************************************************************@ 
+
+@(parameters: metadata.CorrelationMap) @import helper._
+<link rel="stylesheet"
+	href='@routes.Assets.at("stylesheets/livefitler.css")'>
+@scripts = {
+<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+<script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
+<script type="text/javascript"
+	src='https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/xmisc.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("html/js2/dataList2.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("html/js2/varList.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("html/js2/common.js")'></script>
+<script type="text/javascript">
+	var Response = null;
+    var variable1 = "";
+    var variable2 = "";
+    window.onload = function() {
+    	put_data(1);
+    	changeDataSource1();
+        put_data(2);
+        changeDataSource2();
+        put_var(1);
+        changeVariableName1();
+        put_var(2);
+        changeVariableName2();
+        enable_download_button();
+        $('#t0').val($('#startYearMonth').text());
+        $('#t1').val($('#endYearMonth').text());
+        if($('#pressureLevel1').text() == "-9999"){
+        	disable_pres1(1);
+        }else{
+        	$('#pres1').val($('#pressureLevel1').text());
+        }
+        if($('#pressureLevel2').text() == "-9999"){
+        	disable_pres1(2);
+        }else{
+        	$('#pres2').val($('#pressureLevel2').text());
+        }
+        $('#lat0').val($('#startLat').text());
+        $('#lat1').val($('#endLat').text());
+        $('#lon0').val($('#startLon').text());
+        $('#lon1').val($('#endLon').text());
+        $('#laggedTime').html($('#executionLaggedTime').text());
+        $('#purpose').html($('#executionPurpose').text());
+        $('#data_url').html($('#dataURL').text());
+        $('#Response').html($('#serviceResponseText').text());
+    }
+    function disable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "N/A";
+      x.disabled=true;
+    }
+    function enable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "500";
+      x.disabled=false;
+    }
+    function changeDataSource1() {
+    	var dataSource = $('#dataSource1').text();
+	    var x = document.getElementById("data1");
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    function changeDataSource2() {
+    	var dataSource = $('#dataSource2').text();
+	    var x = document.getElementById("data2");
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    function changeVariableName1(){
+        var var_string = $('#variableName1').text();
+        var data_string = $('#dataSource1').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var1");
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    function changeVariableName2(){
+        var var_string = $('#variableName2').text();
+        var data_string = $('#dataSource2').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var2");
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    function disable_download_button()
+    {
+      var x=document.getElementById("download_data");
+      x.disabled=true;
+    }
+    function enable_download_button()
+    {
+      var x=document.getElementById("download_data");
+      x.disabled=false;
+    }
+    function disable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "N/A";
+      x.disabled=true;
+    }
+    function enable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.value = "500";
+      x.disabled=false;
+    }
+    function put_data(ID){
+      var list1=document.getElementById("data"+ID);
+      for(var key in dataList) {
+        if (key.slice(0,5)==="group") {
+          var og = document.createElement("OPTGROUP");
+          og.setAttribute('label', dataList[key][0]);
+          list1.add(og);
+        } else {
+          og.appendChild(new Option(key,key));
+        }
+      }
+    }
+    function put_var(ID) {
+      var list1=document.getElementById("var"+ID);
+      for (var i=list1.length-1; i>=0; i--) {
+      list1.remove(i);
+      }
+      data_string =  document.getElementById("data"+ID).value;
+      var varList2 = dataList[data_string][1];  
+      for (var i=0; i<varList2.length; i++) {
+        var k = varList2[i];
+        list1.add(new Option(varList[k][0],k));
+      }
+    }
+    function select_var1(ID)
+    {
+      var var_string = $("#var"+ID).val();
+      if (varList[var_string][2]===3) {
+        enable_pres1(ID);
+      } else {
+        disable_pres1(ID);
+      }
+      var var_string1 = $("#var"+1).val();
+      var var_string2 = $("#var"+2).val();
+      var data_string1 = $("#data"+1).val();
+      var data_string2 = $("#data"+2).val();
+      var sTime = Math.max( Number(dataList[data_string1][2][var_string1][0]),
+                            Number(dataList[data_string2][2][var_string2][0]) );
+      var eTime = Math.min( Number(dataList[data_string1][2][var_string1][1]),
+                            Number(dataList[data_string2][2][var_string2][1]) );
+      $("#startYear").html("start year-month: (earliest:" + sTime + ")");
+      $("#endYear").html("end year-month: (latest:" + eTime + ")");
+    }
+    $(document).ready(function(){
+      $("#download_data").click(function(event) {
+        var durl = $("#data_url").val();
+        window.location.assign(durl);
+      });
+      $("#correlationMap").click(function(event) {
+        Response = null;
+        disable_download_button();
+        $("#Response").html("Calculating ...");
+        $("#data_url").html("Calculating ...");
+        $("#Image").html("");
+        var url = "http://" + window.location.hostname + ":9002/svc/correlationMap?";
+        var d1 = $("#data1").val();
+        var model1 = d1.replace("/", "_");
+        model1 = model1.toLowerCase();
+        var arglist = "";
+        arglist = arglist.concat("model1=");
+        arglist = arglist.concat(model1);
+        var variable1 = $("#var1").val();
+        arglist = arglist.concat("&var1=");
+        arglist = arglist.concat(variable1);
+        var pres1 = $("#pres1").val();
+        if (isNaN(Number(pres1))) { pres1 = "-9999"; }
+        arglist = arglist.concat("&pres1=");
+        arglist = arglist.concat(pres1);
+        var d2 = $("#data2").val();
+        var model2 = d2.replace("/", "_");
+        model2 = model2.toLowerCase();
+        arglist = arglist.concat("&model2=");
+        arglist = arglist.concat(model2);
+        var variable2 = $("#var2").val();
+        arglist = arglist.concat("&var2=");
+        arglist = arglist.concat(variable2);
+        var pres2 = $("#pres2").val();
+        if (isNaN(Number(pres2))) { pres2 = "-9999"; }
+        arglist = arglist.concat("&pres2=");
+        arglist = arglist.concat(pres2);
+        var laggedTime = $("#laggedTime").val();
+        arglist = arglist.concat("&laggedTime=");
+        arglist = arglist.concat(laggedTime);
+        var t0 = $("#t0").val();
+        var t1 = $("#t1").val();
+        t0 = t0.replace("-", "");
+        t1 = t1.replace("-", "");
+        arglist = arglist.concat("&start_time=");
+        arglist = arglist.concat(t0);
+        arglist = arglist.concat("&end_time=");
+        arglist = arglist.concat(t1);
+        var lon0 = $("#lon0").val();
+        var lon1 = $("#lon1").val();
+        var lat0 = $("#lat0").val();
+        var lat1 = $("#lat1").val();
+        arglist = arglist.concat("&lon1=");
+        arglist = arglist.concat(lon0);
+        arglist = arglist.concat("&lon2=");
+        arglist = arglist.concat(lon1);
+        arglist = arglist.concat("&lat1=");
+        arglist = arglist.concat(lat0);
+        arglist = arglist.concat("&lat2=");
+        arglist = arglist.concat(lat1);
+        var purpose = $("#purpose").val();
+        arglist = arglist.concat("&purpose=");
+        arglist = arglist.concat(purpose);
+        url = url + encodeURI(arglist);
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/two_time_bounds?";
+        var arglistTB = "";
+        arglistTB = arglistTB.concat("serviceType=");
+        arglistTB = arglistTB.concat("2");
+        arglistTB = arglistTB.concat("&source1=");
+        arglistTB = arglistTB.concat(d1);
+        arglistTB = arglistTB.concat("&var1=");
+        arglistTB = arglistTB.concat(variable1);
+        arglistTB = arglistTB.concat("&source2=");
+        arglistTB = arglistTB.concat(d2);
+        arglistTB = arglistTB.concat("&var2=");
+        arglistTB = arglistTB.concat(variable2);
+        urlTimeBounds = urlTimeBounds + encodeURI(arglistTB);
+        $.ajax({
+            type: "GET",
+            url: urlTimeBounds,
+            dataType: "json",
+            data: null,
+            success: function(data, textStatus, xhr) {
+                Response = data;
+                if (data.success == false) {
+                    Response = null;
+                    var text = JSON.stringify(data, null, 4);
+                    text = "Error in backend: <br>" + text; 
+                    $("#Response").html(text);
+                    $("#data_url").html(text);
+                    return;
+                }
+                var text = JSON.stringify(data, null, 4);
+                var tb1 = data.time_bounds1;
+                var bds1 = String(tb1).split(",");
+                var lowerT1 = parseInt(bds1[0]);
+                var upperT1 = parseInt(bds1[1]);
+                var tb2 = data.time_bounds2;
+                var bds2 = String(tb2).split(",");
+                var lowerT2 = parseInt(bds2[0]);
+                var upperT2 = parseInt(bds2[1]);
+                var t0I = parseInt(t0);
+                var t1I = parseInt(t1);
+                var lowerT, upperT;
+                if (lowerT1 == 0  || upperT1 == 0){ 
+                  alert("We do not have data for the data-1 source and variable configuration.");
+                  alert(urlTimeBounds);
+                  return;
+                }
+                else if (lowerT2 == 0  || upperT2 == 0){ 
+                  alert("We do not have data for the data-2 source and variable configuration.");
+                  return;
+                }
+                else if (lowerT2 > upperT1 || lowerT1 > upperT2) { 
+                  alert("The two data sets/vars do not have a common time range.");
+                  return;
+                }
+                else { 
+                  if (lowerT1 > lowerT2) { 
+                    lowerT = lowerT1;
+                  }
+                  else {
+                    lowerT = lowerT2;
+                  }
+                  if (upperT1 > upperT2) { 
+                    upperT = upperT2;
+                  }
+                  else {
+                    upperT = upperT1;
+                  }
+                }
+                if (t0I < lowerT && t1I < lowerT ||
+                    t0I > upperT && t1I > upperT) {
+                  alert("We do not have data that span your time range. Try the range inside ["+lowerT+", "+upperT+"].");
+                  return;
+                }
+                if (t0I < lowerT && t1I <= upperT) {
+                  alert("Your start year-month is out of bound. It has to be in or later than " + lowerT +
+                        ". We will use the range ["+lowerT+", "+t1I+"] for you.");
+                }
+                if (t1I > upperT && t0I >= lowerT) {
+                  alert("Your end year-month is out of bound. It has to be in or earlier than " + upperT +
+                        ". We will use the range ["+t0I+", "+upperT+"] for you.");
+                }
+                if (t0I < lowerT && t1I > upperT ) {
+                  alert("Both of your start and end year-months are out of bounds. They have to be in or earlier than " + upperT +
+                        ", and in or later than " + lowerT + ". We will use the range ["+lowerT+", "+upperT+"] for you.");
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+		$("#Response").html("error!");
+		$("#data_url").html("error!");
+            },
+            complete: function(xhr, textStatus) {
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            data: null,
+            success: function(data, textStatus, xhr) {
+                Response = data;
+                if (data.success == false) {
+                    Response = null;
+                    var text = JSON.stringify(data, null, 4);
+                    if (text.indexOf("No Data") != -1) {
+                      $("#Image").html("No Data");
+                      $("#Response").html("No Data");
+                      $("#data_url").html("No Data");
+                      return;
+                    }
+                    text = "Error in backend: <br>" + text; 
+                    $("#Response").html(text);
+                    $("#data_url").html(text);
+                    return;
+                }
+                var text = JSON.stringify(data, null, 4);
+                $("#Response").html(text);
+                var html = "<img src='" + data.url + "?" + new Date().getTime() + "' width='820'/>";
+                $("#Image").html(html);
+                $("#data_url").html(data.dataUrl);
+                enable_download_button();
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                $("#Response").html("error!");
+                $("#data_url").html("error!");
+            },
+            complete: function(xhr, textStatus) {
+            }
+        });
+      });
+    });
+  </script>
+} @main("Parameters of ConfId", scripts){ @flash_message()
+<p>
+<div id="dataSource1" style="display: none;">@parameters.getSource1()</div>
+<div id="dataSource2" style="display: none;">@parameters.getSource2()</div>
+<div id="variableName1" style="display: none;">@parameters.getVariableName1()</div>
+<div id="variableName2" style="display: none;">@parameters.getVariableName2()</div>
+<div id="startYearMonth" style="display: none;">@parameters.getStartYear()</div>
+<div id="endYearMonth" style="display: none;">@parameters.getEndYear()</div>
+<div id="pressureLevel1" style="display: none;">@parameters.getPressureLevel1()</div>
+<div id="pressureLevel2" style="display: none;">@parameters.getPressureLevel2()</div>
+<div id="startLat" style="display: none;">@parameters.getStartLat()</div>
+<div id="endLat" style="display: none;">@parameters.getEndLat()</div>
+<div id="startLon" style="display: none;">@parameters.getStartLon()</div>
+<div id="endLon" style="display: none;">@parameters.getEndLon()</div>
+<div id="laggedT" style="display: none;">@parameters.getLaggedTime()</div>
+<div id="executionPurpose" style="display: none;">@parameters.getExecutionPurpose()</div>
+<div id="dataURL" style="display: none;">@parameters.getDataURL()</div>
+<div id="serviceResponseText" style="display: none;">@parameters.getServiceResponseText()</div>
+<table border="1">
+	<tr>
+		<td colspan="4">
+			<center>
+				<b>Service: Time-Lagged Correlation Map of Two Variables</b><br>
+				<br> This service generates a time-lagged correlation map
+				between two specified variables. <br>The two variables can be
+				either a two-dimensional variable or a slice of a three-dimensional
+				variable at a specific pressure level. <br> <br>
+			</center>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<center>data1[t-lag]</center>
+		</td>
+		<td colspan="2">
+			<center>data2[t]</center>
+		</td>
+	</tr>
+	<tr>
+		<td>source:</td>
+		<td><select name="data1" , id="data1"
+			onchange="put_var(1); select_var1(1)">
+		</select></td>
+		<td>source:</td>
+		<td><select name="data2" , id="data2"
+			onchange="put_var(2); select_var1(2)">
+		</select></td>
+	</tr>
+	<tr>
+		<td>variable name:</td>
+		<td><select name="var1" , id="var1" onchange="select_var1(1)"></select></td>
+		<td>variable name:</td>
+		<td><select name="var2" , id="var2" onchange="select_var1(2)"></select></td>
+	</tr>
+	<tr>
+		<td>atmosphere pressure level (hPa) <br> or ocean pressure
+			level (dbar)
+		</td>
+		<td><input id="pres1" value="@parameters.getPressureLevel1()"
+			alt="pressure" /></td>
+		<td>atmosphere pressure level (hPa) <br> or ocean pressure
+			level (dbar)
+		</td>
+		<td><input id="pres2" value="@parameters.getPressureLevel2()"
+			alt="pressure" /></td>
+	</tr>
+	<tr>
+	</tr>
+	<tr>
+		<td id=startYear>start year-month:</td>
+		<td><input id="t0" value="@parameters.getStartYear()" alt="start" /></td>
+		<td id=endYear>end year-month:</td>
+		<td><input id="t1" value="@parameters.getEndYear()" alt="end" /></td>
+	</tr>
+	<tr>
+		<td>start lat (deg):</td>
+		<td><input id="lat0" value="@parameters.getStartLat()" /></td>
+		<td>end lat (deg):</td>
+		<td><input id="lat1" value="@parameters.getEndLat()" /></td>
+	</tr>
+	<tr>
+		<td>start lon (deg):</td>
+		<td><input id="lon0" value="@parameters.getStartLon()" /></td>
+		<td>end lon (deg):</td>
+		<td><input id="lon1" value="@parameters.getEndLon()" /></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td colspan="2"><center>
+				lag (month):<input id="laggedTime"
+					value="@parameters.getLaggedTime()" />
+			</center></td>
+		<td></td>
+	</tr>
+	</tr>
+	<tr>
+		<td colspan="1">Execution purpose</td>
+		<td colspan="3">
+			<form>
+				<textarea name="purpose" id="purpose" rows="4" cols="50">@parameters.getExecutionPurpose()</textarea>
+			</form>
+		</td>
+	</tr>
+	<tr>
+	<tr>
+		<td colspan="2" align="center"><input id="correlationMap"
+			type="submit" value="            Run Again            "
+			style="height: 28px" /></td>
+		<form>
+			<td colspan="2" align="center"><input id="download_data"
+				type="button" value="Download Data" style="height: 28px" /></td>
+		</form>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div id="Image">
+				<img src="@parameters.getImage()" width=680 />
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea readonly id="data_url"
+				cols="130" rows="2">@parameters.getDataURL()</textarea></td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea id="Response" cols="130"
+				rows="6">@parameters.getServiceResponseText()</textarea></td>
+	</tr>
+</table>
+}

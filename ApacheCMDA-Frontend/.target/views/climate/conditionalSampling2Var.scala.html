@@ -1,0 +1,1151 @@
+@*******************************************************************************
+ * Licensed to the Apache Software Foundation (ASF) under one or more		   *
+ * contributor license agreements.  See the NOTICE file distributed with	   *
+ * this work for additional information regarding copyright ownership.         *
+ * The ASF licenses this file to You under the Apache License, Version 2.0     *
+ * (the "License"); you may not use this file except in compliance with        *
+ * the License.  You may obtain a copy of the License at                       *
+ *                                                                             *
+ *    http://www.apache.org/licenses/LICENSE-2.0                               *
+ *																			   *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.											   *
+ *******************************************************************************@ 
+
+@(parameters: metadata.ConditionalSampling2Var) @import helper._
+<link rel="stylesheet"
+	href='@routes.Assets.at("stylesheets/livefitler.css")'>
+@scripts = {
+<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+<script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+	<script type="
+	text/javascript" src='@routes.Assets.at("javascripts/json2.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/xmisc.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("html/js2/dataList2.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("html/js2/varList.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("html/js2/common.js")'></script>
+<script type="text/javascript">
+  	var Response = null;
+    var variable1 = "";
+    var variable2 = "";
+    var naValue = "-999999";
+    window.onload = function() {
+      put_data(1);
+      changeDataSource1();
+      put_data(2);
+      changeDataSource2();
+      put_data(3);
+      changeDataSource3();
+      put_var(1);
+      changeVariableName1();
+      put_var(2);
+      changeVariableName2();
+      put_var(3);
+      changeVariableName3();
+      time_range3();
+      fillMonth();
+      enable_download_button();
+      disable_pres(1);
+      disable_pres(2);
+      disable_pres(3);
+      $('#t0').val($('#startYearMonth').text());
+      $('#t1').val($('#endYearMonth').text());
+      var enviVariableChoose1 = $('#enChoose1');
+      if(enviVariableChoose1 == "0"){
+    	  $('#radioDef1').prop("checked", true);
+    	  $('#radioCus1').prop("checked", false);
+      }else{
+    	  $('#radioDef1').prop("checked", false);
+    	  $('#radioCus1').prop("checked", true);
+      }
+      var enviVariableChoose2 = $('#enChoose2');
+      if(enviVariableChoose2 == "0"){
+    	  $('#radioDef2').prop("checked", true);
+    	  $('#radioCus2').prop("checked", false);
+      }else{
+    	  $('#radioDef2').prop("checked", false);
+    	  $('#radioCus2').prop("checked", true);
+      }
+      var selectMonths = $('#selectMonths').text();
+      $('#months option:contains('+selectMonths+')').prop({selected: true});
+      select_monthsByPara();
+      $('#lat0').val($('#startLat').text());
+      $('#lat1').val($('#endLat').text());
+      $('#lon0').val($('#startLon').text());
+      $('#lon1').val($('#endLon').text());
+      var x_axis = $('#div_X').text();
+      if(x_axis == "0") {
+        $('#radioXLin').prop( "checked", true );
+        $('#radioXLog').prop( "checked", false );
+      }
+      else {
+        $('#radioXLin').prop( "checked", false );
+        $('#radioXLog').prop( "checked", true );
+      }
+      var y_axis = $('#div_Y').text();
+      if(y_axis == "0") {
+          $('#radioYLin').prop( "checked", true );
+          $('#radioYLog').prop( "checked", false );
+        }
+        else {
+          $('#radioYLin').prop( "checked", false );
+          $('#radioYLog').prop( "checked", true );
+        }
+      var z_axis = $('#div_Z').text();
+      if(z_axis == "0") {
+          $('#radioZLin').prop( "checked", true );
+          $('#radioZLog').prop( "checked", false );
+        }
+        else {
+          $('#radioZLin').prop( "checked", false );
+          $('#radioZLog').prop( "checked", true );
+        }
+      var binMin1 = $('#binMin1').text();
+      var binMax1 = $('#binMax1').text();
+      var binNum1 = $('#binNum1').text();
+      if(binMin1 == "-999999" && binMax1 == "-999999" && binNum1=="-999999"){
+    	  $('#radioDef1').prop( "checked", true );
+    	  setDefault(1);
+      }else{
+    	  $('#radioCus1').prop( "checked", true );
+    	  $('#min1').val(binMin1);
+          $('#max1').val(binMax1);
+          $('#bins1').val(binNum1);
+      }
+      var binMin2 = $('#binMin2').text();
+      var binMax2 = $('#binMax2').text();
+      var binNum2 = $('#binNum2').text();
+      if(binMin2 == "-999999" && binMax2 == "-999999" && binNum2=="-999999"){
+    	  $('#radioDef2').prop( "checked", true );
+    	  setDefault(2);
+      }else{
+    	  $('#radioCus2').prop( "checked", true );
+    	  $('#min2').val(binMin2);
+          $('#max2').val(binMax2);
+          $('#bins2').val(binNum2);
+      }
+      $('#purpose').html($('#executionPurpose').text());
+      var imageUrl = $('#image').text();
+      $('#Image').html('<img src="'+imageUrl+'" width=680 />');
+      $('#data_url').html($('#dataURL').text());
+      $('#Response').html($('serviceResponseText').text());
+    }
+    function put_data(ID){
+        var list1=document.getElementById("data"+ID);
+        for(var key in dataList) {
+          if (key.slice(0,5)==="group") {
+            var og = document.createElement("OPTGROUP");
+            og.setAttribute('label', dataList[key][0]);
+            list1.add(og);
+          } else {
+            og.appendChild(new Option(key,key));
+          }
+        }
+      }
+      function put_var(ID) {
+        var list1=document.getElementById("var"+ID);
+        for (var i=list1.length-1; i>=0; i--) {
+        list1.remove(i);
+        }
+        data_string =  document.getElementById("data"+ID).value;
+        var varList2 = dataList[data_string][1];  
+        for (var i=0; i<varList2.length; i++) {
+          var k = varList2[i];
+          list1.add(new Option(varList[k][0],k));
+        }
+      }
+    function select_monthsByPara(){
+      	var monthsByPara = $('#monthsPara').text();
+      	console.log("HERE!!!!!!"+monthsByPara);
+      	if(monthsByPara.search("jan")>-1){
+      		document.getElementById('Jan').checked = true;
+      	}
+      	if(monthsByPara.search("feb")>-1){
+      		document.getElementById('Feb').checked = true;
+      		console.log("Feb!");
+      	}
+      	if(monthsByPara.search("mar")>-1){
+      		document.getElementById('Mar').checked = true;
+      	}
+      	if(monthsByPara.search("apr")>-1){
+      		document.getElementById('Apr').checked = true;
+      	}
+      	if(monthsByPara.search("may")>-1){
+      		document.getElementById('May').checked = true;
+      	}
+      	if(monthsByPara.search("jun")>-1){
+      		document.getElementById('Jun').checked = true;
+      	}
+      	if(monthsByPara.search("jul")>-1){
+      		document.getElementById('Jul').checked = true;
+      	}
+      	if(monthsByPara.search("aug")>-1){
+      		document.getElementById('Aug').checked = true;
+      	}
+      	if(monthsByPara.search("sep")>-1){
+      		document.getElementById('Sep').checked = true;
+      	}
+      	if(monthsByPara.search("oct")>-1){
+      		document.getElementById('Oct').checked = true;
+      	}
+      	if(monthsByPara.search("nov")>-1){
+      		document.getElementById('Nov').checked = true;
+      	}
+      	if(monthsByPara.search("dec")>-1){
+      		document.getElementById('Dec').checked = true;
+      	}
+      }
+    function disable_pres(ID)
+    {
+      var x;
+      var var1 = $("#var"+ID).val();
+      x=document.getElementById("pres"+ID);
+      if(x.value == "-999999,-999999" && ID == 1){
+    	  x.value = "N/A";
+          x.disabled=true;
+      }else if(x.value == "-999999" && (ID == 2 || ID == 3)){
+    	  x.value = "N/A";
+          x.disabled=true;
+      }else{
+    	  if(ID == 1){
+	    	  	var split12 = x.value.split(",");
+	   	        var temp1 = split12[0];
+	   	        var temp2 = split12[1];
+	   	        if ( var1 == 'ot' || var1 == 'os') {
+	   	          temp1 = temp1 / 10000;  
+	   	          temp2 = temp2 / 10000;  
+	   	        } 
+	   	        else {
+	   	          temp1 = temp1 / 100;  
+	   	          temp2 = temp2 / 100;  
+	   	        }
+	   	        x.value = temp1 + "," + temp2;
+    	  }
+    	  else{
+    		  if ( var1 == 'ot' || var1 == 'os') {
+	   	          x.value = x.value / 10000;  
+	   	        } 
+	   	        else {
+	   	        	x.value = x.value / 100;  
+	   	        }
+    	  }
+      }
+    }
+    function enable_pres1(ID)
+    {
+      var x;
+      x=document.getElementById("pres"+ID);
+      x.disabled=false;
+    }
+    function changeDataSource1() {
+    	var dataSource = $('#dataSourceP').text();
+	    var x = document.getElementById("data1");
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    function changeDataSource2() {
+    	var dataSource = $('#dataSourceE1').text();
+	    var x = document.getElementById("data2");
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    function changeDataSource3() {
+    	var dataSource = $('#dataSourceE2').text();
+	    var x = document.getElementById("data3");
+	    if(dataSource == "gfdl_esm2g" ){
+     		x.options[0].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-h" ){
+     		x.options[1].selected=true;
+     	}
+     	else if(dataSource == "giss_e2-r" ){
+     		x.options[2].selected=true;
+     	}
+     	else if(dataSource == "ncar_cam5" ){
+     		x.options[3].selected=true;
+     	}
+     	else if(dataSource == "ncc_noresm" ){
+     		x.options[4].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-es" ){
+     		x.options[5].selected=true;
+     	}
+     	else if(dataSource == "cccma_canam4" ){
+     		x.options[6].selected=true;
+     	}
+     	else if(dataSource == "csiro_mk3.6" ){
+     		x.options[7].selected=true;
+     	}
+     	else if(dataSource == "gfdl_cm3" ){
+     		x.options[8].selected=true;
+     	}
+     	else if(dataSource == "ipsl_cm5a-lr" ){
+     		x.options[9].selected=true;
+     	}
+     	else if(dataSource == "miroc_miroc5" ){
+     		x.options[10].selected=true;
+     	}
+     	else if(dataSource == "ukmo_hadgem2-a" ){
+     		x.options[11].selected=true;
+     	}
+     	else if(dataSource == "nasa_grace" ){
+     		x.options[12].selected=true;
+     	}
+     	else if(dataSource == "nasa_modis" ){
+     		x.options[13].selected=true;
+     	}
+     	else if(dataSource == "nasa_amsre" ){
+     		x.options[14].selected=true;
+     	}
+     	else if(dataSource == "nasa_trmm" ){
+     		x.options[15].selected=true;
+     	}
+     	else if(dataSource == "nasa_gpcp" ){
+     		x.options[16].selected=true;
+     	}
+     	else if(dataSource == "nasa_quikscat" ){
+     		x.options[17].selected=true;
+     	}
+     	else if(dataSource == "nasa_aviso" ){
+     		x.options[18].selected=true;
+     	}
+     	else if(dataSource == "noaa_nodc" ){
+     		x.options[19].selected=true;
+     	}
+     	else if(dataSource == "nasa_ceres" ){
+     		x.options[20].selected=true;
+     	}
+     	else if(dataSource == "nasa_airs" ){
+     		x.options[21].selected=true;
+     	}
+     	else if(dataSource == "nasa_mls" ){
+     		x.options[22].selected=true;
+     	}
+     	else if(dataSource == "nasa_argo" ){
+     		x.options[23].selected=true;
+     	}
+     	else if(dataSource == "ecmwf_interim" ){
+     		x.options[24].selected=true;
+     	}
+    }
+    function changeVariableName1(){
+        var var_string = $('#variableNameP').text();
+        var data_string = $('#dataSourceP').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var1");
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    function changeVariableName2(){
+        var var_string = $('#variableNameE1').text();
+        var data_string = $('#dataSourceE1').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var2");
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    function changeVariableName3(){
+        var var_string = $('#variableNameE2').text();
+        var data_string = $('#dataSourceE2').text();
+        data_string = data_string.replace("_", "/").toUpperCase();
+        var varList2 = dataList[data_string][1];  
+        var x = document.getElementById("var3");
+        for (var i=0; i<varList2.length; i++) {
+      	  var k = varList2[i];
+            if (k == var_string) {
+            	x.options[i].selected=true;
+            	break;
+            }
+        }
+    }
+    function select_all_months()
+    {
+        document.getElementById('Jan').checked = true;
+        document.getElementById('Feb').checked = true;
+        document.getElementById('Mar').checked = true;
+        document.getElementById('Apr').checked = true;
+        document.getElementById('May').checked = true;
+        document.getElementById('Jun').checked = true;
+        document.getElementById('Jul').checked = true;
+        document.getElementById('Aug').checked = true;
+        document.getElementById('Sep').checked = true;
+        document.getElementById('Oct').checked = true;
+        document.getElementById('Nov').checked = true;
+        document.getElementById('Dec').checked = true;
+    }
+    function no_month_check()
+    {
+        if (document.getElementById('Jan').checked == false &&
+           document.getElementById('Feb').checked == false &&
+           document.getElementById('Mar').checked == false &&
+           document.getElementById('Apr').checked == false &&
+           document.getElementById('May').checked == false &&
+           document.getElementById('Jun').checked == false &&
+           document.getElementById('Jul').checked == false &&
+           document.getElementById('Aug').checked == false &&
+           document.getElementById('Sep').checked == false &&
+           document.getElementById('Oct').checked == false &&
+           document.getElementById('Nov').checked == false &&
+           document.getElementById('Dec').checked == false) {
+           return true;
+          }
+        else
+           return false;
+    }
+    function reset_months()
+    {
+        document.getElementById('Jan').checked = false;
+        document.getElementById('Feb').checked = false;
+        document.getElementById('Mar').checked = false;
+        document.getElementById('Apr').checked = false;
+        document.getElementById('May').checked = false;
+        document.getElementById('Jun').checked = false;
+        document.getElementById('Jul').checked = false;
+        document.getElementById('Aug').checked = false;
+        document.getElementById('Sep').checked = false;
+        document.getElementById('Oct').checked = false;
+        document.getElementById('Nov').checked = false;
+        document.getElementById('Dec').checked = false;
+    }
+    function setDefault(ID)
+    {
+       var x=document.getElementById("min"+ID);
+       var y=document.getElementById("max"+ID);
+       var z=document.getElementById("bins"+ID);
+       x.value = "N/A";
+       x.disabled=true;
+       y.value = "N/A";
+       y.disabled=true;
+       z.value = "N/A";
+       z.disabled=true;
+    }
+    function setCustomized(ID)
+    {
+       var x=document.getElementById("min"+ID);
+       var y=document.getElementById("max"+ID);
+       var z=document.getElementById("bins"+ID);
+       x.value = "";
+       x.disabled=false;
+       y.value = "";
+       y.disabled=false;
+       z.value = "";
+       z.disabled=false;
+    }
+    function getMonthStr() {
+            var month_str = "";
+            for (var i=0; i<monthList.length; i++) {
+              var mm = document.getElementById(monthList[i]);
+              if (mm.checked == true) {
+                month_str += ","+(i+1);
+              }
+            }
+            month_str = month_str.substr(1);
+            return month_str;
+    }
+    $(document).ready(function(){
+      $("#download_data").click(function(event) {
+        var durl = $("#data_url").val();
+        window.location.assign(durl);
+      });
+      $("#conditionalSamp").click(function(event) {
+        Response = null;
+        disable_download_button();
+        if (no_month_check()) {
+           $("#Response").html("Error: please check at least one month.");
+           $("#Image").html("");
+           return;
+        }
+        $("#Response").html("Calculating ...");
+        $("#data_url").html("Calculating ...");
+        $("#Image").html("");
+        var url = "http://" + window.location.hostname + ":9002/svc/conditionalSampling2Var?";
+        var d1 = $("#data1").val();
+        var model1 = d1.replace("/", "_");
+        model1 = model1.toLowerCase();
+        var arglist = "";
+        arglist = arglist.concat("model1=");
+        arglist = arglist.concat(model1);
+        var variable1 = $("#var1").val();
+        arglist = arglist.concat("&var1=");
+        arglist = arglist.concat(variable1);
+        var t0 = $("#t0").val();
+        var t1 = $("#t1").val();
+        t0 = t0.replace("-", "");
+        t1 = t1.replace("-", "");
+        arglist = arglist.concat("&start_time=");
+        arglist = arglist.concat(t0);
+        arglist = arglist.concat("&end_time=");
+        arglist = arglist.concat(t1);
+        var lon0 = $("#lon0").val();
+        var lon1 = $("#lon1").val();
+        var lat0 = $("#lat0").val();
+        var lat1 = $("#lat1").val();
+        arglist = arglist.concat("&lon1=");
+        arglist = arglist.concat(lon0);
+        arglist = arglist.concat("&lon2=");
+        arglist = arglist.concat(lon1);
+        arglist = arglist.concat("&lat1=");
+        arglist = arglist.concat(lat0);
+        arglist = arglist.concat("&lat2=");
+        arglist = arglist.concat(lat1);
+        var press_range = $("#pres1").val();
+        var pres12 = parse_pres(press_range);
+        var pres1;
+        var pres2;
+        if (pres12 === naValue) {
+          pres1 = naValue;
+          pres2 = naValue;
+        } else {
+          split12 = pres12.split(",");
+          if (split12.length != 2) {
+            alert("pressure level range needs to be two values separated by comma.");
+            return; 
+          } else {
+            pres1 = split12[0];
+            pres2 = split12[1];
+            if (variable1 == 'ot' || variable1 == 'os') {
+              pres1 = pres1 * 10000;  
+              pres2 = pres2 * 10000;  
+            } 
+            else {
+              pres1 = pres1 * 100;  
+              pres2 = pres2 * 100;  
+            }
+          }
+        }
+        arglist = arglist.concat("&pres1=");
+        arglist = arglist.concat(pres1);
+        arglist = arglist.concat("&pres2=");
+        arglist = arglist.concat(pres2);
+        var month_str = getMonthStr();
+        arglist = arglist.concat("&months=");
+        arglist = arglist.concat(month_str);
+        var d2 = $("#data2").val();
+        var model2 = d2.replace("/", "_");
+        model2 = model2.toLowerCase();
+        arglist = arglist.concat("&model2=");
+        arglist = arglist.concat(model2);
+        var variable2 = $("#var2").val();
+        arglist = arglist.concat("&var2=");
+        arglist = arglist.concat(variable2);
+        var d3 = $("#data3").val();
+        var model3 = d3.replace("/", "_");
+        model3 = model3.toLowerCase();
+        arglist = arglist.concat("&model3=");
+        arglist = arglist.concat(model3);
+        var variable3 = $("#var3").val();
+        arglist = arglist.concat("&var3=");
+        arglist = arglist.concat(variable3);
+        var plev1 = $("#pres2").val();
+        plev1 = parse_pres(plev1);
+        if (plev1>0) {
+          if (variable2 == 'ot' || variable2 == 'os') {
+            plev1 = plev1 * 10000;  
+          } 
+          else {
+            plev1 = plev1 * 100;  
+          }
+        }
+        arglist = arglist.concat("&env_var_plev1=");
+        arglist = arglist.concat(plev1);
+        var plev2 = $("#pres3").val();
+        plev2 = parse_pres(plev2);
+        if (plev2>0) {
+          if (variable3 == 'ot' || variable3 == 'os') {
+            plev2 = plev2 * 10000;  
+          } 
+          else {
+            plev2 = plev2 * 100;  
+          }
+        }
+        arglist = arglist.concat("&env_var_plev2=");
+        arglist = arglist.concat(plev2);
+        var binstate1 = document.getElementById('radioDef1').checked;
+        var binMin1, binMax1, numBins1;
+        if (binstate1 == true) { 
+          binMin1 = naValue;
+          binMax1 = naValue;
+          numBins1 = naValue;
+        }
+        else { 
+          binMin1 = $("#min1").val();
+          binMax1 = $("#max1").val();
+          numBins1 = $("#bins1").val();
+        }
+        arglist = arglist.concat("&bin_min1=");
+        arglist = arglist.concat(binMin1);
+        arglist = arglist.concat("&bin_max1=");
+        arglist = arglist.concat(binMax1);
+        arglist = arglist.concat("&bin_n1=");
+        arglist = arglist.concat(numBins1);
+        var binstate2 = document.getElementById('radioDef2').checked;
+        var binMin2, binMax2, numBins2;
+        if (binstate2 == true) { 
+          binMin2 = naValue;
+          binMax2 = naValue;
+          numBins2 = naValue;
+        }
+        else { 
+          binMin2 = $("#min2").val();
+          binMax2 = $("#max2").val();
+          numBins2 = $("#bins2").val();
+        }
+        arglist = arglist.concat("&bin_min2=");
+        arglist = arglist.concat(binMin2);
+        arglist = arglist.concat("&bin_max2=");
+        arglist = arglist.concat(binMax2);
+        arglist = arglist.concat("&bin_n2=");
+        arglist = arglist.concat(numBins2);
+        var xstate = document.getElementById('radioXLin').checked;
+        var xvalue;
+        if (xstate == true)
+          xvalue = 0;
+        else
+          xvalue = 1;
+        var ystate = document.getElementById('radioYLin').checked;
+        var yvalue;
+        if (ystate == true)
+          yvalue = 0;
+        else
+          yvalue = 1;
+        var zstate = document.getElementById('radioZLin').checked;
+        var zvalue;
+        if (zstate == true)
+          zvalue = 0;
+        else
+          zvalue = 1;
+        var dispOpt;
+        dispOpt = xvalue*1 + yvalue*2 + zvalue*4;
+        var dispOptString = dispOpt.toString();
+        arglist = arglist.concat("&displayOpt=");
+        arglist = arglist.concat(dispOptString);
+        url = url + encodeURI(arglist);
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/two_time_bounds?";
+        var arglistTB = "";
+        arglistTB = arglistTB.concat("serviceType=");
+        arglistTB = arglistTB.concat("1");
+        arglistTB = arglistTB.concat("&source1=");
+        arglistTB = arglistTB.concat(d1);
+        arglistTB = arglistTB.concat("&var1=");
+        arglistTB = arglistTB.concat(variable1);
+        arglistTB = arglistTB.concat("&source2=");
+        arglistTB = arglistTB.concat(d2);
+        arglistTB = arglistTB.concat("&var2=");
+        arglistTB = arglistTB.concat(variable2);
+        urlTimeBounds = urlTimeBounds + encodeURI(arglistTB);
+        $.ajax({
+            type: "GET",
+            url: urlTimeBounds,
+            dataType: "json",
+            data: null,
+            success: function(data, textStatus, xhr) {
+                Response = data;
+                if (data.success == false) {
+                    Response = null;
+                    var text = JSON.stringify(data, null, 4);
+                    text = "Error in backend: <br>" + text; 
+                    $("#Response").html(text);
+                    $("#data_url").html(text);
+                    return;
+                }
+                var text = JSON.stringify(data, null, 4);
+                var tb1 = data.time_bounds1;
+                var bds1 = String(tb1).split(",");
+                var lowerT1 = parseInt(bds1[0]);
+                var upperT1 = parseInt(bds1[1]);
+                var tb2 = data.time_bounds2;
+                var bds2 = String(tb2).split(",");
+                var lowerT2 = parseInt(bds2[0]);
+                var upperT2 = parseInt(bds2[1]);
+                var t0I = parseInt(t0);
+                var t1I = parseInt(t1);
+                var lowerT, upperT;
+                if (lowerT1 == 0  || upperT1 == 0){ 
+                  alert("We do not have data for the data-1 source and variable configuration.");
+                  return;
+                }
+                else if (lowerT2 == 0  || upperT2 == 0){ 
+                  alert("We do not have data for the data-2 source and variable configuration.");
+                  return;
+                }
+                else if (lowerT2 > upperT1 || lowerT1 > upperT2) { 
+                  alert("The two data sets/vars do not have a common time range.");
+                  return;
+                }
+                else { 
+                  if (lowerT1 > lowerT2) { 
+                    lowerT = lowerT1;
+                  }
+                  else {
+                    lowerT = lowerT2;
+                  }
+                  if (upperT1 > upperT2) { 
+                    upperT = upperT2;
+                  }
+                  else {
+                    upperT = upperT1;
+                  }
+                }
+                if (t0I < lowerT && t1I < lowerT ||
+                    t0I > upperT && t1I > upperT) {
+                  alert("We do not have data that span your time range. Try the range inside ["+lowerT+", "+upperT+"].");
+                  return;
+                }
+                if (t0I < lowerT && t1I <= upperT) {
+                  alert("Your start year-month is out of bound. It has to be in or later than " + lowerT +
+                        ". We will use the range ["+lowerT+", "+t1I+"] for you.");
+                }
+                if (t1I > upperT && t0I >= lowerT) {
+                  alert("Your end year-month is out of bound. It has to be in or earlier than " + upperT +
+                        ". We will use the range ["+t0I+", "+upperT+"] for you.");
+                }
+                if (t0I < lowerT && t1I > upperT ) {
+                  alert("Both of your start and end year-months are out of bounds. They have to be in or earlier than " + upperT +
+                        ", and in or later than " + lowerT + ". We will use the range ["+lowerT+", "+upperT+"] for you.");
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+		$("#Response").html("error!");
+		$("#data_url").html("error!");
+            },
+            complete: function(xhr, textStatus) {
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            data: null,
+            success: function(data, textStatus, xhr) {
+                Response = data;
+                if (data.success == false) {
+                    Response = null;
+                    var text = JSON.stringify(data, null, 4);
+                    text = "Error in backend: <br>" + text; 
+                    $("#Response").html(text);
+                    $("#data_url").html(text);
+                    return;
+                }
+                var text = JSON.stringify(data, null, 4);
+                $("#Response").html(text);
+                var html = "<img src='"+data.url+"' width='820'/>";
+                $("#Image").html(html);
+                $("#data_url").html(data.dataUrl);
+                enable_download_button();
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                $("#Response").html("error!");
+                $("#data_url").html("error!");
+            },
+            complete: function(xhr, textStatus) {
+            }
+        });
+      });
+    });
+  </script>
+} @main("Parameters of ConfId", scripts){ @flash_message()
+<p>
+<div id="dataSourceP" style="display: none;">@parameters.getDataSourceP()</div>
+<div id="dataSourceE1" style="display: none;">@parameters.getDataSourceE1()</div>
+<div id="dataSourceE2" style="display: none;">@parameters.getDataSourceE2()</div>
+<div id="variableNameP" style="display: none;">@parameters.getVariableNameP()</div>
+<div id="variableNameE1" style="display: none;">@parameters.getVariableNameE1()</div>
+<div id="variableNameE2" style="display: none;">@parameters.getVariableNameE2()</div>
+<div id="pressureRange1" style="display: none;">@parameters.getPressureRange1()</div>
+<div id="pressureRange2" style="display: none;">@parameters.getPressureRange2()</div>
+<div id="env_var_plev1" style="display: none;">@parameters.getEnableVarPlev1()</div>
+<div id="env_var_plev2" style="display: none;">@parameters.getEnableVarPlev2()</div>
+<div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
+<div id="enChoose1" style="display: none;">@parameters.getCustomized1</div>
+<div id="enChoose2" style="display: none;">@parameters.getCustomized2</div>
+<div id="endYearMonth" style="display: none;">@parameters.getEndYearMonth()</div>
+<div id="selectMonths" style="display: none;">@parameters.getSelectMonths()</div>
+<div id="monthsPara" style="display: none;">@parameters.getMonth()</div>
+<div id="startLat" style="display: none;">@parameters.getStartLat()</div>
+<div id="endLat" style="display: none;">@parameters.getEndLat()</div>
+<div id="startLon" style="display: none;">@parameters.getStartLon()</div>
+<div id="endLon" style="display: none;">@parameters.getEndLon()</div>
+<div id="div_X" style="display: none;">@parameters.getX()</div>
+<div id="div_Y" style="display: none;">@parameters.getY()</div>
+<div id="div_Z" style="display: none;">@parameters.getZ()</div>
+<div id="binMin1" style="display: none;">@parameters.getBin_min1()</div>
+<div id="binMax1" style="display: none;">@parameters.getBin_max1()</div>
+<div id="binNum1" style="display: none;">@parameters.getBin_n1()</div>
+<div id="binMin2" style="display: none;">@parameters.getBin_min2()</div>
+<div id="binMax2" style="display: none;">@parameters.getBin_max2()</div>
+<div id="binNum2" style="display: none;">@parameters.getBin_n2()</div>
+<div id="executionPurpose" style="display: none;">@parameters.getExecutionPurpose()</div>
+<div id="image" style="display: none;">@parameters.getImage()</div>
+<div id="dataURL" style="display: none;">@parameters.getDataURL()</div>
+<div id="serviceResponseText" style="display: none;">@parameters.getServiceResponseText()</div>
+<table border="1">
+	<tr>
+		<td colspan="4">
+			<center>
+				<b>Service: Conditional Sampling with Two Variables</b><br>
+				<br> This service sorts one variable called sampled variable by
+				the values of two variables called sampling variables and displays
+				the averaged value of the sampled variable in color as a function of
+				the bin value of the two sampling variables in X-Y axis. There are
+				overlaid contours which show the number of samples in each of the
+				two sampling variable bin.<br>
+				<br>
+			</center>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<center>Physical Variable (sampled variable)</center>
+		</td>
+		<td colspan="2" rowspan="4"></td>
+	</tr>
+	<tr>
+		<td>source:</td>
+		<td><select name="data1" , id="data1"
+			onchange="put_var(1); time_range3()"></select></td>
+	</tr>
+	<tr>
+		<td>variable name:</td>
+		<td><select name="var1" , id="var1"
+			onchange="select_var(1); time_range3()">
+		</select></td>
+	</tr>
+	<td>atmosphere pressure range (hPa) <br> or ocean pressure
+		range (dbar):
+	</td>
+	<td><input id="pres1"
+		value="@{parameters.getPressureRange1()+','+parameters.getPressureRange2()}"
+		alt="pressure" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<center>Environmental Variable 1 (sampling variable)</center>
+		</td>
+		<td colspan="2" rowspan="6"></td>
+	</tr>
+	<tr>
+		<td>source:</td>
+		<td><select name="data2" , id="data2"
+			onchange="put_var(2); time_range3()"></select></td>
+	</tr>
+	<tr>
+		<td>variable name:</td>
+		<td><select name="var2" , id="var2"
+			onchange="select_var(2); time_range3()">
+		</select></td>
+	</tr>
+	<tr>
+		<td>atmosphere pressure level (hPa) <br> or ocean pressure
+			level (dbar):
+		</td>
+		<td><input id="pres2" value="@parameters.getEnableVarPlev1()"
+			alt="pressure" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">sampling variable binning specification:
+			<form>
+				default: <input onclick="setDefault(1)" type="radio" name="default1"
+					value="" id="radioDef1" checked> customized: <input
+					onclick="setCustomized(1)" type="radio" name="default1" value=""
+					id="radioCus1">
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<form>
+				Min: <input id="min1" value="@parameters.getBin_min1()" alt=""
+					size=3 /> Max: <input id="max1" value="@parameters.getBin_max1()"
+					alt="" size=3 /> number of bins: <input id="bins1"
+					value="@parameters.getBin_n1()" alt="" size=3 />
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<center>Environmental Variable 2 (sampling variable)</center>
+		</td>
+	</tr>
+	<tr>
+		<td>source:</td>
+		<td><select name="data3" , id="data3"
+			onchange="put_var(3); time_range3()"></select></td>
+	</tr>
+	<tr>
+		<td>variable name:</td>
+		<td><select name="var3" , id="var3"
+			onchange="select_var(3); time_range3()">
+		</select></td>
+	</tr>
+	<tr>
+		<td>atmosphere pressure level (hPa) <br> or ocean pressure
+			level (dbar):
+		</td>
+		<td><input id="pres3" value="@parameters.getEnableVarPlev2()"
+			alt="pressure" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">sampling variable binning specification:
+			<form>
+				default: <input onclick="setDefault(2)" type="radio" name="default2"
+					value="" id="radioDef2" checked> customized: <input
+					onclick="setCustomized(2)" type="radio" name="default2" value=""
+					id="radioCus2">
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<form>
+				Min: <input id="min2" value="@parameters.getBin_min2()" alt=""
+					size=3 /> Max: <input id="max2" value="@parameters.getBin_max2()"
+					alt="" size=3 /> number of bins: <input id="bins2"
+					value="@parameters.getBin_n2()" alt="" size=3 />
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td id=startYear>start year-month:</td>
+		<td><input id="t0" value="@parameters.getStartYearMonth()"
+			alt="start" /></td>
+		<td id=endYear>end year-month:</td>
+		<td><input id="t1" value="@parameters.getEndYearMonth()"
+			alt="end" /></td>
+	</tr>
+	<tr>
+		<td id="monthSelect0"></td>
+		<td id="monthSelect" colspan="3"></td>
+	</tr>
+	<tr>
+		<td>start lat (deg):</td>
+		<td><input id="lat0" value="@parameters.getStartLat()" /></td>
+		<td>end lat (deg):</td>
+		<td><input id="lat1" value="@parameters.getEndLat()" /></td>
+	</tr>
+	<tr>
+		<td>start lon (deg):</td>
+		<td><input id="lon0" value="@parameters.getStartLon()" /></td>
+		<td>end lon (deg):</td>
+		<td><input id="lon1" value="@parameters.getEndLon()" /></td>
+	</tr>
+	<tr>
+		<td colspan="1" rowspan="3">display option:</td>
+		<td colspan="3">
+			<form>
+				X-axis (sampling variable) scale: <input type="radio" name="scale1"
+					value="linear" id="radioXLin" checked>linear <input
+					type="radio" name="scale1" value="logarithmic" id="radioXLog">logarithmic
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<form>
+				Y-axis (sampled variable or pressure) scale: <input type="radio"
+					name="scale1" value="linear" id="radioYLin" checked>linear
+				<input type="radio" name="scale1" value="logarithmic" id="radioYLog">logarithmic
+			</form>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<form>
+				Z-axis (color) scale: <input type="radio" name="scale1"
+					value="linear" id="radioZLin" checked>linear <input
+					type="radio" name="scale1" value="logarithmic" id="radioZLog">logarithmic
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><input id="conditionalSamp"
+			type="submit" value="            Get  Plot            "
+			style="height: 28px" /></td>
+		<form>
+			<td colspan="2" align="center"><input id="download_data"
+				type="button" value="Download Data" style="height: 28px" /></td>
+		</form>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div id="Image">
+				<img src="@parameters.getImage()" width=680 />
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea readonly id="data_url"
+				cols="130" rows="2">@parameters.getDataURL()</textarea></td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea id="Response" cols="130"
+				rows="6">@parameters.getServiceResponseText()</textarea></td>
+	</tr>
+</table>
+}

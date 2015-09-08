@@ -1,0 +1,5 @@
+[0m[[0mdebug[0m] [0mCopy resource mappings: [0m
+[0m[[0mdebug[0m] [0m	(/Users/mingqi/git/ApacheCMDA-Frontend/conf/application.conf,/Users/mingqi/git/ApacheCMDA-Frontend/target/scala-2.10/classes/application.conf)[0m
+[0m[[0mdebug[0m] [0m	(/Users/mingqi/git/ApacheCMDA-Frontend/conf/META-INF,/Users/mingqi/git/ApacheCMDA-Frontend/target/scala-2.10/classes/META-INF)[0m
+[0m[[0mdebug[0m] [0m	(/Users/mingqi/git/ApacheCMDA-Frontend/conf/routes,/Users/mingqi/git/ApacheCMDA-Frontend/target/scala-2.10/classes/routes)[0m
+[0m[[0mdebug[0m] [0m	(/Users/mingqi/git/ApacheCMDA-Frontend/conf/META-INF/persistence.xml,/Users/mingqi/git/ApacheCMDA-Frontend/target/scala-2.10/classes/META-INF/persistence.xml)[0m

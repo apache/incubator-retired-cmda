@@ -1,0 +1,842 @@
+@*******************************************************************************
+ * Licensed to the Apache Software Foundation (ASF) under one or more		   *
+ * contributor license agreements.  See the NOTICE file distributed with	   *
+ * this work for additional information regarding copyright ownership.         *
+ * The ASF licenses this file to You under the Apache License, Version 2.0     *
+ * (the "License"); you may not use this file except in compliance with        *
+ * the License.  You may obtain a copy of the License at                       *
+ *                                                                             *
+ *    http://www.apache.org/licenses/LICENSE-2.0                               *
+ *																			   *
+ * Unless required by applicable law or agreed to in writing, software         *
+ * distributed under the License is distributed on an "AS IS" BASIS,           *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
+ * See the License for the specific language governing permissions and         *
+ * limitations under the License.											   *
+ *******************************************************************************@ 
+
+@(parameters: metadata.TwoDVarTimeSeries) @import helper._
+<link rel="stylesheet"
+	href='@routes.Assets.at("stylesheets/livefitler.css")'>
+@scripts = {
+<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+<script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+<script type="
+	text/javascript"
+	src='@routes.Assets.at("javascripts/json2.js")'></script>
+<script type="text/javascript"
+	src='@routes.Assets.at("javascripts/xmisc.js")'></script>
+<script type="text/javascript">
+	var Response = null;
+    var variable = "";
+        var method =  @parameters.getVariableScale;
+    window.onload = function() {
+      changeDataSource();
+      select_data();
+      changeVariableName();
+      select_var();
+      disable_download_button();
+    var variableScale = $('#variableScale').text();
+    if(variableScale == "0") {
+      $('#radioLin').prop( "checked", true );
+      $('#radioLog').prop( "checked", false );
+    }
+    else {
+      $('#radioLin').prop( "checked", false );
+      $('#radioLog').prop( "checked", true );
+    }
+    $('#purpose').html($('#executionPurpose').text());
+    var imageUrl = $('#image').text();
+    $('#Image').html('<img src="'+imageUrl+'" width=680 />');
+    $('#data_url').html($('#dataURL').text());
+    $('#Response').html($('serviceResponseText').text());
+    }
+    function changeDataSource(){
+    var dataSource = $('#dataSource').text();
+    var x = document.getElementById("data");
+    if(dataSource == "NASA_MODIS" ){
+    x.options[0].selected=true;
+    }
+    else if(dataSource == "NASA_AMSRE" ){
+    x.options[1].selected=true;
+    }
+    else if(dataSource == "NASA_TRMM" ){
+    x.options[2].selected=true;
+    }
+    else if(dataSource == "NASA_GPCP" ){
+    x.options[3].selected=true;
+    }
+    else if(dataSource == "NASA_QuikSCAT" ){
+    x.options[4].selected=true;
+    }
+    else if(dataSource == "NASA_AVISO" ){
+    x.options[5].selected=true;
+    }
+    else if(dataSource == "NASA_GRACE" ){
+    x.options[6].selected=true;
+    }
+    else if(dataSource == "NOAA_NODC" ){
+    x.options[7].selected=true;
+    }
+    else if(dataSource == "NASA_CERES" ){
+    x.options[8].selected=true;
+    }
+    else if(dataSource == "CCCMA_CANESM2" ){
+    x.options[9].selected=true;
+    }
+    else if(dataSource == "GFDL_ESM2G" ){
+    x.options[10].selected=true;
+    }
+    else if(dataSource == "GISS_E2-H" ){
+    x.options[11].selected=true;
+    }
+    else if(dataSource == "GISS_E2-R" ){
+    x.options[12].selected=true;
+    }
+    else if(dataSource == "NCAR_CAM5" ){
+    x.options[13].selected=true;
+    }
+    else if(dataSource == "NCC_NORESM" ){
+    x.options[14].selected=true;
+    }
+    else if(dataSource == "UKMO_HadGEM2-ES" ){
+    x.options[15].selected=true;
+    }
+    else if(dataSource == "CCCMA_CANAM4" ){
+    x.options[16].selected=true;
+    }
+    else if(dataSource == "CSIRO_MK3.6" ){
+    x.options[17].selected=true;
+    }
+    else if(dataSource == "GFDL_CM3" ){
+    x.options[18].selected=true;
+    }
+    else if(dataSource == "IPSL_CM5A-LR" ){
+    x.options[19].selected=true;
+    }
+    else if(dataSource == "MIROC_MIROC5" ){
+    x.options[20].selected=true;
+    }
+    else if(dataSource == "UKMO_HADGEM2-A" ){
+    x.options[21].selected=true;
+    }
+    else if(dataSource == "ECMWF_interim" ){
+    x.options[22].selected=true;
+    }
+    }
+    function changeVariableName(){
+    var var_string = $('#variableName').text();
+    var x=document.getElementById("var");
+    if (var_string == "clt")
+    x.options[1].selected=true;
+    else if (var_string == "ts")
+    x.options[2].selected=true;
+    else if (var_string == "tos")
+    x.options[3].selected=true;
+    else if (var_string == "pr")
+    x.options[0].selected=true;
+    else if (var_string == "uas")
+    x.options[4].selected=true;
+    else if (var_string == "vas")
+    x.options[5].selected=true;
+    else if (var_string == "sfcWind")
+    x.options[6].selected=true;
+    else if (var_string == "zos")
+    x.options[7].selected=true;
+    else if (var_string == "lai")
+    x.options[8].selected=true;
+    else if (var_string == "zl")
+    x.options[9].selected=true;
+    else if (var_string == "zo")
+    x.options[10].selected=true;
+    else if (var_string == "ohc700")
+    x.options[11].selected=true;
+    else if (var_string == "ohc2000")
+    x.options[12].selected=true;
+    else if (var_string == "rlds")
+    x.options[13].selected=true;
+    else if (var_string == "rsds")
+    x.options[14].selected=true;
+    else if (var_string == "rlus")
+    x.options[15].selected=true;
+    else if (var_string == "rsus")
+    x.options[16].selected=true;
+    else if (var_string == "rldscs")
+    x.options[17].selected=true;
+    else if (var_string == "rsdscs")
+    x.options[18].selected=true;
+    else if (var_string == "rsuscs")
+    x.options[19].selected=true;
+    else if (var_string == "rsdt")
+    x.options[20].selected=true;
+    else if (var_string == "rlutcs")
+    x.options[21].selected=true;
+    else if (var_string == "rlut")
+    x.options[22].selected=true;
+    else if (var_string == "rsutcs")
+    x.options[23].selected=true;
+    else if (var_string == "rsut")
+    x.options[24].selected=true;
+    }
+    function disable_download_button()
+    {
+      var x=document.getElementById("download_data");
+      x.disabled=false;
+    }
+    function enable_download_button()
+    {
+      var x=document.getElementById("download_data");
+      x.disabled=false;
+    }         
+    function reset_vars()
+    {
+      var x=document.getElementById("var");
+      x.options[0].disabled=false;
+      x.options[1].disabled=false;
+      x.options[2].disabled=false;
+      x.options[3].disabled=false;
+      x.options[4].disabled=false;
+      x.options[5].disabled=false;
+      x.options[6].disabled=false;
+      x.options[7].disabled=false;
+      x.options[8].disabled=false;
+      x.options[9].disabled=false;
+      x.options[10].disabled=false;
+      x.options[11].disabled=false;
+      x.options[12].disabled=false;
+      x.options[13].disabled=false;
+      x.options[14].disabled=false;
+      x.options[15].disabled=false;
+      x.options[16].disabled=false;
+      x.options[17].disabled=false;
+      x.options[18].disabled=false;
+      x.options[19].disabled=false;
+      x.options[20].disabled=false;
+      x.options[21].disabled=false;
+      x.options[22].disabled=false;
+      x.options[23].disabled=false;
+      x.options[24].disabled=false;
+    }
+    function select_var()
+    {
+      var var_string = $("#var").val();
+      disable_download_button();
+      if (var_string == "Total Cloud Fraction")
+        variable = "clt";
+      else if (var_string == "Surface Temperature")
+        variable = "ts";
+      else if (var_string == "Sea Surface Temperature")
+        variable = "tos";
+      else if (var_string == "Precipitation Flux")
+        variable = "pr";
+      else if (var_string == "Eastward Near-Surface Wind")
+        variable = "uas";
+      else if (var_string == "Northward Near-Surface Wind")
+        variable = "vas";
+      else if (var_string == "Near-Surface Wind Speed")
+        variable = "sfcWind";
+      else if (var_string == "Sea Surface Height")
+        variable = "zos";
+      else if (var_string == "Leaf Area Index")
+        variable = "lai";
+      else if (var_string == "Equivalent Water Height Over Land")
+        variable = "zl";
+      else if (var_string == "Equivalent Water Height Over Ocean")
+        variable = "zo";
+      else if (var_string == "Ocean Heat Content Anomaly within 700 m Depth")
+        variable = "ohc700";
+      else if (var_string == "Ocean Heat Content Anomaly within 2000 m Depth")
+        variable = "ohc2000";
+      else if (var_string == "Surface Downwelling Longwave Radiation")
+        variable = "rlds";
+      else if (var_string == "Surface Downwelling Shortwave Radiation")
+        variable = "rsds";
+      else if (var_string == "Surface Upwelling Longwave Radiation")
+        variable = "rlus";
+      else if (var_string == "Surface Upwelling Shortwave Radiation")
+        variable = "rsus";
+      else if (var_string == "Surface Downwelling Clear-Sky Longwave Radiation")
+        variable = "rldscs";
+      else if (var_string == "Surface Downwelling Clear-Sky Shortwave Radiation")
+        variable = "rsdscs";
+      else if (var_string == "Surface Upwelling Clear-Sky Shortwave Radiation")
+        variable = "rsuscs";
+      else if (var_string == "TOA Incident Shortwave Radiation")
+        variable = "rsdt";
+      else if (var_string == "TOA Outgoing Clear-Sky Longwave Radiation")
+        variable = "rlutcs";
+      else if (var_string == "TOA Outgoing Longwave Radiation")
+        variable = "rlut";
+      else if (var_string == "TOA Outgoing Clear-Sky Shortwave Radiation")
+        variable = "rsutcs";
+      else if (var_string == "TOA Outgoing Shortwave Radiation")
+        variable = "rsut";
+    }
+    function select_data()
+    {
+      var data_string = $("#data").val();
+      var x=document.getElementById("var");
+      disable_download_button();
+      reset_vars();
+      if (data_string == "NASA/AMSRE") {
+        x.options[0].disabled=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+        x.options[3].selected=true;
+      }
+      else if (data_string == "NASA/MODIS") {
+        x.options[0].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+        x.options[1].selected=true;
+      }
+      else if (data_string == "NASA/TRMM") {
+        x.options[0].selected=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+      }
+      else if (data_string == "NASA/GPCP") {
+        x.options[0].selected=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+      }
+      else if (data_string == "NASA/QuikSCAT") {
+        x.options[0].disabled=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+        x.options[4].selected=true;
+      }
+      else if (data_string == "NASA/AVISO") {
+        x.options[0].disabled=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+        x.options[7].selected=true;
+      }
+      else if (data_string == "NASA/GRACE") {
+        x.options[0].disabled=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+        x.options[9].selected=true;
+      }
+      else if (data_string == "NOAA/NODC") {
+        x.options[0].disabled=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+        x.options[11].selected=true;
+      }
+      else if (data_string == "NASA/CERES") {
+        x.options[0].disabled=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[3].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].selected=true;
+      }
+      else if (data_string == "ECMWF/interim") {
+        x.options[0].disabled=true;
+        x.options[1].disabled=true;
+        x.options[2].disabled=true;
+        x.options[4].disabled=true;
+        x.options[5].disabled=true;
+        x.options[6].disabled=true;
+        x.options[7].disabled=true;
+        x.options[8].disabled=true;
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[13].disabled=true;
+        x.options[14].disabled=true;
+        x.options[15].disabled=true;
+        x.options[16].disabled=true;
+        x.options[17].disabled=true;
+        x.options[18].disabled=true;
+        x.options[19].disabled=true;
+        x.options[20].disabled=true;
+        x.options[21].disabled=true;
+        x.options[22].disabled=true;
+        x.options[23].disabled=true;
+        x.options[24].disabled=true;
+        x.options[3].selected=true;
+      }
+      else {
+        x.options[9].disabled=true;
+        x.options[10].disabled=true;
+        x.options[11].disabled=true;
+        x.options[12].disabled=true;
+        x.options[0].selected=true;
+      }
+      select_var();
+    }
+    $(document).ready(function(){
+      $("#download_data").click(function(event) {
+        var durl = $("#data_url").val();
+        window.location.assign(durl);
+      });
+      $("#timeSeries2D").click(function(event) {
+        Response = null;
+        disable_download_button();
+        $("#Response").html("Calculating ...");
+        $("#data_url").html("Calculating ...");
+        $("#Image").html("");
+        var url = "http://" + window.location.hostname + ":9002/svc/timeSeries2D?";
+        var d1 = $("#data").val();
+        var model1 = d1.replace("/", "_");
+        var arglist = "";
+        arglist = arglist.concat("model=");
+        arglist = arglist.concat(model1);
+        var v1 = $("#var").val();
+        arglist = arglist.concat("&var=");
+        arglist = arglist.concat(variable);
+        var t0 = $("#t0").val();
+        var t1 = $("#t1").val();
+        t0 = t0.replace("-", "");
+        t1 = t1.replace("-", "");
+        arglist = arglist.concat("&start_time=");
+        arglist = arglist.concat(t0);
+        arglist = arglist.concat("&end_time=");
+        arglist = arglist.concat(t1);
+        var lon0 = $("#lon0").val();
+        var lon1 = $("#lon1").val();
+        var lat0 = $("#lat0").val();
+        var lat1 = $("#lat1").val();
+        arglist = arglist.concat("&lon1=");
+        arglist = arglist.concat(lon0);
+        arglist = arglist.concat("&lon2=");
+        arglist = arglist.concat(lon1);
+        arglist = arglist.concat("&lat1=");
+        arglist = arglist.concat(lat0);
+        arglist = arglist.concat("&lat2=");
+        arglist = arglist.concat(lat1);
+        arglist = arglist.concat("&scale=");
+        var y = document.getElementById("radioLin").checked;
+        if (y == true)
+          arglist = arglist.concat('0');
+        else
+          arglist = arglist.concat('2');
+        var purpose = $("#purpose").val();
+        arglist = arglist.concat("&purpose=");
+        arglist = arglist.concat(purpose);
+        url = url + encodeURI(arglist);
+        var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/time_bounds?";
+        var arglistTB = "";
+        arglistTB = arglistTB.concat("serviceType=");
+        arglistTB = arglistTB.concat("1");
+        arglistTB = arglistTB.concat("&source=");
+        arglistTB = arglistTB.concat(d1);
+        arglistTB = arglistTB.concat("&var=");
+        arglistTB = arglistTB.concat(variable);
+        urlTimeBounds = urlTimeBounds + encodeURI(arglistTB);
+        $.ajax({
+            type: "GET",
+            url: urlTimeBounds,
+            dataType: "json",
+            data: null,
+            success: function(data, textStatus, xhr) {
+                Response = data;
+                if (data.success == false) {
+                    Response = null;
+                    var text = JSON.stringify(data, null, 4);
+                    text = "Error in backend: <br>" + text; 
+                    $("#Response").html(text);
+                    $("#data_url").html(text);
+                    return;
+                }
+                var text = JSON.stringify(data, null, 4);
+                var tb = data.time_bounds;
+                var bds = String(tb).split(",");
+                var lowerT = parseInt(bds[0]);
+                var upperT = parseInt(bds[1]);
+                var t0I = parseInt(t0);
+                var t1I = parseInt(t1);
+                if ( lowerT == 0 && upperT ==0 ) {
+                  alert("We do not have data for this source and variable configuration.");
+                  return;
+                }
+                if (t0I < lowerT && t1I < lowerT ||
+                    t0I > upperT && t1I > upperT) {
+                  alert("We do not have data that span your time range. Try the range inside ["+lowerT+", "+upperT+"].");
+                  return;
+                }
+                if (t0I < lowerT && t1I <= upperT) {
+                  alert("Your start year-month is out of bound. It has to be in or later than " + lowerT +
+                        ". We will use the range ["+lowerT+", "+t1I+"] for you.");
+                }
+                if (t1I > upperT && t0I >= lowerT) {
+                  alert("Your end year-month is out of bound. It has to be in or earlier than " + upperT +
+                        ". We will use the range ["+t0I+", "+upperT+"] for you.");
+                }
+                if (t0I < lowerT && t1I > upperT ) {
+                  alert("Both of your start and end year-months are out of bounds. They have to be in or earlier than " + upperT +
+                        ", and in or later than " + lowerT + ". We will use the range ["+lowerT+", "+upperT+"] for you.");
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+		$("#Response").html("error!");
+		$("#data_url").html("error!");
+            },
+            complete: function(xhr, textStatus) {
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            data: null,
+            success: function(data, textStatus, xhr) {
+                Response = data;
+                if (data.success == false) {
+                    Response = null;
+                    var text = JSON.stringify(data, null, 4);
+                    text = "Error in backend: <br>" + text; 
+                    $("#Response").html(text);
+                    $("#data_url").html(text);
+                    return;
+                }
+                var text = JSON.stringify(data, null, 4);
+                $("#Response").html(text);
+                var html1 = "<img src='"+data.url+"' width='820'/>";
+                $("#Image").html(html1);
+                $("#data_url").html(data.dataUrl);
+                enable_download_button();
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                $("#Response").html("error!");
+                $("#data_url").html("error!");
+            },
+            complete: function(xhr, textStatus) {
+            }
+        });
+      });
+    });
+  </script>
+} @main("Parameters of ConfId", scripts){ @flash_message()
+<p>
+<div id="dataSource" style="display: none;">@parameters.getDataSource()</div>
+<div id="variableName" style="display: none;">@parameters.getVariableName()</div>
+<div id="startYearMonth" style="display: none;">@parameters.getStartYearMonth()</div>
+<div id="endYearMonth" style="display: none;">@parameters.getEndYearMonth()</div>
+<div id="startLat" style="display: none;">@parameters.getStartLat()</div>
+<div id="endLat" style="display: none;">@parameters.getEndLat()</div>
+<div id="startLon" style="display: none;">@parameters.getStartLon()</div>
+<div id="endLon" style="display: none;">@parameters.getEndLon()</div>
+<div id="variableScale" style="display: none;">@parameters.getVariableScale()</div>
+<div id="executionPurpose" style="display: none;">@parameters.getExecutionPurpose()</div>
+<div id="image" style="display: none;">@parameters.getImage()</div>
+<div id="dataURL" style="display: none;">@parameters.getDataURL()</div>
+<div id="serviceResponseText" style="display: none;">@parameters.getServiceResponseText()</div>
+<table border="1" align="center">
+	<tr>
+		<td colspan="4">
+			<center>
+				<b>Service: 2-D Variable Time Series</b><br> <br> This
+				service generates a graph of a 2-dimensional variable's time series
+				with monthly averaged values. <br> Select a data source (model
+				or observation), a variable name, a time range, and a spatial range
+				below.<br> <br>
+			</center>
+		</td>
+	</tr>
+	<tr>
+		<td>data source:</td>
+		<td><select name="data" , id="data" onchange="select_data()">
+				<optgroup label="Observation">
+					<option selected="NASA/MODIS">NASA/MODIS</option>
+					<option>NASA/AMSRE</option>
+					<option>NASA/TRMM</option>
+					<option>NASA/GPCP</option>
+					<option>NASA/QuikSCAT</option>
+					<option>NASA/AVISO</option>
+					<option>NASA/GRACE</option>
+					<option>NOAA/NODC</option>
+					<option>NASA/CERES</option>
+				</optgroup>
+				<optgroup label="Model: Historical">
+					<option>CCCMA/CANESM2</option>
+					<option>GFDL/ESM2G</option>
+					<option>GISS/E2-H</option>
+					<option>GISS/E2-R</option>
+					<option>NCAR/CAM5</option>
+					<option>NCC/NORESM</option>
+					<option>UKMO/HadGEM2-ES</option>
+				</optgroup>
+				<optgroup label="Model: AMIP">
+					<option>CCCMA/CANAM4</option>
+					<option>CSIRO/MK3.6</option>
+					<option>GFDL/CM3</option>
+					<option>IPSL/CM5A-LR</option>
+					<option>MIROC/MIROC5</option>
+					<option>UKMO/HadGEM2-A</option>
+				</optgroup>
+				<optgroup label="Reanalysis">
+					<option>ECMWF/interim</option>
+				</optgroup>
+		</select></td>
+		<td>variable name:</td>
+		<td><select name="var" , id="var" onchange="select_var()">
+				<option>Precipitation Flux</option>
+				<option>Total Cloud Fraction</option>
+				<option>Surface Temperature</option>
+				<option>Sea Surface Temperature</option>
+				<option>Eastward Near-Surface Wind</option>
+				<option>Northward Near-Surface Wind</option>
+				<option>Near-Surface Wind Speed</option>
+				<option>Sea Surface Height</option>
+				<option>Leaf Area Index</option>
+				<option>Equivalent Water Height Over Land</option>
+				<option>Equivalent Water Height Over Ocean</option>
+				<option>Ocean Heat Content Anomaly within 700 m Depth</option>
+				<option>Ocean Heat Content Anomaly within 2000 m Depth</option>
+				<option>Surface Downwelling Longwave Radiation</option>
+				<option>Surface Downwelling Shortwave Radiation</option>
+				<option>Surface Upwelling Longwave Radiation</option>
+				<option>Surface Upwelling Shortwave Radiation</option>
+				<option>Surface Downwelling Clear-Sky Longwave Radiation</option>
+				<option>Surface Downwelling Clear-Sky Shortwave Radiation</option>
+				<option>Surface Upwelling Clear-Sky Shortwave Radiation</option>
+				<option>TOA Incident Shortwave Radiation</option>
+				<option>TOA Outgoing Longwave Radiation</option>
+				<option>TOA Outgoing Shortwave Radiation</option>
+				<option>TOA Outgoing Clear-Sky Longwave Radiation</option>
+				<option>TOA Outgoing Clear-Sky Shortwave Radiation</option>
+		</select></td>
+	</tr>
+	<tr>
+		<td>start year-month:</td>
+		<td><input id="t0" value=@parameters.getStartYearMonth()
+			alt="start" /></td>
+		<td>end year-month:</td>
+		<td><input id="t1" value=@parameters.getEndYearMonth() alt="end" /></td>
+	</tr>
+	<tr>
+		<td>start lat (deg):</td>
+		<td><input id="lat0" value=@parameters.getStartLat()></td>
+		<td>end lat (deg):</td>
+		<td><input id="lat1" value=@parameters.getEndLat()></td>
+	</tr>
+	<tr>
+		<td>start lon (deg):</td>
+		<td><input id="lon0" value=@parameters.getStartLon()></td>
+		<td>end lon (deg):</td>
+		<td><input id="lon1" value=@parameters.getEndLon()></td>
+	</tr>
+	<tr>
+		<td colspan="1">variable scale:</td>
+		<td colspan="3">
+			<form>
+				<input type="radio" name="scale1" value="linear" id="radioLin"
+					checked>linear <input type="radio" name="scale1"
+					value="logarithmic" id="radioLog">logarithmic
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="1">Execution purpose</td>
+		<td colspan="3">
+			<form>
+				<textarea name="purpose" id="purpose" rows="4" cols="50"> </textarea>
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><input id="timeSeries2D"
+			type="submit" value="            Run  Again            "
+			style="height: 28px" /></td>
+		<form>
+			<td colspan="2" align="center"><input id="download_data"
+				type="button" value="Download Data" style="height: 28px" /></td>
+		</form>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div id="Image">Image Here</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea readonly id="data_url"
+				cols="89" rows="2">Data URL Here</textarea></td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center"><textarea readonly id="Response"
+				cols="89" rows="6">Service Response Text Here</textarea></td>
+	</tr>
+	</p>
+</table>
+}
