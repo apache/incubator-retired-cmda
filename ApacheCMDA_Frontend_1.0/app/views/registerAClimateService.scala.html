@@ -1,0 +1,345 @@
+@(climateServiceForm: play.data.Form[models.ClimateService])
+@import helper._
+@scripts = {
+
+<script type="text/javascript">	
+	
+
+	$(document).ready(function(){
+		
+	    
+		$( "#preview" ).click(function() {
+			var target = document.getElementById("show");
+			if(target.style.display=="none"){
+				target.style.display="block";
+				$( "#preview" ).text("Hide");
+				var userName = $("#userName").val();
+				var affiliation = $("#affiliation").val();
+				var email = $("#email").val();
+				var researchFields = $("#researchFields").val();
+
+				if(userName!=""){
+					$("#content").append(" User Name = "+userName);	
+				}
+				if(affiliation!="" && affiliation!=null){
+					$("#content").append(" Affiliation = "+affiliation);	
+				}
+				if(email!="" && email!=null){
+					$("#content").append(" Email = "+email);	
+				}
+				if(researchFields!="" && researchFields!=null){
+					$("#content").append(" Research Area = "+researchFields);	
+				}
+				
+			}else {
+				$("#content").val('');	
+                target.style.display="none";
+                $("#preview" ).text("Preview");
+            }
+		});
+	});
+		
+	</script>
+} 
+@main("Register A New Climate Service") {
+<script type="text/javascript">
+console.log("register started");
+$(window).load(function(){
+    var fixHelperModified = function(e, tr) {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+        $helper.children().each(function(index) {
+            $(this).width($originals.eq(index).width())
+        });
+        return $helper;
+    },
+        updateIndex = function(e, ui) {
+            $('td.index', ui.item.parent()).each(function (i) {
+                $(this).html(i + 1);
+            });
+        };
+
+    $("#parameterPreview tbody").sortable({
+        helper: fixHelperModified,
+        stop: updateIndex
+    }).disableSelection();
+});
+</script>
+<h2 class="text-center">Register a New Climate Service</h2>
+<br>
+
+<div class="container col-md-6">
+    
+
+    
+    @form(routes.ClimateServiceController.addClimateService()) {
+    <div class="well">
+    	<h4>Step 1 : Add Climate Service Metadata</h3>
+    	<br>
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="2-D-Variable-Map">
+        </div>
+        <div class="form-group">
+            <label>Purpose</label>
+            <input type="text" class="form-control" id="purpose" name="purpose" placeholder="climate service description">
+        </div>
+        <div class="form-group">
+            <label>Web Service API</label>
+            <input type="text" class="form-control" id="url" name="url" placeholder="cmac/web/twoDimMap">
+        </div>
+        <div class="form-group">
+            <label>Scenario</label>
+            <input type="text" class="form-control" id="scenario" name="scenario" placeholder="12">
+        </div>
+        <div class="form-group">
+            <label>Version</label>
+            <input type="text" class="form-control" id="version" name="version" placeholder="1">
+        </div>
+        <div class="form-group">
+            <label>Root Service Id</label>
+            <input type="text" class="form-control" id="rootServiceId" name="rootServiceId" placeholder="2">
+        </div>
+        <div class="form-group">
+            <label>Homepage URL</label>
+            <input type="text" class="form-control" id="homepage" placeholder="http://www.google.com">
+        </div>
+        <div class="form-group">
+            <label>Developers</label>
+            <input type="text" class="form-control" id="delevopers" placeholder="Tom Smith, Mary Brown">
+        </div>        
+        <div class="text-center">
+        	<div class="form-group">            
+            	<button type="reset" class="btn btn-success">Reset</button>
+        	</div>
+        </div>
+     </div>   
+        <div class="well">
+            <h4>Step 2 : Configure Input Parameters</h4>
+            <br>
+            <form>
+                <div class="form-group">
+                    <label>Descriptive Parameter Name</label>
+                    <input type="text" class="form-control" id="parameterNameDescriptive" placeholder="descriptive">
+                </div>
+                <div class="form-group">
+                    <label>API Parameter Name</label>
+                    <input type="text" class="form-control" id="parameterNameFunctional" placeholder="functional">
+                </div>
+                <div class="form-group">
+                    <label>Parameter Type</label>
+                    <select class="form-control" id="parameterType" onchange="Javascript:disableItem()">
+                        <option value="Input text">Input text</option>
+                        <option value="Input area">Input area</option>
+                        <option value="Multiple selects">Multiple selects</option>
+                        <option value="Radio button">Radio button</option>
+                        <option value="Dropdown list">Dropdown list</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Parameter Values</label>
+                    <input type="text" class="form-control" id="parameterValues" placeholder="2" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Default Values</label>
+                    <input type="text" class="form-control" id="defaultValues" placeholder="2">
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" onclick="Javascript:addRow()">Add Input Parameter</button>
+                    <button type="reset" class="btn btn-success">Reset</button>
+                </div>
+            </form>
+        </div>        
+        <div class="well">
+
+            <h4>Step 3 : Rule Generator</h4>
+            <br>
+            
+            <div id= "ruleAlert" class="alert alert-success">
+                <strong>Successfully added!</strong>
+            </div>
+            <div class="well">
+					<div class="form-group">
+	                    <label>Dependence1</label>
+	                    <input type="text" class="form-control" id="dependence1" placeholder="Enter dependence1 API Name" value="test">
+	                </div>
+	                <div class="form-group">
+	                    <label>Dependence2</label>
+	                    <input type="text" class="form-control" id="dependence2" placeholder="Enter dependence2 API Name" value="test1">
+	                </div>
+	                <div class="text-center">
+	                    <button type="button" class="btn btn-primary" onclick="Javascript:addDependency()">Add dependency</button>
+	                    <button type="button" class="btn btn-success" onclick="">Reset dependency</button>
+	                </div> 
+             </div>
+			<div class="well">					
+	            <form>
+	            	<div class="form-group">
+	                    <label>Data source</label>
+	                    <input type="text" class="form-control" id="dataSource" placeholder="Enter Data Source" value="GFDL/ESM2G">
+	                </div>
+	                <div class="text-center">
+	                    <button type="button" class="btn btn-primary" onclick="Javascript:addDataSource()">Add data source</button>
+	                    <button type="button" class="btn btn-success" onclick="Javascript:resetDataSource()">Reset data source</button>
+	                </div>
+	                <div class="form-group">
+	                    <label>Data group</label>
+	                    <input type="text" class="form-control" id="dataGroup" placeholder="Enter Data Group" value="Default Group">
+	                </div>
+	                <div class="text-center">
+	                    <button type="button" class="btn btn-primary" onclick="Javascript:addGroup()">Add group</button>
+	                </div>
+	                <div class="form-group">
+	                    <label>Enabled variable</label>
+	                    <input type="text" class="form-control" id="variable" placeholder="Enter Variable" value="clt">
+	                </div>
+	                <div class="text-center">
+	                    <button type="button" class="btn btn-primary" onclick="Javascript:addVariable()">Add variable</button>
+	                    <button type="button" class="btn btn-success" onclick="Javascript:resetVariable()">Reset variable</button>
+	                    <button type="button" class="btn btn-primary" onclick="Javascript:oneClickAdd()">One-click add</button>
+	                </div>       
+	            </form>
+	            <br>
+	
+	            <div class="well">
+	                <div class="text-center">
+	                    <button type="button" class="btn  btn-primary" onclick="Javascript:continue1()">Add one rule</button>
+	                    <button type="button" class="btn  btn-primary" onclick="Javascript:addDataList()">Add rule list</button>
+						<button type="button" class="btn  btn-success" onclick="Javascript:deleteAllData()">Reset rule</button>	                
+	                </div>
+	            </div>
+            </div>
+            <div class="well">
+                <label>Rule Preview</label>
+                <textarea class="form-control" rows="10" id="preview" placeholder ="Placeholder for the json data"></textarea>
+            
+                <div class="input-group">
+                    <input type="text" id="valid" class="form-control" placeholder="Valiadtion Result">
+                    <span class="input-group-btn">
+                    <button class="btn btn-primary" onclick="Javascript:validate()" type="button">Validate Json Format and Save</button>
+                    </span>
+                </div><!-- /input-group -->
+
+            </div>
+
+            <div class="well">
+                <div class="form-group">
+                    <label>Show Cache</label>
+                    <input type="text" class="form-control" id="demo1" placeholder="Show Cache" >
+                </div>
+                <label>Para Preview</label>
+                <textarea class="form-control" rows="10" id="previewPara" placeholder ="Placeholder for the Para data"></textarea>
+            </div>
+        </div>
+        
+        <div class="well">
+        	<h4>Step 4 : Configure Output Parameters</h4>
+        	<br>
+        	<form>
+                <div class="form-group">
+                    <label>Button Name</label>
+                    <input type="text" class="form-control" id="outputName" placeholder="Enter Output Name">
+                </div>
+                <div class="form-group">
+                    <label>Output Button Key</label>
+                    <input type="text" class="form-control" id="outputUrl" placeholder="Enter Output Button Url">
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" onclick="Javascript:addButton()">Add Output Button</button>
+                    <button type="reset" class="btn btn-success">Reset</button>
+                </div>
+            </form>
+        </div>
+        
+        
+        
+        
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirm" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to add this climate service?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="Javascript:window.location.href='/climateService/add'">Submit</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container col-md-6">
+    <h3>Input Part Preview</h3>
+
+    <form>
+        <table id="parameterPreview" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th class="col-md-2">Parameter Name</th>
+                <th class="col-md-3">Value</th>
+                <th class="col-md-1">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </form>
+    
+    <h3> Output Part Preview</h3>
+    <form>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Output</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <a id="serviceImgLink" href="">
+                        <img src="" id="serviceImg" class="img-responsive">
+                        <h5>  Placeholder for the image</h5>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a id="commentLink" href="">
+                        <textarea class="form-control" rows="3" id="comment" placeholder ="Placeholder for the link"></textarea>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea class="form-control" rows="10" id="message" placeholder ="Placeholder for the message"></textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Download Data</button>
+        </div>
+        <br>
+        <div class="text-center" id="output">
+            
+        </div>
+    </form>
+    
+    <div class="text-center">
+            <button type="button" class="btn btn-primary btn-lg" id="addAClimateService">Add a Climate Service</button>
+    </div>
+    
+    
+</div>
+}

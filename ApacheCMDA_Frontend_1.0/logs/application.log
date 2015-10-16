@@ -1,0 +1,355 @@
+2015-10-15 15:05:56,948 - [INFO] - from play in pool-4-thread-2 
+Listening for HTTP on /0:0:0:0:0:0:0:0:9032
+
+2015-10-15 15:07:59,275 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:07:59,762 - [INFO] - from application in play-akka.actor.default-dispatcher-3 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:08:00,153 - [ERROR] - from play in play-akka.actor.default-dispatcher-3 
+Cannot invoke the action, eventually got an error: java.lang.NullPointerException
+
+2015-10-15 15:08:00,164 - [ERROR] - from application in play-akka.actor.default-dispatcher-3 
+
+
+! @6nncbaom4 - Internal server error, for (GET) [/dataSet/allDatasets] ->
+
+play.api.Application$$anon$1: Execution exception[[NullPointerException: null]]
+	at play.api.Application$class.handleError(Application.scala:296) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.DefaultApplication.handleError(Application.scala:402) [play_2.11-2.3.9.jar:2.3.9]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3$$anonfun$applyOrElse$4.apply(PlayDefaultUpstreamHandler.scala:320) [play_2.11-2.3.9.jar:2.3.9]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3$$anonfun$applyOrElse$4.apply(PlayDefaultUpstreamHandler.scala:320) [play_2.11-2.3.9.jar:2.3.9]
+	at scala.Option.map(Option.scala:145) [scala-library-2.11.4.jar:na]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3.applyOrElse(PlayDefaultUpstreamHandler.scala:320) [play_2.11-2.3.9.jar:2.3.9]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3.applyOrElse(PlayDefaultUpstreamHandler.scala:316) [play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.Future$$anonfun$recoverWith$1.apply(Future.scala:344) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.Future$$anonfun$recoverWith$1.apply(Future.scala:343) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:32) [scala-library-2.11.4.jar:na]
+	at play.api.libs.iteratee.Execution$trampoline$.execute(Execution.scala:46) [play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:40) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Promise$DefaultPromise.tryComplete(Promise.scala:248) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.Promise$class.complete(Promise.scala:55) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Promise$DefaultPromise.complete(Promise.scala:153) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:23) [scala-library-2.11.4.jar:na]
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41) [akka-actor_2.11-2.3.4.jar:na]
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:393) [akka-actor_2.11-2.3.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107) [scala-library-2.11.4.jar:na]
+Caused by: java.lang.NullPointerException: null
+	at controllers.DatasetController.deserializeJsonToDataSet(DatasetController.java:172) ~[classes/:na]
+	at controllers.DatasetController.showAllDatasets(DatasetController.java:60) ~[classes/:na]
+	at Routes$$anonfun$routes$1$$anonfun$applyOrElse$24$$anonfun$apply$24.apply(routes_routing.scala:538) ~[classes/:na]
+	at Routes$$anonfun$routes$1$$anonfun$applyOrElse$24$$anonfun$apply$24.apply(routes_routing.scala:538) ~[classes/:na]
+	at play.core.Router$HandlerInvokerFactory$$anon$4.resultCall(Router.scala:264) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.Router$HandlerInvokerFactory$JavaActionInvokerFactory$$anon$15$$anon$1.invocation(Router.scala:255) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.JavaAction$$anon$1.call(JavaAction.scala:55) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.JavaAction$$anonfun$11.apply(JavaAction.scala:82) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.JavaAction$$anonfun$11.apply(JavaAction.scala:82) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) [scala-library-2.11.4.jar:na]
+	at play.core.j.HttpExecutionContext$$anon$2.run(HttpExecutionContext.scala:40) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Execution$trampoline$.execute(Execution.scala:46) [play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.HttpExecutionContext.execute(HttpExecutionContext.scala:32) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$.apply(Future.scala:31) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.Future$.apply(Future.scala:492) ~[scala-library-2.11.4.jar:na]
+	at play.core.j.JavaAction$class.apply(JavaAction.scala:82) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.Router$HandlerInvokerFactory$JavaActionInvokerFactory$$anon$15$$anon$1.apply(Router.scala:252) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4$$anonfun$apply$5.apply(Action.scala:130) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4$$anonfun$apply$5.apply(Action.scala:130) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.utils.Threads$.withContextClassLoader(Threads.scala:21) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4.apply(Action.scala:129) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4.apply(Action.scala:128) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.Option.map(Option.scala:145) [scala-library-2.11.4.jar:na]
+	at play.api.mvc.Action$$anonfun$apply$1.apply(Action.scala:128) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1.apply(Action.scala:121) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$mapM$1.apply(Iteratee.scala:483) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$mapM$1.apply(Iteratee.scala:483) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMapM$1.apply(Iteratee.scala:519) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMapM$1.apply(Iteratee.scala:519) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMap$1$$anonfun$apply$14.apply(Iteratee.scala:496) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMap$1$$anonfun$apply$14.apply(Iteratee.scala:496) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) [scala-library-2.11.4.jar:na]
+	... 6 common frames omitted
+
+2015-10-15 15:08:59,971 - [INFO] - from application in play-akka.actor.default-dispatcher-9 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:11:44,100 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:11:44,108 - [INFO] - from application in play-akka.actor.default-dispatcher-15 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:20:36,867 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:20:36,875 - [INFO] - from application in play-akka.actor.default-dispatcher-20 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:20:37,427 - [ERROR] - from play in play-akka.actor.default-dispatcher-20 
+Cannot invoke the action, eventually got an error: java.lang.IllegalArgumentException: Illegal pattern character 'e'
+
+2015-10-15 15:20:37,429 - [ERROR] - from application in play-akka.actor.default-dispatcher-20 
+
+
+! @6nncd211n - Internal server error, for (GET) [/dataSet/allDatasets] ->
+
+play.api.Application$$anon$1: Execution exception[[IllegalArgumentException: Illegal pattern character 'e']]
+	at play.api.Application$class.handleError(Application.scala:296) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.DefaultApplication.handleError(Application.scala:402) [play_2.11-2.3.9.jar:2.3.9]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3$$anonfun$applyOrElse$4.apply(PlayDefaultUpstreamHandler.scala:320) [play_2.11-2.3.9.jar:2.3.9]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3$$anonfun$applyOrElse$4.apply(PlayDefaultUpstreamHandler.scala:320) [play_2.11-2.3.9.jar:2.3.9]
+	at scala.Option.map(Option.scala:145) [scala-library-2.11.4.jar:na]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3.applyOrElse(PlayDefaultUpstreamHandler.scala:320) [play_2.11-2.3.9.jar:2.3.9]
+	at play.core.server.netty.PlayDefaultUpstreamHandler$$anonfun$3.applyOrElse(PlayDefaultUpstreamHandler.scala:316) [play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.Future$$anonfun$recoverWith$1.apply(Future.scala:344) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.Future$$anonfun$recoverWith$1.apply(Future.scala:343) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:32) [scala-library-2.11.4.jar:na]
+	at play.api.libs.iteratee.Execution$trampoline$.execute(Execution.scala:46) [play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:40) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Promise$DefaultPromise.tryComplete(Promise.scala:248) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.Promise$class.complete(Promise.scala:55) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Promise$DefaultPromise.complete(Promise.scala:153) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:23) [scala-library-2.11.4.jar:na]
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41) [akka-actor_2.11-2.3.4.jar:na]
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:393) [akka-actor_2.11-2.3.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107) [scala-library-2.11.4.jar:na]
+Caused by: java.lang.IllegalArgumentException: Illegal pattern character 'e'
+	at java.text.SimpleDateFormat.compile(SimpleDateFormat.java:845) ~[na:1.7.0_67]
+	at java.text.SimpleDateFormat.initialize(SimpleDateFormat.java:659) ~[na:1.7.0_67]
+	at java.text.SimpleDateFormat.<init>(SimpleDateFormat.java:585) ~[na:1.7.0_67]
+	at java.text.SimpleDateFormat.<init>(SimpleDateFormat.java:560) ~[na:1.7.0_67]
+	at controllers.DatasetController.deserializeJsonToDataSet(DatasetController.java:215) ~[classes/:na]
+	at controllers.DatasetController.showAllDatasets(DatasetController.java:62) ~[classes/:na]
+	at Routes$$anonfun$routes$1$$anonfun$applyOrElse$24$$anonfun$apply$24.apply(routes_routing.scala:538) ~[classes/:na]
+	at Routes$$anonfun$routes$1$$anonfun$applyOrElse$24$$anonfun$apply$24.apply(routes_routing.scala:538) ~[classes/:na]
+	at play.core.Router$HandlerInvokerFactory$$anon$4.resultCall(Router.scala:264) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.Router$HandlerInvokerFactory$JavaActionInvokerFactory$$anon$15$$anon$1.invocation(Router.scala:255) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.JavaAction$$anon$1.call(JavaAction.scala:55) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.JavaAction$$anonfun$11.apply(JavaAction.scala:82) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.JavaAction$$anonfun$11.apply(JavaAction.scala:82) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) [scala-library-2.11.4.jar:na]
+	at play.core.j.HttpExecutionContext$$anon$2.run(HttpExecutionContext.scala:40) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Execution$trampoline$.execute(Execution.scala:46) [play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.core.j.HttpExecutionContext.execute(HttpExecutionContext.scala:32) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$.apply(Future.scala:31) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.Future$.apply(Future.scala:492) ~[scala-library-2.11.4.jar:na]
+	at play.core.j.JavaAction$class.apply(JavaAction.scala:82) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.Router$HandlerInvokerFactory$JavaActionInvokerFactory$$anon$15$$anon$1.apply(Router.scala:252) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4$$anonfun$apply$5.apply(Action.scala:130) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4$$anonfun$apply$5.apply(Action.scala:130) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.utils.Threads$.withContextClassLoader(Threads.scala:21) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4.apply(Action.scala:129) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4.apply(Action.scala:128) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.Option.map(Option.scala:145) [scala-library-2.11.4.jar:na]
+	at play.api.mvc.Action$$anonfun$apply$1.apply(Action.scala:128) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.mvc.Action$$anonfun$apply$1.apply(Action.scala:121) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$mapM$1.apply(Iteratee.scala:483) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$mapM$1.apply(Iteratee.scala:483) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMapM$1.apply(Iteratee.scala:519) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMapM$1.apply(Iteratee.scala:519) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMap$1$$anonfun$apply$14.apply(Iteratee.scala:496) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMap$1$$anonfun$apply$14.apply(Iteratee.scala:496) ~[play-iteratees_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) [scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) [scala-library-2.11.4.jar:na]
+	... 6 common frames omitted
+
+2015-10-15 15:21:00,820 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:21:00,828 - [INFO] - from application in play-akka.actor.default-dispatcher-24 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:24:14,966 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:24:14,976 - [INFO] - from application in play-akka.actor.default-dispatcher-25 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:27:16,344 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:27:16,352 - [INFO] - from application in play-akka.actor.default-dispatcher-35 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:39:09,390 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:39:09,398 - [INFO] - from application in play-akka.actor.default-dispatcher-41 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:48:45,107 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:48:45,115 - [INFO] - from application in play-akka.actor.default-dispatcher-46 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:53:31,557 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:53:31,565 - [INFO] - from application in play-akka.actor.default-dispatcher-58 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:57:34,070 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:57:34,078 - [INFO] - from application in play-akka.actor.default-dispatcher-63 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:57:52,911 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:57:52,918 - [INFO] - from application in play-akka.actor.default-dispatcher-67 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:58:09,484 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:58:09,495 - [INFO] - from application in play-akka.actor.default-dispatcher-74 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:59:06,873 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:59:06,885 - [INFO] - from application in play-akka.actor.default-dispatcher-77 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:59:25,036 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:59:25,044 - [INFO] - from application in play-akka.actor.default-dispatcher-86 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 15:59:55,848 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 15:59:55,859 - [INFO] - from application in play-akka.actor.default-dispatcher-84 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:02:28,747 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:02:28,757 - [INFO] - from application in play-akka.actor.default-dispatcher-90 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:04:28,268 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:04:28,275 - [INFO] - from application in play-akka.actor.default-dispatcher-96 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:04:44,299 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:04:44,309 - [INFO] - from application in play-akka.actor.default-dispatcher-101 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:06:00,458 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:06:00,466 - [INFO] - from application in play-akka.actor.default-dispatcher-107 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:06:10,770 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:06:10,781 - [INFO] - from application in play-akka.actor.default-dispatcher-115 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:06:26,341 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:06:26,348 - [INFO] - from application in play-akka.actor.default-dispatcher-114 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:06:45,547 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:06:45,554 - [INFO] - from application in play-akka.actor.default-dispatcher-120 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:07:04,610 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:07:04,617 - [INFO] - from application in play-akka.actor.default-dispatcher-114 
+http://localhost:9035/dataset/getAllDatasets/json
+
+2015-10-15 16:10:03,131 - [ERROR] - from application in New I/O worker #8 
+
+
+! @6nncjek56 - Internal server error, for (GET) [/dataSet/searchDataSet] ->
+
+play.PlayExceptions$CompilationException: Compilation error[error: cannot find symbol]
+	at play.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27) ~[na:na]
+	at play.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27) ~[na:na]
+	at scala.Option.map(Option.scala:145) ~[scala-library-2.11.4.jar:na]
+	at play.PlayReload$$anonfun$taskFailureHandler$1.apply(PlayReload.scala:49) ~[na:na]
+	at play.PlayReload$$anonfun$taskFailureHandler$1.apply(PlayReload.scala:44) ~[na:na]
+	at scala.Option.map(Option.scala:145) ~[scala-library-2.11.4.jar:na]
+	at play.PlayReload$.taskFailureHandler(PlayReload.scala:44) ~[na:na]
+	at play.PlayReload$.compileFailure(PlayReload.scala:40) ~[na:na]
+	at play.PlayReload$$anonfun$compile$1.apply(PlayReload.scala:17) ~[na:na]
+	at play.PlayReload$$anonfun$compile$1.apply(PlayReload.scala:17) ~[na:na]
+	at scala.util.Either$LeftProjection.map(Either.scala:377) ~[scala-library-2.11.4.jar:na]
+	at play.PlayReload$.compile(PlayReload.scala:17) ~[na:na]
+	at play.PlayRun$$anonfun$playRunTask$1$$anonfun$apply$2$$anonfun$apply$3$$anonfun$2.apply(PlayRun.scala:62) ~[na:na]
+	at play.PlayRun$$anonfun$playRunTask$1$$anonfun$apply$2$$anonfun$apply$3$$anonfun$2.apply(PlayRun.scala:62) ~[na:na]
+	at play.runsupport.Reloader.reload(Reloader.scala:295) ~[na:na]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:122) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:120) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask$AdaptedRunnableAction.exec(ForkJoinTask.java:1361) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107) ~[scala-library-2.11.4.jar:na]
+
+2015-10-15 16:10:50,413 - [ERROR] - from application in New I/O worker #8 
+
+
+! @6nncjhc3m - Internal server error, for (GET) [/dataSet/searchDataSet] ->
+
+play.PlayExceptions$CompilationException: Compilation error[error: cannot find symbol]
+	at play.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27) ~[na:na]
+	at play.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27) ~[na:na]
+	at scala.Option.map(Option.scala:145) ~[scala-library-2.11.4.jar:na]
+	at play.PlayReload$$anonfun$taskFailureHandler$1.apply(PlayReload.scala:49) ~[na:na]
+	at play.PlayReload$$anonfun$taskFailureHandler$1.apply(PlayReload.scala:44) ~[na:na]
+	at scala.Option.map(Option.scala:145) ~[scala-library-2.11.4.jar:na]
+	at play.PlayReload$.taskFailureHandler(PlayReload.scala:44) ~[na:na]
+	at play.PlayReload$.compileFailure(PlayReload.scala:40) ~[na:na]
+	at play.PlayReload$$anonfun$compile$1.apply(PlayReload.scala:17) ~[na:na]
+	at play.PlayReload$$anonfun$compile$1.apply(PlayReload.scala:17) ~[na:na]
+	at scala.util.Either$LeftProjection.map(Either.scala:377) ~[scala-library-2.11.4.jar:na]
+	at play.PlayReload$.compile(PlayReload.scala:17) ~[na:na]
+	at play.PlayRun$$anonfun$playRunTask$1$$anonfun$apply$2$$anonfun$apply$3$$anonfun$2.apply(PlayRun.scala:62) ~[na:na]
+	at play.PlayRun$$anonfun$playRunTask$1$$anonfun$apply$2$$anonfun$apply$3$$anonfun$2.apply(PlayRun.scala:62) ~[na:na]
+	at play.runsupport.Reloader.reload(Reloader.scala:295) ~[na:na]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:122) ~[play_2.11-2.3.9.jar:2.3.9]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:120) ~[play_2.11-2.3.9.jar:2.3.9]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask$AdaptedRunnableAction.exec(ForkJoinTask.java:1361) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979) ~[scala-library-2.11.4.jar:na]
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107) ~[scala-library-2.11.4.jar:na]
+
+2015-10-15 16:11:57,331 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2015-10-15 16:12:02,526 - [INFO] - from application in play-akka.actor.default-dispatcher-129 
+http://localhost:9035/dataset/getMostKPopularDatasets/5
+
+2015-10-15 16:13:26,949 - [INFO] - from application in play-akka.actor.default-dispatcher-134 
+http://localhost:9035/dataset/getAllDatasets/json
+

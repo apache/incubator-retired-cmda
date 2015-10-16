@@ -1,0 +1,205 @@
+@(dataSets: List[Dataset], dataSetForm: play.data.Form[Dataset], datasetsTopK: List[Dataset])
+
+@import helper._
+@import java.math.BigInteger;var k=1;var n = 0;
+
+@scripts = {
+	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		//alert($("#url").text());
+	});
+	</script>
+}
+
+@main("Dataset List", scripts) { 
+	 
+    <h1>Climate Datasets</h1>
+    <h2>@dataSets.size() Datasets Found</h2>
+    
+<!-- 
+		<div style="overflow-y:scroll">
+		<table class="table table-striped table-bordered table-condensed tablesorter" id ="myTable">
+		<thead>
+	<tr >
+		<th style = "vertical-align: top;" class="col-md-1 header">Id</th>
+		<th style = "vertical-align: top;" class="col-md-2">Dataset Name</th>
+		<th style = "vertical-align: top;" class="col-md-1">Agency</th>
+		<th style = "vertical-align: top;" class="col-md-1">Instrument</th>
+		<th style = "vertical-align: top;" class="col-md-2">Physical variable</th>
+		<th style = "vertical-align: top;" class="col-md-1">Variable short name</th>
+		<th style = "vertical-align: top;" class="col-md-1">Units</th>
+		<th style = "vertical-align: top;" class="col-md-1">Grid Dimension</th>
+		
+		<th style = "vertical-align: top;" class="col-md-2">Variable Name in Web Interface</th>
+		<th style = "vertical-align: top;" class="col-md-1">Data Source Input Parameter</th>
+		
+		<th style = "vertical-align: top;" class="col-md-1">Dataset Start Time</th>
+		<th style = "vertical-align: top;"class="col-md-1">Dataset End Time</th>
+
+	</tr>
+	</thead>
+	<tbody>
+-->
+
+
+<section id="courses">
+    <div id="carousel1" class="carousel slide" data-ride="carousel" > 
+        <!-- Indicators -->         
+
+        <ol class="carousel-indicators"> 
+        @for(dataSet <- datasetsTopK) {
+	        @if(n == 0) {
+	        	<li data-target="#carousel1" data-slide-to="@n" class="active"></li>	        	
+	        }else{
+	        	<li data-target="#carousel1" data-slide-to="@n"></li>  	        	
+	        }
+	        @{n = n + 1}
+        }    
+        </ol>         
+
+        <!-- Wrapper for slides -->         
+
+        <div class="carousel-inner" style="background: url('@routes.Assets.at("images/pc.gif")') no-repeat left center; background-size: cover; -webkit-filter: blur(0px);  -moz-filter: blur(2px);  -o-filter: blur(2px);  -ms-filter: blur(2px);  filter: blur(2px);"> 
+				   @for(dataSet <- datasetsTopK){
+				   @if(k == 1) {
+				    <div class="item active" >
+				    @{k=0}				    
+				    }else{
+				    <div class="item" > 
+				    }
+						<div class="text-left " >
+								<div class="well col-lg-offset-4 col-lg-4 col-sm-offset-3 col-sm-6">
+									<div class="text-center">
+										<img class="card-img-top" style=" width:60%;"
+											src='@routes.Assets.at("images/data.png")' >
+									</div>
+									<div class="card-block text-center">
+										<h4 class="card-title">@dataSet.getName()</h4>
+										<p class="card-text text-muted">A data set (or dataset) is a collection of data.</p>
+									</div>
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item"><strong>Agency:</strong> <code>@dataSet.getAgencyId()</code></li>
+										<li class="list-group-item"><strong>Instrument:</strong> <code>@dataSet.getInstrument()</code></li>
+										<li class="list-group-item"><strong>Units:</strong> <code>@dataSet.getUnits()</code></li>
+										<li class="list-group-item"><strong>Start Time:</strong> <code>@dataSet.getStartTime()</code></li>
+										<li class="list-group-item"><strong>End Time:</strong> <code>@dataSet.getEndTime()</code></li>
+										<li class="list-group-item"><strong>Physical Variable:</strong> <code>@dataSet.getPhysicalVariable()</code></li>
+										
+										<!--  
+										<li class="list-group-item"><strong>Start Time:</strong> <code>@dataSet.getStartTime()</code></li>
+										<li class="list-group-item"><strong>End Time::</strong> <code>@dataSet.getEndTime</code></li>
+										-->
+									</ul>
+									<div class="card-block">
+										<a href="#" class="card-link col-lg-offset-2 col-lg-4">Card link</a> 
+										<a href="#" class="card-link col-lg-4">Another link</a>
+									</div>
+									
+									<br>
+									<div>
+										<h4 class="card-title text-center"><strong>People also research:</strong></h4>
+									</div>
+									
+									<div class="row">
+									  <div class="col-md-6">
+									    <div class="thumbnail">
+									      <img src='@routes.Assets.at("images/github.png")' >
+									      <div class="caption">
+									        <h5>NASA</h5>				        
+									        <p><a href="#" class="btn btn-primary" role="button">Go</a> <a href="#" class="btn btn-default" role="button">Ignore</a></p>
+									      </div>				      
+									    </div>
+									  </div>
+									  <div class="col-md-6">
+									    <div class="thumbnail">
+									      <img src='@routes.Assets.at("images/bug.png")' >
+									      <div class="caption">
+									        <h5>ARGO</h5>				        
+									        <p><a href="#" class="btn btn-primary" role="button">Go</a> <a href="#" class="btn btn-default" role="button">Ignore</a></p>
+									      </div>				      
+									    </div>
+									  </div>
+									</div>
+									
+								</div>
+						</div>
+					</div>
+				<!--  
+							<tr>
+								<td><font size="2">@dataSet.getId()</font></td>
+								<td><font size="2">@dataSet.getName()</font></td>
+								<td><font size="2">@dataSet.getAgencyId()</font></td>
+								<td><font size="2">@dataSet.getInstrument()</font></td>
+								<td><font size="2">@dataSet.getPhysicalVariable()</font></td>
+								<td><font size="2">@dataSet.getCMIP5VarName()</font></td>
+								<td><font size="2">@dataSet.getUnits()</font></td>
+								<td><font size="2">@dataSet.getGridDimension()</font></td>
+								<td><font size="2">@dataSet.getVariableNameInWebInterface()</font></td>
+								<td><font size="2">@dataSet.getDataSourceInputParameterToCallScienceApplicationCode()</font></td>
+								<td><font size="2">@dataSet.getStartTime()</font></td>
+								<td><font size="2">@dataSet.getEndTime()</font></td>
+							</tr>
+				-->
+					}
+        </div>         
+
+        <!-- Controls -->         
+
+        <a class="left carousel-control" href="#carousel1" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a>
+        <a class="right carousel-control" href="#carousel1" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span>  </a>          
+    </div>          
+</section>
+
+
+<h1>Datasets List</h1>
+<div style="overflow-y:scroll">
+		<table class="table table-striped table-bordered table-condensed tablesorter" id ="myTable">
+		<thead>
+	<tr >
+		<!-- 
+		<th style = "vertical-align: top;" class="col-md-1 header">Id</th>
+		-->
+		<th style = "vertical-align: top;" class="col-md-2">Dataset Name</th>
+		<th style = "vertical-align: top;" class="col-md-1">Agency</th>
+		<th style = "vertical-align: top;" class="col-md-1">Instrument</th>
+		<th style = "vertical-align: top;" class="col-md-2">Physical variable</th>
+		<th style = "vertical-align: top;" class="col-md-1">Variable short name</th>
+		<th style = "vertical-align: top;" class="col-md-1">Units</th>
+		<th style = "vertical-align: top;" class="col-md-1">Grid Dimension</th>
+		
+		<th style = "vertical-align: top;" class="col-md-2">Variable Name in Web Interface</th>
+		<th style = "vertical-align: top;" class="col-md-1">Data Source Input Parameter</th>
+		
+		<th style = "vertical-align: top;" class="col-md-1">Dataset Start Time</th>
+		<th style = "vertical-align: top;"class="col-md-1">Dataset End Time</th>
+		<th style = "vertical-align: top;"class="col-md-1">Duration</th>
+
+	</tr>
+	</thead>
+	<tbody>
+@for(dataSet <- dataSets){
+							<tr>
+								<!-- 
+								<td><font size="2">@dataSet.getId()</font></td>
+								-->
+								<td><font size="2">@dataSet.getName()</font></td>
+								<td><font size="2">@dataSet.getAgencyId()</font></td>
+								<td><font size="2">@dataSet.getInstrument()</font></td>
+								<td><font size="2">@dataSet.getPhysicalVariable()</font></td>
+								<td><font size="2">@dataSet.getCMIP5VarName()</font></td>
+								<td><font size="2">@dataSet.getUnits()</font></td>
+								<td><font size="2">@dataSet.getGridDimension()</font></td>
+								<td><font size="2">@dataSet.getVariableNameInWebInterface()</font></td>
+								<td><font size="2">@dataSet.getDataSourceInputParameterToCallScienceApplicationCode()</font></td>
+								<td><font size="2">@dataSet.getStartTime()</font></td>
+								<td><font size="2">@dataSet.getEndTime()</font></td>
+								<td><font size="2">@dataSet.getDuration()</font></td>
+							</tr>
+							}
+
+	
+	</tbody>
+    </table>
+    </div>
+}

@@ -1,0 +1,85 @@
+@(serviceLogs: List[ServiceExecutionLog], serviceLogForm: play.data.Form[ServiceExecutionLog])
+
+@import helper._
+
+@main("Service Logs"){ 
+	 
+    <h1>@serviceLogs.size() Service Logs</h1>
+    <!--
+    @helper.form(routes.Application.home()) {
+    	<div class = "col-sm-2">
+    		<input class="btn btn-primary" type="submit" value="Sync data" style="margin-top:18px">
+    	</div>
+    }
+    -->
+    
+    @helper.form(routes.Application.home()) {
+    <div class = "container">
+    	<div class = "col-sm-offset-2 col-sm-1">
+    		<!-- @inputText(serviceLogForm("User Id"),  'class -> "form-control", 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123") -->
+    	</div>
+    	<div class = "col-sm-4" >
+    		@inputText(serviceLogForm("Start Time"), 'class -> "form-control", 'id -> "startTime", 'type -> "datetime-local", '_label -> Messages("Execution Start Time"))
+    	</div>
+    	<div class = "col-sm-4">
+	    	@inputText(serviceLogForm("End Time"),  'class -> "form-control", 'id -> "endTime", 'type -> "datetime-local", '_label -> Messages("Execution End Time"))
+    	</div>
+    	<input class="btn" type="submit" value="Search" style="margin-top:23px">
+    </div>
+    }
+    
+    <table class="table table-striped table-bordered table-condensed tablesorter" id ="myTable2">
+    <thead>
+	<tr>
+		<th style = "vertical-align: top;" class="col-sm-1">Service Id</th>
+		<th style = "vertical-align: top;" class="col-sm-3">Service Name</th>
+ 		<th style = "vertical-align: top;" class="col-sm-2">User Name</th> 
+		<th style = "vertical-align: top;" class="col-sm-2">Purpose</th>
+		<th style = "vertical-align: top;" class="col-sm-2">Execution Start Time</th>
+		<th style = "vertical-align: top;" class="col-sm-2">Execution End Time</th>		
+		<th style = "vertical-align: top;" class="col-sm-1">DataSet Start Time</th>
+		<th style = "vertical-align: top;" class="col-sm-1">DataSet End Time</th>
+		<th style = "vertical-align: top;" class="col-sm-1">Details</th>
+		<!-- 
+		<td class="col-md-2">Operation</td>
+		 -->
+	</tr>
+	</thead>
+	<tbody>
+	@for(serviceLog <- serviceLogs) {
+	<tr>
+	<td><font size="2">@serviceLog.getServiceId</font></td>
+	<td><font size="2">@serviceLog.getServiceName</font></td>
+ 	<td><font size="2">@serviceLog.getUserName</font></td>
+	<td><font size="2">@serviceLog.getPurpose</font></td>
+	<td><font size="2">@serviceLog.getExecutionStartTime</font></td>
+	<td><font size="2">@serviceLog.getExecutionEndTime</font></td>
+	<td><font size="2">@serviceLog.getDataSetStartTime</font></td>
+	<td><font size="2">@serviceLog.getDataSetEndTime</font></td>
+	<td>
+	@form(routes.ServiceExecutionLogController.getConfigurationByConfId()){
+		<input
+			name="logId" class="hidden" type="hidden"
+			value="@serviceLog.getId">
+		<input
+			type="submit"  value="see details">
+	}
+	</td>
+	<!--
+	<td>
+	@form(routes.Application.home()){ 
+		<input
+			name="idHolder" class="hidden" type="hidden"
+			value="@serviceLog.getId">
+		<input
+			type="submit" class="btn btn-primary delete-btn span2" value="Delete"
+			onclick="return confirm('Are you sure you want to delete this log?')">
+		}
+	</td>
+	-->
+	</tr>
+	}
+	</tbody>
+    </table>
+}
+	

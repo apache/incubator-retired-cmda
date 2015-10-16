@@ -1,0 +1,190 @@
+@(serviceLogForm: play.data.Form[ServiceExecutionLog])
+
+@import helper._
+
+@scripts = {
+	<script type="text/javascript">
+	$(function() {
+	    var availableTags = [	      
+	      "ARGO/ARGO",
+	      "CCCMA/CANAM4",
+	      "CSIRO/MK3.6",
+	      "ECMWF/interim",
+	      "GFDL/CM3",
+	      "GFDL/ESM2G",
+	      "GISS/E2-H",
+	      "GISS/E2-R",
+	      "IPSL/CM5A-LR",
+	      "MIROC/MIROC5",
+	      "NASA/AIRS",
+	      "NASA/AMSRE",
+	      "NASA/AVISO",
+	      "NASA/CERES",
+	      "NASA/GPCP",
+	      "NASA/GRACE",
+	      "NASA/MLS",
+	      "NASA/MODIS",
+	      "NASA/QuikSCAT",
+	      "NASA/TRMM",
+	      "NCAR/CAM5",
+	      "NCC/NORESM",
+	      "NOAA/NODC",
+	      "UKMO/HadGEM2-A",
+	      "UKMO/HadGEM2-ES"
+	    ];
+	    var availableTagsVariableName = ["Air Temperature",
+					"Cloud Ice Water Content", "Cloud Liquid Water Content",
+					"Eastward Near-Surface Wind",
+					"Equivalent Water Height Over Land",
+					"Equivalent Water Height Over Ocean", "Leaf Area Index",
+					"Near-Surface Air Temperature",
+					"Near-Surface Relative Humidity",
+					"Near-Surface Wind Speed", "Northward Near-Surface Wind",
+					"Ocean Heat Content Anomaly within 2000 m Depth",
+					"Ocean Heat Content Anomaly within 700 m Depth",
+					"Ocean Salinity", "Ocean Temperature",
+					"Precipitation Flux", "Precipitation", "Relative Humidity",
+					"Sea Surface Height", "Sea Surface Temperature",
+					"Specific Humidity",
+					"Surface Downwelling Clear-Sky Longwave Radiation",
+					"Surface Downwelling Clear-Sky Shortwave Radiation",
+					"Surface Downwelling Longwave Radiation",
+					"Surface Downwelling Shortwave Radiation",
+					"Surface Temperature",
+					"Surface Upwelling Clear-Sky Shortwave Radiation",
+					"Surface Upwelling Longwave Radiation",
+					"Surface Upwelling Shortwave Radiation",
+					"TOA Incident Shortwave Radiation",
+					"TOA Outgoing Clear-Sky Longwave Radiation",
+					"TOA Outgoing Clear-Sky Shortwave Radiation",
+					"TOA Outgoing Longwave Radiation",
+					"TOA Outgoing Shortwave Radiation", "Total Cloud Fraction",
+					"Vertical Wind Velocity" ];
+			$("#dataSource").autocomplete({
+				source : availableTags
+			});
+			$("#variableName").autocomplete({
+				source : availableTagsVariableName
+			});
+		});
+
+		$(document).ready(
+				function() {
+					$("#preview").click(
+							function() {
+								var target = document.getElementById("show");
+								if (target.style.display == "none") {
+									target.style.display = "block";
+									$("#preview").text("Hide");
+									var dataS = $("#dataSource").val();
+									var varName = $("#variableName").val();
+									var exectionPurpose = $("#exectionPurpose")
+											.val();
+									/* var userId = $("#userId").val(); */
+									var executionStartTime = $(
+											"#executionStartTime").val();
+									var executionEndTime = $(
+											"#executionEndTime").val();
+									var datasetStartTime = $(
+											"#datasetStartTime").val();
+									var datasetEndTime = $("#datasetEndTime")
+											.val();
+
+									/* var startLon = $("#startLon").val();
+									var endLon = $("#endLon").val();
+									var startPre = $("#startPre").val();
+									var endPre = $("#endPre").val(); */
+									if (dataS != "") {
+										$("#content").append(
+												" Data Source = " + dataS);
+									}
+									if (varName != "" && varName != null) {
+										$("#content").append(
+												" Variable Name = " + varName);
+									}
+									if (exectionPurpose != ""
+											&& exectionPurpose != null) {
+										$("#content").append(
+												" Exection Purpose = "
+														+ exectionPurpose);
+									}
+									/* if(userId!="" && userId!=null){
+										$("#content").append(" UserId = "+userId);	
+									} */
+									if (executionStartTime != ""
+											&& executionStartTime != null) {
+										$("#content").append(
+												" Execution Start Time = "
+														+ executionStartTime);
+									}
+									if (executionEndTime != ""
+											&& executionEndTime != null) {
+										$("#content").append(
+												"Execution End Time = "
+														+ executionEndTime);
+									}
+									if (datasetStartTime != ""
+											&& datasetStartTime != null) {
+										$("#content").append(
+												" Dataset Start Time = "
+														+ datasetStartTime);
+									}
+									if (datasetEndTime != ""
+											&& datasetEndTime != null) {
+										$("#content").append(
+												" Dataset End Time = "
+														+ datasetEndTime);
+									}
+
+								} else {
+									$("#content").val('');
+									target.style.display = "none";
+									$("#preview").text("Preview");
+								}
+							});
+				});
+	</script>
+}
+
+
+@main("Search Execution Service Logs", scripts) {
+
+    <h1 style="margin-left:360px"> Search Service Execution Log</h1>
+    
+    @helper.form(routes.ServiceExecutionLogController.getSearchServiceLog()) {
+    	<!-- @select(serviceLogForm("Data Source"), options(Seq("NASA/MODIS","NASA/AMSRE","NASA/TRMM","NASA/GPCP","NASA/QuikSCAT","NASA/AVISO","NASA/GRACE","")), '_label -> "Data Source", '_default -> "", 'style->"width: 290px")  --> 
+    	<div class="ui-widget col-sm-offset-3 col-sm-7">
+    	<div class = "form-group">
+    		@inputText(serviceLogForm("Data Source"),'class -> "form-control", 'id -> "dataSource", '_label -> Messages("Data Source"), 'placeholder -> "NASA/MODIS", 'size->70) 
+    	</div>
+    	<div class = "form-group">
+    		@inputText(serviceLogForm("Variable Name"),'class -> "form-control", 'id -> "variableName", '_label -> Messages("Variable Name"), 'placeholder -> "Total Cloud Fraction", 'size->70) 
+    	</div>
+    	<div class = "form-group">
+    		@inputText(serviceLogForm("Execution Purpose"),'class -> "form-control", 'id -> "exectionPurpose", '_label -> Messages("Execution Purpose"), 'placeholder -> "test", 'size->70) 
+       	</div>
+       	<!-- <div class = "form-group">
+       		@inputText(serviceLogForm("User Id"),'class -> "form-control", 'id -> "userId", '_label -> Messages("User Id"), 'placeholder -> "123", 'size->70)
+	    </div> -->
+	    <div class = "form-group">
+	    	@inputText(serviceLogForm("Execution Start Time"),'class -> "form-control", 'id -> "executionStartTime", '_label -> Messages("Execution Start Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
+	    	@inputText(serviceLogForm("Execution End Time"),'class -> "form-control", 'id -> "executionEndTime", '_label -> Messages("Execution End Time"), 'placeholder -> "MM/DD/YYYY hh:mm", 'size->70)
+	    	<!-- @inputText(serviceLogForm("Start Latitude"),'class -> "form-control",'id -> "startLa", '_label -> Messages("Start Latitude"), 'placeholder -> "-90", 'size->70)
+	    	@inputText(serviceLogForm("End Latitude"),'class -> "form-control",'id -> "endLa", '_label -> Messages("End Latitude"), 'placeholder -> "90", 'size->70) -->
+	    	
+	    </div>
+	    <div class = "form-group">
+	    	@inputText(serviceLogForm("Dataset Start Time"),'class -> "form-control", 'id -> "datasetStartTime", '_label -> Messages("Dataset Start Time"), 'placeholder -> "YYYYMM", 'size->70)
+	    	@inputText(serviceLogForm("Dataset End Time"),'class -> "form-control", 'id -> "datasetEndTime", '_label -> Messages("Dataset End Time"), 'placeholder -> "YYYYMM", 'size->70)
+	    	
+	    	<div id="show" style="display: none;">
+	    		<textarea style="width: 640px" rows="4" id="content"></textarea>
+	    	</div>
+	    </div>
+	    <div align="center">
+	    <button id="preview" type="button" class="btn btn-info"> Preview</button>	
+	    <input class="btn" type="submit" value="Search" >
+	    </div>
+	    </div>
+	    }
+}
