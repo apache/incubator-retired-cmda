@@ -1,69 +1,72 @@
-@*******************************************************************************
- * Licensed to the Apache Software Foundation (ASF) under one or more		   *
- * contributor license agreements.  See the NOTICE file distributed with	   *
- * this work for additional information regarding copyright ownership.         *
- * The ASF licenses this file to You under the Apache License, Version 2.0     *
- * (the "License"); you may not use this file except in compliance with        *
- * the License.  You may obtain a copy of the License at                       *
- *                                                                             *
- *    http://www.apache.org/licenses/LICENSE-2.0                               *
- *																			   *
- * Unless required by applicable law or agreed to in writing, software         *
- * distributed under the License is distributed on an "AS IS" BASIS,           *
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *
- * See the License for the specific language governing permissions and         *
- * limitations under the License.											   *
- *******************************************************************************@ 
+@(parameters: metadata.RegridAndDownload) 
+@import helper._
 
-@(parameters: metadata.RegridAndDownload) @import helper._
 <link rel="stylesheet"
 	href='@routes.Assets.at("stylesheets/livefitler.css")'>
+
 @scripts = {
+
 <script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
 <script src='@routes.Assets.at("javascripts/livefilter.js")'></script>
 <script type="text/javascript"
 	src='@routes.Assets.at("javascripts/jquery-1.9.0.min.js")'></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
-<script type="
-	text/javascript"
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+<script type="text/javascript"
 	src='@routes.Assets.at("javascripts/json2.js")'></script>
-<script type="text/javascript"
-	src='@routes.Assets.at("jhtml/js/xmisc.js")'></script>
-<script type="text/javascript"
-	src='@routes.Assets.at("html/js2/varList.js")'></script>
-<script type="text/javascript"
-	src='@routes.Assets.at("html/js2/dataList2.js")'></script>
-<script type="text/javascript"
-	src='@routes.Assets.at("html/js2/common.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("jhtml/js/xmisc.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("html/js2/varList.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("html/js2/dataList2.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("html/js2/common.js")'></script>
+
 <script type="text/javascript">
+
+    
     var Response = null;
     var variable = "";
+ 
+    // called on load or reload
     window.onload = function() {
+
     	put_data(1);
     	changeDataSource();
         put_var(1);
         changeVariableName();
+      
       enable_download_button();
+
       $('#t0').val($('#startYearMonth').text());
       $('#t1').val($('#endYearMonth').text());
+      
       if($('#pressureLevel').text() == "-999999"){
       	disable_pres1(1);
       }else{
       	$('#pres1').val($('#pressureLevel').text());
       }
+
       $('#lat0').val($('#startLat').text());
       $('#lat1').val($('#endLat').text());
       $('#dlat').val($('#deltaLat').text());
+
       $('#lon0').val($('#startLon').text());
       $('#lon1').val($('#endLon').text());
       $('#dlon').val($('#deltaLon').text());
+
       $('#purpose').html($('#executionPurpose').text());
+      
+      
       $('#data_url').html($('#dataURL').text());
       $('#Response').html($('#serviceResponseText').text());
+      
     }
+ 
+
+
  function changeDataSource() {
 	    var dataSource = $('#dataSource').text();
+	    //dataSource = "NASA_QuikSCAT";
 	    var x = document.getElementById("data1");
+	    // if(dataSource == "NASA_AIRS" ){
 	    if(dataSource == "gfdl_esm2g" ){
      		x.options[0].selected=true;
      	}
@@ -139,31 +142,121 @@
      	else if(dataSource == "ecmwf_interim" ){
      		x.options[24].selected=true;
      	}
+      // }
       }
+
 function changeVariableName(){
       var var_string = $('#variableName').text();
       var data_string = $('#dataSource').text();
       data_string = data_string.replace("_", "/").toUpperCase();
+      
+    
       var varList2 = dataList[data_string][1];  
       var x = document.getElementById("var1");
+      
       for (var i=0; i<varList2.length; i++) {
     	  var k = varList2[i];
+    	  
           if (k == var_string) {
           	x.options[i].selected=true;
           	break;
           }
       }
+      /*
+      if (var_string == "clt")
+   		x.options[1].selected=true;
+      else if (var_string == "ts")
+      	x.options[2].selected=true;
+      else if (var_string == "tos")
+      	x.options[3].selected=true;
+      else if (var_string == "pr")
+      	x.options[0].selected=true;
+      else if (var_string == "uas")
+      	x.options[4].selected=true;
+      else if (var_string == "vas")
+      	x.options[5].selected=true;
+      else if (var_string == "sfcWind")
+      	x.options[6].selected=true;
+      else if (var_string == "zos")
+      	x.options[7].selected=true;
+      else if (var_string == "lai")
+      	x.options[8].selected=true;
+      else if (var_string == "zl")
+      	x.options[9].selected=true;
+      else if (var_string == "zo")
+      	x.options[10].selected=true;
+      else if (var_string == "ohc700")
+      	x.options[11].selected=true;
+      else if (var_string == "ohc2000")
+      	x.options[12].selected=true;
+      else if (var_string == "rlds")
+      	x.options[13].selected=true;
+      else if (var_string == "rsds")
+      	x.options[14].selected=true;
+      else if (var_string == "rlus")
+      	x.options[15].selected=true;
+      else if (var_string == "rsus")
+      	x.options[16].selected=true;
+      else if (var_string == "rldscs")
+      	x.options[17].selected=true;
+      else if (var_string == "rsdscs")
+      	x.options[18].selected=true;
+      else if (var_string == "rsuscs")
+      	x.options[19].selected=true;
+      else if (var_string == "rsdt")
+      	x.options[20].selected=true;
+      
+      else if (var_string == "rlut")
+      	x.options[21].selected=true;
+      else if (var_string == "rsut")
+       	x.options[22].selected=true;
+      else if (var_string == "rlutcs")
+       	x.options[23].selected=true;
+      else if (var_string == "rsutcs")
+      	x.options[24].selected=true;     
+      else if (var_string == "ta")
+      	x.options[25].selected=true;
+      else if (var_string == "hus")
+      	x.options[26].selected=true;
+      else if (var_string == "cli")
+      	x.options[27].selected=true;
+      else if (var_string == "clw")
+      	x.options[28].selected=true;
+      else if (var_string == "ot")
+      	x.options[29].selected=true;
+      else if (var_string == "os")
+       	x.options[30].selected=true;
+      else if (var_string == "wap")
+       	x.options[31].selected=true;
+      else if (var_string == "hur")
+       	x.options[32].selected=true;
+      */
     }
+
+// function changePres() {
+//       // var dataSource = $('#data1').text();
+//       //dataSource = "NASA_QuikSCAT";
+//       var x = document.getElementById("pres1");
+//       x.value = "sss";
+//       // if(dataSource == "NASA_AIRS" ){
+//         // x.options[1].selected=true;
+//       // }
+//       }
+
 function disable_download_button()
     {
       var x=document.getElementById("download_data");
       x.disabled=true;
     }
+
+    // enable download data button
     function enable_download_button()
     {
       var x=document.getElementById("download_data");
       x.disabled=false;
     }
+
+    // disable pressure level box for 2D var
     function disable_pres1(ID)
     {
       var x;
@@ -171,14 +264,19 @@ function disable_download_button()
       x.value = "N/A";
       x.disabled=true;
     }
+
+    // enable pressure level box for 3D var
     function enable_pres1(ID)
     {
       var x;
       x=document.getElementById("pres"+ID);
+      //x.value = "500";
       x.disabled=false;
     }
+
     function put_data(ID){
       var list1=document.getElementById("data"+ID);
+
       for(var key in dataList) {
         if (key.slice(0,5)==="group") {
           var og = document.createElement("OPTGROUP");
@@ -189,11 +287,13 @@ function disable_download_button()
         }
       }
     }
+
     function put_var(ID) {
       var list1=document.getElementById("var"+ID);
       for (var i=list1.length-1; i>=0; i--) {
       list1.remove(i);
       }
+
       data_string =  document.getElementById("data"+ID).value;
       var varList2 = dataList[data_string][1];  
       for (var i=0; i<varList2.length; i++) {
@@ -201,48 +301,90 @@ function disable_download_button()
         list1.add(new Option(varList[k][0],k));
       }
     }
+
+    // 
     function select_var1(ID)
     {
       var var_string;
       var_string = $("#var"+ID).val();
+      
       variable = var_string;
+      // alert("var_string: " + var_string)
+
       if (varList[var_string][2]==3) {
         enable_pres1(ID);
       } else {
         disable_pres1(ID);
       }
+
+      //alert("variable1: " + var_string);
     }
+
     $(document).ready(function(){
+/*
+      $("a").click(function(event){
+        alert("As you can see, the link no longer took you to jquery.com");
+        event.preventDefault();
+      });
+*/
+
       $("#download_data").click(function(event) {
         var durl = $("#data_url").val();
+        // alert(durl);
         window.location.assign(durl);
       });
+
+
       $("#action1").click(function(event) {
+        // alert('****** inside scatterPlot2V()!');
         Response = null;
+
+        // no data to download yet
         disable_download_button();
+
         $("#Response").html("Calculating ...");
         $("#data_url").html("Calculating ...");
+
+        // sample url: http://cmacws.jpl.nasa.gov:8090/svc/scatterPlot2V?model1=ukmo_hadgem2-a&var1=ts&pres1=200&model2=ukmo_hadgem2-a&var2=clt&pres2=200&start_time=199001&end_time=199512&lon1=0&lon2=100&lat1=-29&lat2=29
+        // form url string
+        // var url = "http://cmacws.jpl.nasa.gov:8090/svc/scatterPlot2V?";
         var url = "http://" + window.location.hostname + ":9002/svc/regridAndDownload?";
+        // alert("url: " + url);
+
         var d1 = $("#data1").val();
         var model1 = d1.replace("/", "_");
         model1 = model1.toLowerCase();
+
         var arglist = "";
         arglist = arglist.concat("model=");
         arglist = arglist.concat(model1);
+
+        // alert("arglist: " + arglist);
+
         var v1 = $("#var1").val();
         arglist = arglist.concat("&var=");
         arglist = arglist.concat(v1);
+
+        // alert("arglist: " + arglist);
+
         var pres1 = $("#pres1").val();
         arglist = arglist.concat("&plev=");
         arglist = arglist.concat(pres1);
+
         var t0 = $("#t0").val();
         var t1 = $("#t1").val();
+
         t0 = t0.replace("-", "");
         t1 = t1.replace("-", "");
+
         arglist = arglist.concat("&start_time=");
         arglist = arglist.concat(t0);
+
         arglist = arglist.concat("&end_time=");
         arglist = arglist.concat(t1);
+
+        // alert("arglist: " + arglist);
+
         var lon0 = $("#lon0").val();
         var lon1 = $("#lon1").val();
         var dlon = $("#dlon").val();
@@ -250,21 +392,34 @@ function disable_download_button()
         var lat1 = $("#lat1").val();
         var dlat = $("#dlat").val();
         var purpose = $("#purpose").val();
+
         arglist = arglist.concat("&lon1=");
         arglist = arglist.concat(lon0);
+
         arglist = arglist.concat("&lon2=");
         arglist = arglist.concat(lon1);
+
         arglist = arglist.concat("&dlon=");
         arglist = arglist.concat(dlon);
+
         arglist = arglist.concat("&lat1=");
         arglist = arglist.concat(lat0);
+
         arglist = arglist.concat("&lat2=");
         arglist = arglist.concat(lat1);
+
         arglist = arglist.concat("&dlat=");
         arglist = arglist.concat(dlat);
+
         arglist = arglist.concat("&purpose=");
         arglist = arglist.concat(purpose);
+        // alert("arglist: " + arglist);
+
+        // url = url + encodeURIComponent(arglist);
         url = url + encodeURI(arglist);
+        // url = url + arglist;
+        // alert("url: " + url);
+
         var urlTimeBounds = "http://" + window.location.hostname + ":9002/svc/time_bounds?"; 
         var arglistTB = "";
         arglistTB = arglistTB.concat("serviceType=");
@@ -274,6 +429,8 @@ function disable_download_button()
         arglistTB = arglistTB.concat("&var=");
         arglistTB = arglistTB.concat(variable);
         urlTimeBounds = urlTimeBounds + encodeURI(arglistTB);
+        // alert("urlTimeBounds: " + urlTimeBounds);
+
         $.ajax({
             type: "GET",
             url: urlTimeBounds,
@@ -281,7 +438,9 @@ function disable_download_button()
             data: null,
             success: function(data, textStatus, xhr) {
                 Response = data;
+                // alert("data: " + data);
                 if (data.success == false) {
+                    // alert(data.error);
                     Response = null;
                     var text = JSON.stringify(data, null, 4);
                     text = "Error in backend: <br>" + text; 
@@ -290,29 +449,44 @@ function disable_download_button()
                     return;
                 }
                 var text = JSON.stringify(data, null, 4);
+                // alert("text: " + text);
+                // $("#Response").html("<pre>"+text+"</pre>");
+                // $("#Response").html(text);
+
                 var tb = data.time_bounds;
                 var bds = String(tb).split(",");
+                // alert("tb: " + tb);
+                // alert("bds: " + bds);
                 var lowerT = parseInt(bds[0]);
                 var upperT = parseInt(bds[1]);
+                // alert("lowerT: " + lowerT);
+                // alert("upperT: " + upperT);
                 var t0I = parseInt(t0);
                 var t1I = parseInt(t1);
+                // alert("t0: " + t0I);
+                // alert("t1: " + t1I);
+
                 if ( lowerT == 0 && upperT ==0 ) {
                   alert("We do not have data for this source and variable configuration.");
                   return;
                 }
+
                 if (t0I < lowerT && t1I < lowerT ||
                     t0I > upperT && t1I > upperT) {
                   alert("We do not have data that span your time range. Try the range inside ["+lowerT+", "+upperT+"].");
                   return;
                 }
+
                 if (t0I < lowerT && t1I <= upperT) {
                   alert("Your start year-month is out of bound. It has to be in or later than " + lowerT +
                         ". We will use the range ["+lowerT+", "+t1I+"] for you.");
                 }
+
                 if (t1I > upperT && t0I >= lowerT) {
                   alert("Your end year-month is out of bound. It has to be in or earlier than " + upperT +
                         ". We will use the range ["+t0I+", "+upperT+"] for you.");
                 }
+
                 if (t0I < lowerT && t1I > upperT ) {
                   alert("Both of your start and end year-months are out of bounds. They have to be in or earlier than " + upperT +
                         ", and in or later than " + lowerT + ". We will use the range ["+lowerT+", "+upperT+"] for you.");
@@ -321,10 +495,14 @@ function disable_download_button()
             error: function(xhr, textStatus, errorThrown) {
 		$("#Response").html("error!");
 		$("#data_url").html("error!");
+                // alert("xhr.status: "+xhr.status);
+                // alert("error status: "+textStatus);
             },
             complete: function(xhr, textStatus) {
+                //alert("complete status: "+textStatus);
             }
         });
+
         $.ajax({
             type: "GET",
             url: url,
@@ -332,33 +510,49 @@ function disable_download_button()
             data: null,
             success: function(data, textStatus, xhr) {
                 Response = data;
+                // alert("data: " + data);
                 if (data.success == false) {
+                    // alert(data.error);
                     Response = null;
                     var text = JSON.stringify(data, null, 4);
+
                     if (text.indexOf("No Data") != -1) {
                       $("#Response").html("No Data");
                       $("#data_url").html("No Data");
                       return;
                     }
+
                     text = "Error in backend: <br>" + text; 
+                    // $("#Response").html("<span style='color:red'>" + text + "</span>");
                     $("#Response").html(text);
                     $("#data_url").html(text);
+
                     return;
                 }
                 var text = JSON.stringify(data, null, 4);
+                // alert(text);
+                // $("#Response").html("<pre>"+text+"</pre>");
                 $("#Response").html(text);
+
+                // post dataUrl to textarea and enable download button
                 $("#data_url").html(data.dataUrl);
                 enable_download_button();
             },
             error: function(xhr, textStatus, errorThrown) {
                 $("#Response").html("error!");
                 $("#data_url").html("error!");
+                // alert("xhr.status: "+xhr.status);
+                // alert("error status: "+textStatus);
             },
             complete: function(xhr, textStatus) {
+                //alert("complete status: "+textStatus);
             }
         });
+
       });
+
     });
+    
   </script>
 } @main("Parameters of ConfId", scripts){ @flash_message()
 <p>
@@ -376,7 +570,15 @@ function disable_download_button()
 <div id="executionPurpose" style="display: none;">@parameters.getExecutionPurpose()</div>
 <div id="dataURL" style="display: none;">@parameters.getDataURL()</div>
 <div id="serviceResponseText" style="display: none;">@parameters.getServiceResponseText()</div>
+
 <table border="1" width="800" align="center">
+
+
+
+
+
+
+
 	<tr>
 		<td colspan="4">
 			<center>
@@ -387,18 +589,25 @@ function disable_download_button()
 			</center>
 		</td>
 	</tr>
+
 	<tr>
 		<td>data source:</td>
 		<td><select name="data1" id="data1" onchange="put_var(1)">
 		</select></td>
+
 		<td>variable name:</td>
 		<td><select name="var1" id="var1" onchange="select_var1(1)">
 		</select></td>
 	</tr>
+
 	<tr>
-		<td colspan=4>atmosphere pressure level (hPa), or ocean pressure
-			level (dbar) <input list="plev1" id="pres1" size="50"
-			value="@parameters.getPressureLevel()"> <datalist id="plev1">
+		<td colspan=4>atmosphere pressure level (hPa), or ocean pressure level (dbar)
+			<!--
+			<input id=pres1 size=50>
+			--> 
+			<input list="plev1" id="pres1" size="50"
+			value="@parameters.getPressureLevel()"> 
+			<datalist id="plev1">
 				<option value="100000,80000,50000,30000,20000,10000"></option>
 				<option value="100000,30000,10000"></option>
 				<option value="100000,10000"></option>
@@ -406,13 +615,16 @@ function disable_download_button()
 			</datalist>
 		</td>
 	</tr>
+
 	<tr>
 		<td>start year-month: <input id="t0"
-			value="@parameters.getStartYearMonth()" alt="start" size="10" /></td>
+			value="@parameters.getStartYearMonth()" alt="start" size="10"/></td>
 		<td>end year-month: <input id="t1"
-			value="@parameters.getEndYearMonth()" alt="end" size="10" /></td>
+			value="@parameters.getEndYearMonth()" alt="end" size="10"/></td>
 		<td colspan=2></td>
 	</tr>
+
+
 	<tr>
 		<td width="25%">start lat (deg): <input size=5 id="lat0"
 			value="@parameters.getStartLat()" /></td>
@@ -422,6 +634,7 @@ function disable_download_button()
 			value="@parameters.getDeltaLat()" /></td>
 		<td></td>
 	</tr>
+
 	<tr>
 		<td width="25%">start lon (deg): <input size=5 id="lon0"
 			value="@parameters.getStartLon()" /></td>
@@ -446,14 +659,18 @@ function disable_download_button()
 			<td colspan="2" align="center"><input id="download_data"
 				type="button" value="Download Data" style="height: 28px" /></td>
 		</form>
+
 	</tr>
+
 	<tr>
 		<td colspan="4" align="center"><textarea readonly id="data_url"
 				cols="130" rows="2">@parameters.getDataURL()</textarea></td>
 	</tr>
+
 	<tr>
 		<td colspan="4" align="center"><textarea id="Response" cols="130"
 				rows="6">@parameters.getServiceResponseText()</textarea></td>
 	</tr>
+
 </table>
 }
