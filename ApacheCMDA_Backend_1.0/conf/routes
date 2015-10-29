@@ -13,6 +13,7 @@ GET           /climateService/getAllClimateServices/json                        
 GET           /climateService/getAllMostRecentClimateServicesByCreateTime/json                          @controllers.ClimateServiceController.getAllClimateServicesOrderByCreateTime(format: String="json")
 GET           /climateService/getAllMostRecentClimateServicesByLatestAccessTime/json                    @controllers.ClimateServiceController.getAllClimateServicesOrderByLatestAccessTime(format: String="json")
 GET           /climateService/getAllMostUsedClimateServices/json                                        @controllers.ClimateServiceController.getAllClimateServicesOrderByCount(format: String="json")
+GET			  /climateService/getTopKUsedClimateServicesByDatasetId/:id									@controllers.ClimateServiceController.getTopKUsedClimateServicesByDatasetId(id: Long, format: String="json")
 POST          /climateService/addClimateService                                                         @controllers.ClimateServiceController.addClimateService
 GET           /climateService/getAllServiceEntries/json                                                 @controllers.ClimateServiceController.getAllServiceEntries(format: String="json")
 POST          /climateService/addServiceEntry                                                           @controllers.ClimateServiceController.addServiceEntry
@@ -135,6 +136,9 @@ GET			  /users/getAllUsers/json																	@controllers.UserController.getA
 POST		  /users/isUserValid																		@controllers.UserController.isUserValid
 POST		  /users/isEmailExisted																		@controllers.UserController.isEmailExisted
 DELETE		  /users/delete/userName/:userName/password/:password										@controllers.UserController.deleteUserByUserNameandPassword(userName: String, password: String)
+
+# Analytics
+GET			  /analytics/getAllDatasetAndUserWithCount/json											@controllers.AnalyticsController.getAllDatasetAndUserWithCount(format: String="json")
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                                                                             controllers.Assets.at(path="/public", file)

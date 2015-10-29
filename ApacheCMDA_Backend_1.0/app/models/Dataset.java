@@ -45,6 +45,7 @@ public class Dataset {
 	private String comment;
 	private Date startTime;
 	private Date endTime;
+	private String agencyURL;
 	
 
 	public Dataset() {
@@ -80,6 +81,14 @@ public class Dataset {
 		this.comment = comment;
 		this.startTime = startTime;
 		this.endTime = endTime;
+	}
+
+	public String getAgencyURL() {
+		return agencyURL;
+	}
+
+	public void setAgencyURL(String agencyURL) {
+		this.agencyURL = agencyURL;
 	}
 
 	public long getId() {

@@ -25,9 +25,11 @@ public class Constants {
 	
 	public static final String GET_MOST_RECENTLY_USED_CLIMATE_SERVICES_CALL = "/climateService/getAllMostRecentClimateServicesByLatestAccessTime/json";
 	public static final String GET_CLIMATE_SERVICES_CALL = "/climateService/getAllClimateServices/json";
+	public static final String GET_TOP_K_USED_CLIMATE_SERVICES_BY_DATASET_ID = "/climateService/getTopKUsedClimateServicesByDatasetId";
 	
 	// climate service page
 	public static final String SAVE_CLIMATE_SERVICE_PAGE = "/climateService/savePage";
+	public static final String QUERY_CLIMATE_SERVICE = "/climateService/queryClimateService";
 	
 	// user
 	public static final String IS_USER_VALID = "/users/isUserValid";
@@ -78,6 +80,9 @@ public class Constants {
 	//ServiceConfigItem
 	public static final String CONFIG_ITEM =	"/serviceConfigurationItem";
 	public static final String GET_CONFIG_ITEMS_BY_CONFIG= "/serviceConfigurationItemByServiceConfig";
+	
+	//Analytics
+	public static final String GET_DATASET_AND_USER = "/analytics/getAllDatasetAndUserWithCount/json";
 	
 	
 }

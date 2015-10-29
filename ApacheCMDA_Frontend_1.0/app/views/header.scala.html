@@ -10,13 +10,21 @@
 				</button>
 				<a class="navbar-brand" style="padding-bottom: 0;" href="/">
 					<div>
-					<img src='@routes.Assets.at("images/NASA_JPL_logo.png")' style="height: 30px; width: 180px;">&nbsp&nbsp
-					<img src='@routes.Assets.at("images/logo.png")' style="height: 15px; width: 200px;">
+					<img src='@routes.Assets.at("images/NASA_JPL_logo.png")' style="height: 24px; width: 144px;">
+					<img src='@routes.Assets.at("images/logo.png")' style="height: 12px; width: 160px;">
 					</div>
 				</a>
 			</div>
 			<div class="navbar-collapse collapse" style="height:">
 				<ul class="nav navbar-nav navbar-right">
+					
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="text-danger">Recommendation</span><b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="@routes.ClimateServiceController.recommendationSummary()">Summary</a></li>
+							
+						</ul>				
+					</li>
 					
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Web Service<b class="caret"></b></a>
@@ -28,14 +36,14 @@
 							@if(true) {
 								<li><a href="@routes.ClimateServiceController.addAClimateService()">Register A Service</a></li>
 							}
-							<li><a>Search Service</a></li>
+							<li><a href="@routes.ClimateServiceController.searchClimateServices()">Search Service</a></li>
 						</ul>				
 					</li>
 					
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dataset<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a>Most Popular</a></li>
+							<li><a href="@routes.DatasetController.mostPopularDatasets()">Most Popular</a></li>
 							<li><a href="@routes.DatasetController.showAllDatasets()">Dataset List</a></li>
 							@if(true) {
 								<li><a href="#">Register A Dataset</a></li>
@@ -50,7 +58,7 @@
 							<li><a href="@routes.ServiceExecutionLogController.getServiceLog">Service Execution Log</a></li>
 							<li><a href="@routes.ServiceExecutionLogController.searchServiceLog">Search Service Log</a></li>
 							<li><a href="@routes.DatasetLogController.getAllDatasetLogs">Dataset Log</a></li>
-							<li><a href="@routes.AnalyticsController.getRecommend">Semantic Service Analytics</a></li>
+							<li><a href="@routes.AnalyticsController.getKnowledgeGraph">Knowledge Graph</a></li>
 							<li><a href="@routes.AnalyticsController.getDatasetRecommend">Semantic Dataset Analytics</a></li>
 							<li><a href="@routes.AnalyticsController.getScientistRecommend">User Analytics</a></li>
 							<li><a href="@routes.AnalyticsController.getLogGraph">Service Execution Log Analytics</a></li>

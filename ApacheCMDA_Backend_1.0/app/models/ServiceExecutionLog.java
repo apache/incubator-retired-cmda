@@ -40,6 +40,7 @@ public class ServiceExecutionLog {
 	private String dataUrl;
 	private Date datasetStudyStartTime;
 	private Date datasetStudyEndTime;
+	private String url;
 	
 
 	public ServiceExecutionLog(
@@ -47,7 +48,7 @@ public class ServiceExecutionLog {
 			ServiceConfiguration serviceConfiguration, // DatasetLog datasetLog,
 			String purpose, Date executionStartTime, Date executionEndTime,
 			String dataUrl, String plotUrl,
-			Date datasetStudyStartTime, Date datasetStudyEndTime) {
+			Date datasetStudyStartTime, Date datasetStudyEndTime, String url) {
 	this.climateService = climateService;
 		this.user = user;
 		this.serviceConfiguration = serviceConfiguration;
@@ -59,6 +60,7 @@ public class ServiceExecutionLog {
 		this.dataUrl = dataUrl;
 		this.datasetStudyStartTime = datasetStudyStartTime;
 		this.datasetStudyEndTime = datasetStudyEndTime;
+		this.url = url;
 	}
 	
 	public ServiceExecutionLog() {
@@ -111,6 +113,10 @@ public class ServiceExecutionLog {
 	
 	public Date getDatasetStudyEndTime() {
 		return datasetStudyEndTime;
+	}	
+
+	public String getUrl() {
+		return url;
 	}
 	
 	public void setId(long id) {
@@ -161,6 +167,10 @@ public class ServiceExecutionLog {
 		this.datasetStudyEndTime  = datasetStudyEndTime;
 	}
 
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Override
 	public String toString() {
 		return "ServiceExecutionLog [id=" + id + ", climateService="
@@ -171,6 +181,7 @@ public class ServiceExecutionLog {
 				+ plotUrl + ", dataUrl=" + dataUrl 
 				+ ", datasetStudyStartTime=" + datasetStudyStartTime
 				+ ", datasetStudyEndTime=" + datasetStudyEndTime
+				+ ", url=" + url
 				+ "]";
 	}
 

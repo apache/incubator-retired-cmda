@@ -366,8 +366,6 @@ public class DatasetController extends Controller {
     		System.out.println("ServiceExecutionLog cannot be queried, query is corrupt");
     		return badRequest("ServiceExecutionLog cannot be queried, query is corrupt");
     	}
-    	System.out.println("************" + result);
-
     	return ok(result);
     }
 }

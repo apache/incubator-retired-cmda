@@ -7,6 +7,6 @@ import javax.inject.Singleton;
 
 @Named
 @Singleton
-public interface DatasetLogRepository extends CrudRepository<DatasetLog, Long> {
-	
+public interface DatasetAndUserRepository extends CrudRepository<DatasetAndUser, Long> {
+		
 }

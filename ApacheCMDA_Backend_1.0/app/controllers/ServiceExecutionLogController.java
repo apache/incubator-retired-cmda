@@ -342,8 +342,8 @@ public class ServiceExecutionLogController extends Controller {
 		String purpose = json.findPath("purpose").asText();
 		String plotUrl = json.findPath("url").asText();
 		String dataUrl = json.findPath("dataUrl").asText();
+		String url = json.findPath("urlLink").asText();
 		JsonNode datasetArray = json.get("datasets");
-		System.out.println(datasetArray);
 
 		SimpleDateFormat formatter = new SimpleDateFormat(util.Common.DATE_PATTERN);
 		formatter.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
@@ -415,7 +415,7 @@ public class ServiceExecutionLogController extends Controller {
 			ServiceExecutionLog serviceExecutionLog = new ServiceExecutionLog(
 					climateService, user, serviceConfiguration, purpose,
 					executionStartTime, executionEndTime, dataUrl, plotUrl,
-					datasetStudyStartTime, datasetStudyEndTime);
+					datasetStudyStartTime, datasetStudyEndTime, url);
 			ServiceExecutionLog savedServiceExecutionLog = serviceExecutionLogRepository
 					.save(serviceExecutionLog);
 			ServiceConfiguration savedServiceConfiguration = savedServiceExecutionLog

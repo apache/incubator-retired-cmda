@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import models.ClimateService;
 import models.Dataset;
 
 import org.joda.time.DateTime;
@@ -36,12 +37,14 @@ public class DatasetController extends Controller {
 		return ok(searchDataSet.render(dataSetForm));
 	}
 	
+	public static Result mostPopularDatasets() {
+		List<Dataset> datasets = queryFirstKDatasetsWithoutClimateService("", "", "", "", "", new Date(0), new Date(), Integer.MAX_VALUE);
+		return ok(dataSetListPopular.render(dataSetForm, datasets));
+	}
+	
 	public static Result showAllDatasets() {
 		List<Dataset> dataSetsList = new ArrayList<Dataset>();
 		JsonNode dataSetsNode = RESTfulCalls.getAPI(Constants.URL_HOST
-				+ Constants.CMU_BACKEND_PORT
-				+ Constants.GET_ALL_DATASETS);
-		System.out.println("GET API: " + Constants.URL_HOST
 				+ Constants.CMU_BACKEND_PORT
 				+ Constants.GET_ALL_DATASETS);
 		// if no value is returned or error or is not json array
@@ -129,7 +132,7 @@ public class DatasetController extends Controller {
 		}
 
 		List<Dataset> response = queryDataSet(dataSetName, agency, instrument, physicalVariable, gridDimension, dataSetStartTime, dataSetEndTime);
-		int k = 5;
+		int k = 5; // Set the first popular K datasets
 		List<Dataset> datasetsTopK = queryFirstKDatasets(dataSetName, agency, instrument, physicalVariable, gridDimension, dataSetStartTime, dataSetEndTime, k);
 		return ok(dataSetList.render(response, dataSetForm, datasetsTopK));
 	}
@@ -194,12 +197,55 @@ public static List<Dataset> queryFirstKDatasets(String dataSetName, String agenc
 	for (int i = 0; i < dataSetNode.size(); i++) {
 		JsonNode json = dataSetNode.path(i);
 		Dataset newDataSet = deserializeJsonToDataSet(json);
+		long id = newDataSet.getId();
+		JsonNode climateSetNode = RESTfulCalls.getAPI(Constants.URL_HOST
+				+ Constants.CMU_BACKEND_PORT + Constants.GET_TOP_K_USED_CLIMATE_SERVICES_BY_DATASET_ID + "/" + id);
+		List<ClimateService> climateServices = new ArrayList<ClimateService>();
+		for (int j = 0; j < climateSetNode.size(); j++) {
+			JsonNode json1 = climateSetNode.path(j);
+			ClimateService oneService = ClimateServiceController.deserializeJsonToClimateService(json1);
+			climateServices.add(oneService);
+		}
+		newDataSet.setClimateServices(climateServices);
 		dataset.add(newDataSet);
 	}
 	return dataset;
 }
+	
+	public static List<Dataset> queryFirstKDatasetsWithoutClimateService(String dataSetName, String agency, String instrument, String physicalVariable, String gridDimension, Date dataSetStartTime, Date dataSetEndTime, int k) {
+		
+		List<Dataset> dataset = new ArrayList<Dataset>();
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode queryJson = mapper.createObjectNode();
+		queryJson.put("name", dataSetName);
+		queryJson.put("agencyId", agency);
+		queryJson.put("instrument", instrument);
+		queryJson.put("physicalVariable", physicalVariable);
+		queryJson.put("gridDimension", gridDimension);
+		queryJson.put("k", k);
+		if (dataSetEndTime != null) {
+			queryJson.put("dataSetEndTime", dataSetEndTime.getTime());
+		}
+		if (dataSetStartTime != null) {
+			queryJson.put("dataSetStartTime", dataSetStartTime.getTime());
+		}
+		JsonNode dataSetNode = RESTfulCalls.postAPI(Constants.URL_HOST
+				+ Constants.CMU_BACKEND_PORT + Constants.GET_MOST_K_POPULAR_DATASETS_CALL, queryJson);
+		if (dataSetNode == null || dataSetNode.has("error")
+				|| !dataSetNode.isArray()) {
+			return dataset;
+		}
+	
+		// parse the json string into object
+		for (int i = 0; i < dataSetNode.size(); i++) {
+			JsonNode json = dataSetNode.path(i);
+			Dataset newDataSet = deserializeJsonToDataSet(json);
+			dataset.add(newDataSet);
+		}
+		return dataset;
+	}
 
-	private static Dataset deserializeJsonToDataSet(JsonNode json) {
+	public static Dataset deserializeJsonToDataSet(JsonNode json) {
 		Dataset newDataSet = new Dataset();
 		newDataSet.setId(json.get("id").asLong());
 		newDataSet.setName(json.get("name").asText());
@@ -212,14 +258,14 @@ public static List<Dataset> queryFirstKDatasets(String dataSetName, String agenc
 		newDataSet.setSource(json.get("source").asText());
 		newDataSet.setStatus(json.get("status").asText());
 		newDataSet.setResponsiblePerson(json.get("responsiblePerson").asText());
-	//	dataset.setComments(json.get(""));
 		newDataSet.setDataSourceNameinWebInterface(json.get("dataSourceNameinWebInterface").asText());
-	//	Console.print("aaa"+dataset.getDataSourceName());
 		newDataSet.setVariableNameInWebInterface(json.get("variableNameInWebInterface").asText());
 		newDataSet.setDataSourceInputParameterToCallScienceApplicationCode(json.get("dataSourceInputParameterToCallScienceApplicationCode").asText());
 		newDataSet.setVariableNameInputParameterToCallScienceApplicationCode(json.get("variableNameInputParameterToCallScienceApplicationCode").asText());
-		String startTime = json.findPath("startTime").asText();
-		String endTime = json.findPath("endTime").asText();
+		newDataSet.setAgencyURL(json.findPath("agencyURL").asText());
+		newDataSet.setInstrumentURL(json.findPath("instrument").findPath("instrumentURL").asText());
+		String startTime = json.get("startTime").asText();
+		String endTime = json.get("endTime").asText();
 		Date tmpStartTime = null;
 		Date tmpEndTime = null;
 		
@@ -230,6 +276,7 @@ public static List<Dataset> queryFirstKDatasets(String dataSetName, String agenc
 				newDataSet.setStartTime(new SimpleDateFormat("YYYY-MM").format(tmpStartTime));
 			}
 	    } catch (ParseException e){	    
+	    	System.out.println(e);
 	    }
 		
 		try {
@@ -239,7 +286,7 @@ public static List<Dataset> queryFirstKDatasets(String dataSetName, String agenc
 				newDataSet.setEndTime(new SimpleDateFormat("YYYY-MM").format(tmpEndTime));
 			}
 	    } catch (ParseException e){	    
-	    	
+	    	System.out.println(e);
 	    }
 		
 		DateTime dateTimeFrom = new DateTime(tmpStartTime);  
@@ -255,4 +302,5 @@ public static List<Dataset> queryFirstKDatasets(String dataSetName, String agenc
 		
 		return newDataSet;
 	}
+	
 }

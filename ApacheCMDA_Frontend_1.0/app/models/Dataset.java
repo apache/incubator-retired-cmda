@@ -44,6 +44,9 @@ public class Dataset {
 	private String startTime;
 	private String endTime;
 	private String duration;
+	private String agencyURL;
+	private String instrumentURL;
+	private List<ClimateService> climateServices;
 
 	public Dataset() {
 	}
@@ -56,7 +59,7 @@ public class Dataset {
 			String responsiblePerson, String variableNameInWebInterface,
 			String dataSourceInputParameterToCallScienceApplicationCode,
 			String variableNameInputParameterToCallScienceApplicationCode,
-			String comment, String duration) {
+			String comment, String duration, String agencyURL, String instrumentURL, List<ClimateService> climateServices) {
 		super();
 		this.name = name;
 		this.dataSourceNameinWebInterface = dataSourceNameinWebInterface;
@@ -77,6 +80,33 @@ public class Dataset {
 		this.variableNameInputParameterToCallScienceApplicationCode = variableNameInputParameterToCallScienceApplicationCode;
 		this.comment = comment;
 		this.duration = duration;
+		this.agencyURL = agencyURL;
+		this.instrumentURL = instrumentURL;
+		this.climateServices = climateServices;
+	}
+
+	public List<ClimateService> getClimateServices() {
+		return climateServices;
+	}
+
+	public void setClimateServices(List<ClimateService> climateServices) {
+		this.climateServices = climateServices;
+	}
+
+	public String getInstrumentURL() {
+		return instrumentURL;
+	}
+
+	public void setInstrumentURL(String instrumentURL) {
+		this.instrumentURL = instrumentURL;
+	}
+
+	public String getAgencyURL() {
+		return agencyURL;
+	}
+
+	public void setAgencyURL(String agencyURL) {
+		this.agencyURL = agencyURL;
 	}
 
 	public String getDuration() {

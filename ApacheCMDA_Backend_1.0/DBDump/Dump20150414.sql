@@ -186,6 +186,7 @@ CREATE TABLE `Dataset` (
   `dataSourceNameinWebInterface` varchar(255) DEFAULT NULL,
   `startTime` datetime DEFAULT NULL,
   `endTime` datetime DEFAULT NULL,
+  `agencyURL` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_9x29nf004vryd28iummv5l5r0` (`instrumentId`),
   CONSTRAINT `FK_9x29nf004vryd28iummv5l5r0` FOREIGN KEY (`instrumentId`) REFERENCES `Instrument` (`id`)
@@ -200,6 +201,35 @@ LOCK TABLES `Dataset` WRITE;
 /*!40000 ALTER TABLE `Dataset` DISABLE KEYS */;
 INSERT INTO `Dataset` VALUES (1,'ot','NOAA','NOAA_ARGO','3D','ARGO Ocean Temperature','Ocean temperature','2015-04-07 21:30:02','BT/CZ/GS/SL','ARGO','available on server','K',NULL,'Ocean temperature','ot',1,NULL,'NOAA/ARGO'),(2,'os','NOAA','NOAA_ARGO','3D','ARGO Ocean Salinity','Ocean Salinity','2015-04-07 21:30:02','BT/CZ/GS/SL','ARGO','available on server','psu',NULL,'Ocean Salinity','os',1,NULL,'NOAA/ARGO'),(3,'zl','NASA','NASA_GRACE','2D','GRACE equivalent water height over land','Equivalent Water Height Over Land','2015-04-07 21:30:02','BT','GRACE','available on server','m (equivalent water height)',NULL,'Equivalent Water Height Over Land','zl',2,'over land','NASA/GRACE'),(4,'zo','NASA','NASA_GRACE','2D','GRACE equivalent water height over ocean','Equivalent water height over ocean','2015-04-07 21:30:02','BT','GRACE','available on server','m (equivalent water height)',NULL,'Equivalent water height over ocean','zo',2,'over ocean','NASA/GRACE'),(5,'ohc700','NOAA','NOAA_NODC','3D','NOAA Global Ocean Heat Content','Ocean Heat Content Anomaly within 700 m Depth','2015-04-07 21:30:02','BT/CZ/GS','NODC','available on server','J?',NULL,'Ocean Heat Content Anomaly within 700 m Depth','ohc700',3,NULL,'NOAA/NODC'),(6,'ohc700','NOAA','NOAA_NODC','3D','NOAA Global Ocean Heat Content','Ocean Heat Content Anomaly within 2000 m Depth','2015-04-07 21:30:02','BT/CZ/GS','NODC','available on server','J?',NULL,'Ocean Heat Content Anomaly within 2000 m Depth','ohc2000',3,NULL,'NOAA/NODC'),(7,'hus','NASA','NASA_AIRS','3D','AIRS Water Vapor','Specific Humidity','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','Kg/Kg',NULL,'Specific Humidity','hus',4,'>= 300hPa','NASA/AIRS'),(8,'ta','NASA','NASA_AIRS','3D','AIRS Air Temperature','Air Temperature','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','K',NULL,'Air Temperature','ta',4,'>= 300hPa','NASA/AIRS'),(9,'hus','NASA','NASA_MLS','3D','MLS Water Vapor','Specific Humidity','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','Kg/Kg',NULL,'Specific Humidity','hus',5,'< 300hPa','NASA/MLS'),(10,'ta','NASA','NASA_MLS','3D','MLS Air Temperature','Air Temperature','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','K',NULL,'Air Temperature','ta',5,'< 300hPa','NASA/MLS'),(11,'clt','NASA','NASA_MODIS','2D','MODIS Total Area Cloud Fraction','Total Cloud Fraction','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','%',NULL,'Total Cloud Fraction','clt',6,NULL,'NASA/MODIS'),(12,'pr','NASA','NASA_TRMM','2D','TRMM precipitation','Precipitation Flux','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','Kg/m^2/s',NULL,'Precipitation Flux','pr',7,NULL,'NASA/TRMM'),(13,'pr','NASA','NASA_GPCP','2D','GPCP precipitation','Precipitation Flux','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','Kg/m^2/s',NULL,'Precipitation Flux','pr',8,NULL,'NASA/GPCP'),(14,'tos','NASA','NASA_AMSRE','2D','AMSRE sea surface temperature','Sea Surface Temperature','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','K',NULL,'Sea Surface Temperature','tos',9,NULL,'NASA/AMSRE'),(15,'uas','NASA','NASA_QuikSCAT','2D','QuikSCAT Eastward Near-Surfaces Wind','Eastward Near-Surface Wind','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','m/s',NULL,'Eastward Near-Surface Wind','uas',10,'uas','NASA/QuikSCAT'),(16,'vas','NASA','NASA_QuikSCAT','2D','QuikSCAT Northward Near-Surface Wind','Northward Near-Surface Wind','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','m/s',NULL,'Northward Near-Surface Wind','vas',10,'vas','NASA/QuikSCAT'),(17,'sfcWind','NASA','NASA_QuikSCAT','2D','QuikSCAT Near-Surface Wind Speed','Near-Surface Wind Speed','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','m/s',NULL,'Near-Surface Wind Speed','sfcWind',10,'sfcWind','NASA/QuikSCAT'),(18,'zos','NASA','NASA_AVISO','2D','AVISO sea surface height','Sea Surface Height','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','m',NULL,'Sea Surface Height','zos',11,NULL,'NASA/AVISO'),(19,'lai','NASA','NASA_MODIS','2D','MODIS leaf area index','Leaf Area Index','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','1',NULL,'Leaf Area Index','lai',6,NULL,'NASA/MODIS'),(20,'rlds','NASA','NASA_CERES','2D','CERES Radiation ','Surface Downwelling Longwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'Surface Downwelling Longwave Radiation','rlds',12,NULL,'NASA/CERES'),(21,'rsus','NASA','NASA_CERES','2D','CERES Radiation ','Surface Upwelling Shortwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'Surface Upwelling Shortwave Radiation','rsus',12,NULL,'NASA/CERES'),(22,'rldscs','NASA','NASA_CERES','2D','CERES Radiation ','Surface Downwelling Clear-Sky Longwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'Surface Downwelling Clear-Sky Longwave Radiation','rldscs',12,NULL,'NASA/CERES'),(23,'rsds','NASA','NASA_CERES','2D','CERES Radiation ','Surface Downwelling Shortwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'Surface Downwelling Shortwave Radiation','rsds',12,NULL,'NASA/CERES'),(24,'rsuscs','NASA','NASA_CERES','2D','CERES Radiation ','Surface Upwelling Clear-Sky Shortwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'Surface Upwelling Clear-Sky Shortwave Radiation','rsuscs',12,NULL,'NASA/CERES'),(25,'rlus','NASA','NASA_CERES','2D','CERES Radiation ','Surface Upwelling Longwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'Surface Upwelling Longwave Radiation','rlus',12,NULL,'NASA/CERES'),(26,'rsdscs','NASA','NASA_CERES','2D','CERES Radiation ','Surface Downwelling Clear-Sky Shortwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'Surface Downwelling Clear-Sky Shortwave Radiation','rsdscs',12,NULL,'NASA/CERES'),(27,'rlutcs','NASA','NASA_CERES','2D','CERES Radiation ','TOA Outgoing Clear-Sky Longwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'TOA Outgoing Clear-Sky Longwave Radiation','rlutcs',12,NULL,'NASA/CERES'),(28,'rsut','NASA','NASA_CERES','2D','CERES Radiation ','TOA Outgoing Shortwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'TOA Outgoing Shortwave Radiation','rsut',12,NULL,'NASA/CERES'),(29,'rsdt','NASA','NASA_CERES','2D','CERES Radiation ','TOA Incident Shortwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'TOA Incident Shortwave Radiation','rsdt',12,NULL,'NASA/CERES'),(30,'rsutcs','NASA','NASA_CERES','2D','CERES Radiation ','TOA Outgoing Clear-Sky Shortwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'TOA Outgoing Clear-Sky Shortwave Radiation','rsutcs',12,NULL,'NASA/CERES'),(31,'rlut','NASA','NASA_CERES','2D','CERES Radiation ','TOA Outgoing Longwave Radiation','2015-04-07 21:30:02','CZ','Obs4MIPs','available on server','W m-2',NULL,'TOA Outgoing Longwave Radiation','rlut',12,NULL,'NASA/CERES');
 /*!40000 ALTER TABLE `Dataset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `DatasetAndUser`
+--
+
+DROP TABLE IF EXISTS `DatasetAndUser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DatasetAndUser` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) NOT NULL,
+  `datasetId` bigint(20) NOT NULL,
+  `count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_User_DatasetAndUser` (`userId`),
+  KEY `FK_Dataset_DatasetAndUser` (`datasetId`),
+  CONSTRAINT `FK_User_DatasetAndUser` FOREIGN KEY (`userId`) REFERENCES `User` (`id`),
+  CONSTRAINT `FK_Dataset_DatasetAndUser` FOREIGN KEY (`datasetId`) REFERENCES `Dataset` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `DatasetAndUser`
+--
+
+LOCK TABLES `DatasetAndUser` WRITE;
+/*!40000 ALTER TABLE `DatasetAndUser` DISABLE KEYS */;
+/*!40000 ALTER TABLE `DatasetAndUser` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -285,6 +315,7 @@ CREATE TABLE `Instrument` (
   `description` varchar(255) DEFAULT NULL,
   `launchDate` datetime DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `instrumentURL` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -464,6 +495,7 @@ CREATE TABLE `ServiceExecutionLog` (
   `userId` bigint(20) NOT NULL,
   `datasetStudyStartTime` datetime DEFAULT NULL,
   `datasetStudyEndTime` datetime DEFAULT NULL,
+  `url` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ly45hkuqs8yyw00iiuyx5hoj4` (`serviceId`),
   KEY `FK_g2n3b4rs0xys2r4r967uvi4jr` (`serviceConfigurationId`),

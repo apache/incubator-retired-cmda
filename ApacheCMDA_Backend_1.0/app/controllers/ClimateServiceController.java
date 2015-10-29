@@ -472,5 +472,22 @@ public class ClimateServiceController extends Controller {
         return ok(result);
 
     }
-
+    
+    public Result getTopKUsedClimateServicesByDatasetId(long id, String format) {
+    	if (id < 0) {
+			System.out.println("id is negative!");
+			return badRequest("id is negative!");
+		}
+    	String result = new String();
+    	try {
+    		//Parse JSON file
+    		List<ClimateService> climateService;
+    		climateService = climateServiceRepository.getClimateServiceByDatasetId(5, id);
+    		result = new Gson().toJson(climateService);
+    	} catch (Exception e) {
+    		System.out.println("ServiceExecutionLog cannot be queried, query is corrupt");
+    		return badRequest("ServiceExecutionLog cannot be queried, query is corrupt");
+    	}
+    	return ok(result);
+    }
 }

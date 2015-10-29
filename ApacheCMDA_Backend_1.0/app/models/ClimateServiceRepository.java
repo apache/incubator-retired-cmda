@@ -21,5 +21,7 @@ public interface ClimateServiceRepository extends CrudRepository<ClimateService,
 
 	@Query(value = "select c.* from ClimateService c, ServiceEntry s where c.id=s.serviceId group by s.serviceId order by s.latestAccessTimeStamp desc", nativeQuery = true)
 	List<ClimateService> getClimateServiceOrderByLatestAccessTime();
-
+	
+	@Query(value = "select * from ClimateService where id in (select serviceId from ServiceEntry s where serviceId in (select climateServiceId from DatasetAndService where datasetId=?2) group by s.serviceId order by s.latestAccessTimeStamp desc) limit ?1", nativeQuery = true)
+	List<ClimateService> getClimateServiceByDatasetId(int k, long id);
 }
