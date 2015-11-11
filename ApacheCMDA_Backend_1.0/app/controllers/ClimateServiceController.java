@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 @Named
 @Singleton
 public class ClimateServiceController extends Controller {
+	public static final String WILDCARD = "%";
 	private final int initialcount = 0;
 
 	// static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ssz";
@@ -488,6 +489,62 @@ public class ClimateServiceController extends Controller {
     		System.out.println("ServiceExecutionLog cannot be queried, query is corrupt");
     		return badRequest("ServiceExecutionLog cannot be queried, query is corrupt");
     	}
+    	return ok(result);
+    }
+    
+    public Result queryClimateServices() {
+    	JsonNode json = request().body().asJson();
+    	if (json == null) {
+    		System.out.println("ClimateService cannot be queried, expecting Json data");
+    		return badRequest("ClimateService cannot be queried, expecting Json data");
+    	}
+    	String result = new String();
+    	try {
+    		//Parse JSON file
+    		String name = json.path("name").asText();
+    		if (name.isEmpty()) {
+    			name = WILDCARD;
+    		}
+    		else {
+    			name = WILDCARD+name+WILDCARD;
+    		}
+    		String purpose = json.path("purpose").asText();
+    		if (purpose.isEmpty()) {
+    			purpose = WILDCARD;
+    		}
+    		else {
+    			purpose = WILDCARD+purpose+WILDCARD;
+    		}
+    		String url = json.path("url").asText();
+    		if (url.isEmpty()) {
+    			url = WILDCARD;
+    		}
+    		else {
+    			url = WILDCARD+url+WILDCARD;
+    		}
+    		String scenario = json.path("scenario").asText();
+    		if (scenario.isEmpty()) {
+    			scenario = WILDCARD;
+    		}
+    		else {
+    			scenario = WILDCARD+scenario+WILDCARD;
+    		}
+    		String versionNo = json.path("versionNo").asText();
+    		if (versionNo.isEmpty()) {
+    			versionNo = WILDCARD;
+    		}
+    		else {
+    			versionNo = WILDCARD+versionNo+WILDCARD;
+    		}
+
+    		List<ClimateService> climateServices = climateServiceRepository.findClimateService(name, purpose, url, scenario, versionNo);
+    		result = new Gson().toJson(climateServices);
+    	} catch (Exception e) {
+    		System.out.println("ServiceExecutionLog cannot be queried, query is corrupt");
+    		return badRequest("ServiceExecutionLog cannot be queried, query is corrupt");
+    	}
+
+    	System.out.println("*******************************\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n" + result);
     	return ok(result);
     }
 }

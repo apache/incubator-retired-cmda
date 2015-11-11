@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 
 import models.ClimateService;
 import models.ClimateServiceRepository;
+import models.DatasetAndUserRepository;
 import models.DatasetEntryRepository;
 import models.DatasetLogRepository;
 import models.DatasetRepository;
@@ -59,6 +60,7 @@ public class WorkflowController extends Controller {
 	private final ServiceEntryRepository serviceEntryRepository;
 	private final DatasetEntryRepository datasetEntryRepository;
 	private final DatasetRepository datasetRepository;
+	private final DatasetAndUserRepository datasetAndUserRepository;
 
 	@Inject
 	public WorkflowController(
@@ -72,7 +74,8 @@ public class WorkflowController extends Controller {
 			ServiceConfigurationRepository serviceConfigurationRepository,
 			ServiceEntryRepository serviceEntryRepository,
 			DatasetEntryRepository datasetEntryRepository,
-			DatasetRepository datasetRepository) {
+			DatasetRepository datasetRepository,
+			DatasetAndUserRepository datasetAndUserRepository) {
 		this.climateServiceRepository = climateServiceRepository;
 		this.userRepository = userRepository;
 		this.workflowRepository = workflowRepository;
@@ -84,6 +87,7 @@ public class WorkflowController extends Controller {
 		this.serviceEntryRepository = serviceEntryRepository;
 		this.datasetEntryRepository = datasetEntryRepository;
 		this.datasetRepository = datasetRepository;
+		this.datasetAndUserRepository = datasetAndUserRepository;
 	}
 
 	public Result addWorkflow() {
@@ -227,7 +231,7 @@ public class WorkflowController extends Controller {
 				serviceConfigurationItemRepository, userRepository,
 				climateServiceRepository, datasetLogRepository,
 				serviceConfigurationRepository, serviceEntryRepository,
-				datasetEntryRepository, datasetRepository);
+				datasetEntryRepository, datasetRepository, datasetAndUserRepository);
 		List<ServiceExecutionLog> list = serviceExecutionLogController
 				.queryServiceExecutionLogsAsList();
 		String result = VisTrailJson.getVisTrailJson(list);

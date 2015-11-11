@@ -12,6 +12,8 @@ import javax.persistence.PersistenceException;
 import models.ClimateService;
 import models.ClimateServiceRepository;
 import models.Dataset;
+import models.DatasetAndUser;
+import models.DatasetAndUserRepository;
 import models.DatasetEntry;
 import models.DatasetEntryRepository;
 import models.DatasetLog;
@@ -54,6 +56,7 @@ public class ServiceExecutionLogController extends Controller {
 	private final ServiceConfigurationItemRepository serviceConfigurationItemRepository;
 	private final DatasetLogRepository datasetLogRepository;
 	private final ServiceConfigurationRepository serviceConfigurationRepository;
+	private final DatasetAndUserRepository datasetAndUserRepository;
 
 	// We are using constructor injection to receive a repository to support our
 	// desire for immutability.
@@ -68,7 +71,8 @@ public class ServiceExecutionLogController extends Controller {
 			ServiceConfigurationRepository serviceConfigurationRepository,
 			ServiceEntryRepository serviceEntryRepository,
 			DatasetEntryRepository datasetEntryRepository,
-			DatasetRepository datasetRepository) {
+			DatasetRepository datasetRepository,
+			DatasetAndUserRepository datasetAndUserRepository) {
 		this.parameterRepository = parameterRepository;
 		this.serviceExecutionLogRepository = serviceExecutionLogRepository;
 		this.userRepository = userRepository;
@@ -79,6 +83,7 @@ public class ServiceExecutionLogController extends Controller {
 		this.serviceEntryRepository = serviceEntryRepository;
 		this.datasetEntryRepository = datasetEntryRepository;
 		this.datasetRepository = datasetRepository;
+		this.datasetAndUserRepository = datasetAndUserRepository;
 	}
 
 	public Result queryServiceExecutionLogs() {
@@ -477,8 +482,18 @@ public class ServiceExecutionLogController extends Controller {
 							dataset, user, plotUrl, dataUrl, dataset,
 							dataset, datasetStudyStartTime, datasetStudyEndTime);
 					DatasetLog savedDatasetLog = datasetLogRepository.save(datasetLog);
-					System.out.println(dataset.toString());
 					System.out.print("DatasetLog saved:" + savedDatasetLog.getId());
+					
+					List<DatasetAndUser> datasetAndUsers = datasetAndUserRepository.findByUserAndDataset(user, dataset);
+					if(datasetAndUsers.size() == 0) {
+						DatasetAndUser datasetAndUser = new DatasetAndUser(user, dataset, 0);
+						datasetAndUserRepository.save(datasetAndUser);
+					}
+					else {
+						DatasetAndUser datasetAndUser = datasetAndUsers.get(0);
+						datasetAndUser.setCount(datasetAndUser.getCount() + 1);
+						datasetAndUserRepository.save(datasetAndUser);
+					}
 				}
 			}
 			
