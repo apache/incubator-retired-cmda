@@ -12,6 +12,9 @@ GET		/createNewUser				controllers.Application.createNewUser()
 GET		/createSuccess				controllers.Application.createSuccess()
 POST	/isEmailExisted				controllers.Application.isEmailExisted()
 
+# Knowledge Graph
+
+
 #recommendation overview
 GET		/climateService/recommendationSummary					controllers.ClimateServiceController.recommendationSummary()
 
@@ -56,6 +59,10 @@ GET     /profileRecommend                           controllers.AnalyticsControl
 GET     /serviceLogGraph                            controllers.AnalyticsController.getLogGraph()
 GET 	/searchAndGenerateWorkflow					controllers.AnalyticsController.getSearchAndGenerateWorkflow()
 GET     /serviceKnowledgeGraph                      controllers.AnalyticsController.getKnowledgeGraph()
+GET     /relationalKnowledgeGraph                   controllers.AnalyticsController.getRelationalKnowledgeGraph()
+POST	/getSpecifiedKnowledgeGraph					controllers.AnalyticsController.getSpecifiedKnowledgeGraph()
+POST	/getShortestPath 							controllers.AnalyticsController.getShortestPath()
+POST	/getPartKnowledgeGraph						controllers.AnalyticsController.getPartKnowledgeGraph()
 
 # Users
 GET		/scientist/allUsers							controllers.UsersController.getAllUsers()

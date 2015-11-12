@@ -105,34 +105,97 @@
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/exampleUtil.js")'></script>
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/vis.js")'></script>
 	<script type="text/javascript">
+	
+	var responseJson = null;
+    var jsonString = null;
 	$(document).ready(function() {  
 	    $("#panel").hide(); 
 	    $("#config").hide();
-	    
+	    $("#basicConf").hide();
+	    jsonString =  $('#jsonData').text();
 	    draw();
 	  })
-
+	  	
+	  	var p1 = "User";
+		var p2 = "Dataset";
+	    var p3 = "Service";
+	  
+	  
+		var degrees = 1;// graph level setting
 	    var nodes = null;
 	    var edges = null;
 	    var network = null;
-
-	    var visConfig = 1;
-
-	    function hideConfig() {
-	        if (visConfig == 0) {
+		var allNodes;
+		var allEdges;
+		var highlightActive = false;
+	    var nodesDataset = new vis.DataSet(nodes); 
+	    var edgesDataset = new vis.DataSet(edges); 
+	    var visAdvancedConfig = 1;
+	    var visBasicConfig = 1;
+	    
+	    
+	    function getParameters() {
+	    	var temp1 = document.getElementById("paramCombination").value;
+			var temp2 = temp1.split(" ");
+			p1 = temp2[0];
+			p2 = temp2[1];
+	    	p3 = temp2[2];
+	    	
+	    	var parameters = {
+	    			param1:p1,
+	    			param2:p2,
+	    			param3:p3
+	    	}
+	    	
+	    	$.ajax({
+	            url: "/getSpecifiedKnowledgeGraph",
+	            type: "POST",
+	            contentType: "application/json",
+	            data: JSON.stringify(parameters),
+	            dataType: "text"
+	        }).done(function(data1) {
+	        	console.log("success");
+	        	jsonString = data1;
+	        	draw();
+	        }).fail(function(xhr, textStatus, errorThrown) {
+	        	console.log("error!");
+	        	console.log(xhr);
+	        	console.log(textStatus);
+	            console.log(errorThrown);
+	        })
+	        
+	    }
+	    
+	    
+	    function showBasicConfig() {
+	        if (visBasicConfig == 0) {
+	            $("#basicConf").hide();
+	            visBasicConfig =1;
+	        }else {
+	            $("#basicConf").show();
+	            visBasicConfig =0;
+	        }
+	    }
+	    
+	    function showAdvancedConfig() {
+	        if (visAdvancedConfig == 0) {
 	            $("#config").hide();
-	            visConfig =1;
+	            visAdvancedConfig =1;
 	        }else {
 	            $("#config").show();
-	            visConfig =0;
+	            visAdvancedConfig =0;
 	        }
+	    }
+	    
+	    function setGraphLevel() {
+	    	degrees = $("#graphLevel").val();
+	    	//alert(degrees);
 	    }
 
 	    function draw() {
 	    	console.log("draw");
 	      // create people.
 	      // value corresponds with the age of the person
-	      var jsonString = $('#jsonData').text();
 	      var test = jsonString;
 	      
 	      //test = JSON.stringify(test);
@@ -142,26 +205,29 @@
 	      console.log("nodes: " + nodes);
 	      var edges = test.edges;
 	      console.log("edges: " + edges); 
-
+		  
+	      nodesDataset = new vis.DataSet(nodes); 
+	      edgesDataset = new vis.DataSet(edges); 
+	      
 	      // Instantiate our network object.
 	      var container = document.getElementById('mynetwork');
 	      var data = {
-	        nodes: nodes,
-	        edges: edges
+	        nodes: nodesDataset,
+	        edges: edgesDataset
 	      };
 	      var options = {
    		  nodes: {
    			    color: {
    			      highlight: {
-   			        border: "red",
-   			        background: "pink"
+   			        border: "rgba(255,0,255,0.3)",
+   			        background: "rgba(255,0,255,0.3)"
    			      }
    			    },
    			    scaling: {
    			      min: 12
    			    },
    			    shadow: {
-   			      enabled: true,
+   			      enabled: false,
    			      size: 8
    			    },
 	   			 font: {
@@ -175,32 +241,29 @@
    			    }
    			  },
    			  edges: {
+   				 color: 'rgba(192,192,192,0.3)',
    			    arrows: {
+   			    	
    			      to: {
-   			        enabled: true,
+   			        enabled: false,
    			        scaleFactor: 0.4
    			      }
    			    },
- 			  color: {
- 			      highlight: "rgba(244,1,0,1)",
- 			      hover: "rgba(0,0,0,1)",
- 			      inherit: false
- 			    },
+ 			  
 		      smooth: {
  			      type: "continuous",
  			      forceDirection: "vertical"
  			    }
    			  },
    			  interaction: {
-   			    hover: true,
    			    multiselect: true
    			  },
 	         groups: {
 	          dataset: {
-	            color:"#A9E2F3"
+	            color:"rgba(0,0,255,0.3)"
 	          },
 	          user: {
-	        	color:"#F781F3"
+	        	color:"rgba(255,0,0,0.3)"
 	          }
 	        },
 	        
@@ -210,7 +273,7 @@
 	        	  springLength: 195,
 	              springConstant: 0.185,
 	        	  damping: 0.25,
-	              avoidOverlap: 0.2
+	              avoidOverlap: 0.5
    			    },
    			 	maxVelocity: 10,
    			    minVelocity: 0.75,
@@ -228,11 +291,19 @@
 	            if (path.indexOf('smooth') !== -1 || option === 'smooth') {
 	              return true;
 	            }
-	            return true;
+	            if (path.indexOf('layout') !== -1 || option === 'layout') {
+		              return true;
+		            }
+	            return false;
 	          },
 	          container: document.getElementById('config')
 	        }
 	      };
+
+	      
+	      
+	      $("#config").html("");
+
 	      network = new vis.Network(container, data, options);
 
 	      network.on("stabilizationProgress", function(params) {
@@ -252,21 +323,298 @@
 	                setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
 	            });
 
-	      //network.focusOnNode(19);
-	      network.on('select', function(properties) {
-	        var select_node = $.grep(data.nodes, function(e){
-	          return e["id"] == properties.nodes[0];
-	        })[0];
-
-	        $("#nodeName").text(select_node["title"]);
-	        //alert(select_node["title"]);
-	        $("#id").text(select_node["id"]);
-	        $("#cluster").text(select_node["cluster"]);
-	        $("#label").text(select_node["label"]);
-
-	        $("#panel").show();
-	      });
+	      allNodes = nodesDataset.get({returnType:"Object"});
+	      allEdges = edgesDataset.get({returnType:"Object"});
+	      //console.log(allEdges);
+	      network.on('select',neighbourhoodHighlight);      
+	      network.on('doubleClick',selectThatNode);      
 	    }
+	    
+	    function findShortestPath() {
+	    	var startId = $("#startPoint").val();
+	    	var endId = $("#endPoint").val();
+	    	//console.log(startId + endId);
+	    	
+	    	var ids = {
+	    			startId : startId,
+	    			endId : endId
+	    		}
+	    	
+	    	$.ajax({
+	            url: "/getShortestPath",
+	            type: "POST",
+	            contentType: "application/json",
+	            data: JSON.stringify(ids),
+	            dataType: "text"
+	        }).done(function(data1) {
+	        	var connectedNodes =  null;
+	        	
+	        	
+	        	console.log(data1);
+	        	data1 = JSON.parse(data1);
+	        	var edges = data1.edges;
+	        	var nodes = data1.nodes;
+	        	
+	        	console.log(nodes[0].label);
+	        	for (var i = 0; i< nodes.length; i++) {	             		
+	        		allNodes[nodes[i].id].color =  'rgba(0,255,0,1)';        		
+	        	}
+	        	for (var i = 0; i< edges.length; i++) {	             		
+	        		allEdges[edges[i].id].color =  'rgba(0,255,0,1)';        		
+	        	}
+	        	
+	        	
+	        	var updateArray = [];
+	    	    for (nodeId in allNodes) {
+	    	      if (allNodes.hasOwnProperty(nodeId)) {
+	    	        updateArray.push(allNodes[nodeId]);
+	    	      }
+	    	    }	    	
+	    	
+	    	    nodesDataset.update(updateArray);    	 
+	    	     
+	    	    updateArray = [];
+	    	    for (edgeId in allEdges) {
+	    	      if (allEdges.hasOwnProperty(edgeId)) {
+	    	        updateArray.push(allEdges[edgeId]);
+	    	      }
+	    	    }
+	    	    
+	    	    edgesDataset.update(updateArray);  
+	    	    
+	        	
+	        }).fail(function(xhr, textStatus, errorThrown) {
+	        	console.log("error!");
+	        	console.log(xhr);
+	        	console.log(textStatus);
+	            console.log(errorThrown);
+	        })
+	    }
+	    
+	    function selectThatNode(params) {
+	    	 if (params.nodes.length > 0) {
+	    		console.log("TTT");		
+	    		
+	    		var node1 = params.nodes[0];
+	    		var group = allNodes[node1].group;
+	    		var id = null;
+	    		switch(group) {
+	    		case "service":
+	    			id = allNodes[node1].serviceId;
+	    			break;
+	    		case "dataset":
+	    			id = allNodes[node1].datasetId;
+	    			break;
+	    		case "user":
+	    			id = allNodes[node1].userId;
+	    			break;
+	    		default:
+	    			break;
+	    		}
+	    		
+	    		console.log("id: " + id);
+	    		console.log("idP: " + node1);
+	    		console.log("p1: " + p1);
+	    		console.log("p2: " + p2);
+	    		
+	    		var parameters = {
+		    			param1:p1,
+		    			param2:p2,
+		    			id:id,
+		    			groupName:group
+		    	}
+	    		$.ajax({
+		            url: "/getPartKnowledgeGraph",
+		            type: "POST",
+		            contentType: "application/json",
+		            data: JSON.stringify(parameters),
+		            dataType: "text"
+		        }).done(function(data1) {
+		        	console.log("success");
+		        	jsonString = data1;
+		        	draw();
+		        }).fail(function(xhr, textStatus, errorThrown) {
+		        	console.log("error!");
+		        	console.log(xhr);
+		        	console.log(textStatus);
+		            console.log(errorThrown);
+		        })
+	    		  
+	    	 }
+	    	    
+	      }
+	    
+	    function selectThatNodeCustomized() {
+	    	
+	    	 var group = document.getElementById("paramCombination1").value;
+	    	 var id = document.getElementById("userConfId").value;
+	    		
+	    		console.log("id: " + id);
+	    		console.log("group: " + group);
+	    		console.log("p1: " + p1);
+	    		console.log("p2: " + p2);
+	    		
+	    		var parameters = {
+		    			param1:p1,
+		    			param2:p2,
+		    			id:id,
+		    			groupName:group
+		    	}
+	    		$.ajax({
+		            url: "/getPartKnowledgeGraph",
+		            type: "POST",
+		            contentType: "application/json",
+		            data: JSON.stringify(parameters),
+		            dataType: "text"
+		        }).done(function(data1) {
+		        	console.log("success");
+		        	jsonString = data1;
+		        	draw();
+		        }).fail(function(xhr, textStatus, errorThrown) {
+		        	console.log("error!");
+		        	console.log(xhr);
+		        	console.log(textStatus);
+		            console.log(errorThrown);
+		        })
+	    	    
+	      }
+	    
+	    function neighbourhoodHighlight(params) {
+    	     // if something is selected:
+    	    if (params.nodes.length > 0) {
+    	      highlightActive = true;
+    	      var i,j;
+    	      var selectedNode = params.nodes[0];
+    	      //console.log(selectedNode);
+    	      
+    	      // mark all nodes as hard to read.
+    	      for (var nodeId in allNodes) {
+    	        allNodes[nodeId].color = 'rgba(192,192,192,0.3)';
+    	        if (allNodes[nodeId].hiddenLabel == undefined) {
+    	          allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+    	          allNodes[nodeId].label = undefined;
+    	        }
+    	      }
+    	      
+    	      for (var edgeId in allEdges) {
+    	    	  allEdges[edgeId].color = 'rgba(192,192,192,0.3)';
+      	        if (allEdges[edgeId].hiddenLabel == undefined) {
+      	        	allEdges[edgeId].hiddenLabel = allEdges[edgeId].label;
+      	        	allEdges[edgeId].label = undefined;
+      	        }
+      	      }
+      	      
+    	      
+    	      allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+    	      
+    	      var connectedNodes = network.getConnectedNodes(selectedNode);
+    	      var allConnectedNodes = [];
+
+    	      // get the second degree nodes
+    	      for (i = 1; i < degrees; i++) {
+    	        for (j = 0; j < connectedNodes.length; j++) {
+    	          allConnectedNodes = allConnectedNodes.concat(network.getConnectedNodes(connectedNodes[j]));
+    	        }
+    	      }
+
+    	      // all second degree nodes get a different color and their label back
+    	      for (i = 0; i < allConnectedNodes.length; i++) {
+    	        allNodes[allConnectedNodes[i]].color = 'rgba(0,255,0,0.3)';
+    	        if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+    	          allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
+    	          allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+    	        }
+    	      }
+
+    	      // all first degree nodes get their own color and their label back
+    	      for (i = 0; i < connectedNodes.length; i++) {
+    	        allNodes[connectedNodes[i]].color = 'rgba(255,0,0,0.3)';
+    	        if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
+    	          allNodes[connectedNodes[i]].label = allNodes[connectedNodes[i]].hiddenLabel;
+    	          allNodes[connectedNodes[i]].hiddenLabel = undefined;
+    	        }
+    	      }
+    	      
+    	      var curNode = allNodes[selectedNode];	   
+    	      
+    	      $("#nodeName").text(curNode.title);		  	       
+	  	      $("#id").text(curNode.id);
+	  	      $("#cluster").text(curNode.cluster);
+	  	      $("#label").text(curNode.label);
+  	          $("#panel").show();
+    	      
+    	      // the main node gets its own color and its label back.
+    	      
+    	      
+    	      allNodes[selectedNode].color = 'rgba(0,0,255,0.3)'
+    	      if (allNodes[selectedNode].hiddenLabel !== undefined) {
+    	        allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+    	        allNodes[selectedNode].hiddenLabel = undefined;
+    	      }
+    	     
+    	    }    else if (highlightActive === true) {
+    	      // reset all nodes
+    	       
+    	      for (var nodeId in allNodes) {
+    	        allNodes[nodeId].color = undefined;
+    	       
+    	        if (allNodes[nodeId].hiddenLabel !== undefined) {
+    	          allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+    	          allNodes[nodeId].hiddenLabel = undefined;
+    	        }
+    	      }
+    	      
+    	      for (var edgeId in allEdges) {
+    	    	  allEdges[edgeId].color = undefined;
+    	    	  
+      	        
+      	        	console.log(allEdges[edgeId].color);
+      	        	allEdges[edgeId].label = allEdges[edgeId].hiddenLabel;
+      	        	allEdges[edgeId].hiddenLabel = undefined;
+      	        
+      	      }
+    	      highlightActive = false;
+    	    } 	  	  
+    	    
+    	    
+    	    /*
+    	  	  //console.log(allEdges);	    	      
+    	      var connectedE = network.getConnectedEdges(selectedNode);
+    	      //console.log(connectedE);
+    	      
+    	      
+    	      for (var i = 0; i< connectedE.length ; i++) {
+    	    	  console.log(allEdges[connectedE[i]]);	   
+    	    	  allEdges[connectedE[i]].color = 'rgba(0,255,255,0.3)';
+    	    	  
+    	      }
+    	      */
+    	      
+    	    // transform the object into an array
+    	    var updateArray = [];
+    	    for (nodeId in allNodes) {
+    	      if (allNodes.hasOwnProperty(nodeId)) {
+    	        updateArray.push(allNodes[nodeId]);
+    	      }
+    	    }   	  
+    	        	    
+    	    nodesDataset.update(updateArray);
+    	    
+    	    
+    	    updateArray = [];
+    	    for (edgeId in allEdges) {
+    	      if (allEdges.hasOwnProperty(edgeId)) {
+    	        updateArray.push(allEdges[edgeId]);
+    	      }
+    	    }
+    	    
+    	    edgesDataset.update(updateArray);  
+    	  }
+	    
+	      
+	    
+	    
+	  //  draw();
 	    
 	    
 	</script>
@@ -288,33 +636,121 @@
 	   
 	  <div id="mynetwork" class="col-lg-3"></div>
 	  <div class = "col-lg-offset-7">
-	        <button type="button" onclick="hideConfig()" class="btn btn-default btn-lg "><span class="glyphicon glyphicon-star" aria-hidden="true">
+	        <button type="button" onclick="showBasicConfig()" class="btn btn-default  "><span class="glyphicon glyphicon-cog" aria-hidden="true">
+	        </span> Show Basic Settings </button>
+	        <button type="button" onclick="showAdvancedConfig()" class="btn btn-default  "><span class="glyphicon glyphicon-wrench" aria-hidden="true">
 	        </span> Show Advanced Settings </button>
 	  </div>
-	  <div id="config" class="col-lg-offset-7"></div>  
+	  
+	  <div id="basicConf" class="col-lg-offset-7">
+	  	<br>
+  			<div class="col-lg-8">
+  				<label>Graph Level</label>		     
+			    <div class="input-group col-lg-5">	
+			    <input type="number" class="form-control" placeholder="1~2" id = "graphLevel">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="button" onclick="setGraphLevel()">Go!</button>
+			      </span>
+			    </div>
+			    <div class="input-group col-lg-6">
+					<label>Actions</label>		     
+					<button type="button" onclick="selectThatNode()" class="btn btn-default  "><span class="glyphicon glyphicon-star" aria-hidden="true">
+			        </span> Clear All Node </button>
+	        	</div>
+	        	<br>
+	        	<div class="input-group">
+				  <span class="input-group-addon" id="basic-addon1">Start Point</span>
+				  <input type="text" class="form-control" placeholder="Type in Id" aria-describedby="basic-addon1" id="startPoint">
+			    </div>
+			    <br>
+			    <div class="input-group">
+				  <span class="input-group-addon" id="basic-addon2">End Point</span>
+				  <input type="text" class="form-control" placeholder="Type in Id" aria-describedby="basic-addon2" id="endPoint">
+				</div>
+				<br>
+				<div class="text-center">
+                    <button type="button" class="btn btn-primary" onclick="findShortestPath()">Shortest Path</button>
+                </div>	
+				<br>
+			    <div class="col-lg-offset-0">
+				    <form>
+					    <label>Rational Graph</label>
+			                <div class="form-group">
+			                    <select class="form-control" id="paramCombination">
+			                        <option value="User User Dataset">User × User | Dataset</option>
+			                        <option value="User User Service">User × User | Service</option>
+			                        <option value="Dataset Dataset User">Dataset × Dataset | User</option>
+			                        <option value="Dataset Dataset Service">Dataset × Dataset | Service</option>
+			                        <option value="Service Service User">Service × Service | User</option>
+			                        <option value="Service Service Dataset">Service × Service | Dataset</option>
+			                        <option value="User Dataset Service">User × Dataset | Service</option>
+			                        <option value="User Service Dataset">User × Service | Dataset</option>
+			                        <option value="Dataset Service User">Dataset × Service | User</option>
+			                    </select>
+			                </div>
+			                <div class="text-center">
+			                    <button type="button" class="btn btn-primary" onclick="Javascript:getParameters()">Finish</button>
+			                </div>
+	            	</form>
+	            	<br>
+	            	<br>
+				</div>				
+					    
+			</div>
+			
+				
+	  </div>  
+  		
+	  <div id="config" class="row col-lg-offset-7"></div>  
 	</div>
 	
-	<br>
+
 	
-	<div id="panel" class="col-lg-offset-7">  
-	  <div class="well col-lg-5">
-	    <div class="text-center">
-	      <img class="card-img-top" style=" width:60%;" src="/assets/images/data.png">
-	    </div>
-	    <div class="card-block text-center">
-	      <h4 class="card-title" id="nodeName">card</h4>
-	      <p class="card-text text-muted" >A data set (or dataset) is a collection of data.</p>
-	    </div>
-	    <ul class="list-group list-group-flush">
-	      <li class="list-group-item"><strong>Id:</strong><code id="id"></code></li>
-	      <li class="list-group-item"><strong>Cluster:</strong><code id="cluster"></code></li>
-	      <li class="list-group-item"><strong>Label:</strong><code id="label"></code></li>
-	    </ul>
-	    <div class="card-block">
-	      <a href="#" class="card-link col-lg-offset-0 col-lg-6">Card link</a> 
-	      <a href="#" class="card-link col-lg-6">Another link</a>
-	    </div>    
-	  </div>  
+	<div class = "row">
+		<br>
+		<div id="panel" class="col-lg-offset-7">  
+		  <div class="well col-lg-5">
+		    <div class="text-center">
+		      <img class="card-img-top" style=" width:60%;" src="/assets/images/data.png">
+		    </div>
+		    <div class="card-block text-center">
+		      <h4 class="card-title" id="nodeName">card</h4>
+		      <p class="card-text text-muted" >A data set (or dataset) is a collection of data.</p>
+		    </div>
+		    <ul class="list-group list-group-flush">
+		      <li class="list-group-item"><strong>Id:</strong><code id="id"></code></li>
+		      <li class="list-group-item"><strong>Cluster:</strong><code id="cluster"></code></li>
+		      <li class="list-group-item"><strong>Label:</strong><code id="label"></code></li>
+		    </ul>
+		    <div class="card-block">
+		      <a href="#" class="card-link col-lg-offset-0 col-lg-6">Card link</a> 
+		      <a href="#" class="card-link col-lg-6">Another link</a>
+		    </div>    
+		  </div>  
+		</div>
+	</div>
+	<br>
+	<div id="userConfig" class="col-lg-8">
+	<form>
+   		<label>Customized ID</label>
+   			<div class="row">
+   			<div class="col-sm-4 col-md-2">
+	             <div class="form-group">
+	                 <select class="form-control" id="paramCombination1">
+	                     <option value="user">User</option>
+	                     <option value="service">Service</option>
+	                     <option value="dataset">Dataset</option>
+	                 </select>
+	             </div>
+             </div>
+             <div class="col-sm-4 col-md-2">
+             	<input type="text" class="form-control col-lg-3" id="userConfId" placeholder="1">
+             </div>
+             <div class="col-sm-4 col-md-4">
+                 <button type="button" class="btn btn-primary col-lg-3" onclick="Javascript:selectThatNodeCustomized()">Show</button>
+             </div>
+             </div>
+       	</form>
 	</div>
   
 }
