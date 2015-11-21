@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.springframework.data.domain.Sort;
+
 import models.ClimateService;
 import models.ClimateServiceRepository;
 import models.Dataset;
@@ -23,6 +25,7 @@ import models.User;
 import models.UserRepository;
 import play.mvc.Controller;
 import play.mvc.Result;
+import util.HashMapUtil;
 import util.Matrix;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -82,7 +85,7 @@ public class AnalyticsController extends Controller {
 		case "UserUserDataset": {
 			relations = new int[count1][count3];
 			Iterable<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
-					.findAll();
+					.findAll(sortByCountDesc());
 
 			if (datasetAndUsers == null) {
 				System.out.println("User and Dataset: cannot be found!");
@@ -105,7 +108,7 @@ public class AnalyticsController extends Controller {
 		case "UserUserService": {
 			relations = new int[count1][count3];
 			Iterable<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
-					.findAll();
+					.findAll(sortByCountDesc());
 
 			if (serviceAndUsers == null) {
 				System.out.println("User and Service: cannot be found!");
@@ -128,7 +131,7 @@ public class AnalyticsController extends Controller {
 		case "DatasetDatasetUser": {
 			relations = new int[count1][count3];
 			Iterable<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
-					.findAll();
+					.findAll(sortByCountDesc());
 
 			if (datasetAndUsers == null) {
 				System.out.println("User and Dataset: cannot be found!");
@@ -151,7 +154,7 @@ public class AnalyticsController extends Controller {
 		case "DatasetDatasetService": {
 			relations = new int[count1][count3];
 			Iterable<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
-					.findAll();
+					.findAll(sortByCountDesc());
 
 			if (datasetAndServices == null) {
 				System.out.println("Dataset and Service: cannot be found!");
@@ -174,7 +177,7 @@ public class AnalyticsController extends Controller {
 		case "ServiceServiceUser": {
 			relations = new int[count1][count3];
 			Iterable<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
-					.findAll();
+					.findAll(sortByCountDesc());
 
 			if (serviceAndUsers == null) {
 				System.out.println("User and Service: cannot be found!");
@@ -197,7 +200,7 @@ public class AnalyticsController extends Controller {
 		case "ServiceServiceDataset": {
 			relations = new int[count1][count3];
 			Iterable<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
-					.findAll();
+					.findAll(sortByCountDesc());
 
 			if (datasetAndServices == null) {
 				System.out.println("Dataset and Service: cannot be found!");
@@ -259,13 +262,13 @@ public class AnalyticsController extends Controller {
 
 	public Map<String, Object> getAllServiceAndDatasetWithCount() {
 
-		Iterable<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
-				.findAll();
+		List<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
+				.findAll(sortByCountDesc());
 
 		if (datasetAndServices == null) {
 			System.out.println("Dataset and Service: cannot be found!");
 		}
-
+		
 		Map<String, Object> map = jsonFormatServiceAndDataset(datasetAndServices);
 		return map;
 
@@ -273,8 +276,8 @@ public class AnalyticsController extends Controller {
 
 	public Map<String, Object> getAllDatasetAndUserWithCount() {
 
-		Iterable<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
-				.findAll();
+		List<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
+				.findAll(sortByCountDesc());
 
 		if (datasetAndUsers == null) {
 			System.out.println("User and Dataset: cannot be found!");
@@ -286,8 +289,8 @@ public class AnalyticsController extends Controller {
 
 	public Map<String, Object> getAllServiceAndUserWithCount() {
 
-		Iterable<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
-				.findAll();
+		List<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
+				.findAll(sortByCountDesc());
 
 		if (serviceAndUsers == null) {
 			System.out.println("User and Service: cannot be found!");
@@ -301,7 +304,7 @@ public class AnalyticsController extends Controller {
 
 		try {
 			User user = userRepository.findOne(userId);
-			Iterable<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
+			List<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
 					.findByUser(user);
 
 			if (datasetAndUsers == null) {
@@ -322,12 +325,12 @@ public class AnalyticsController extends Controller {
 		}
 	}
 
-	public Result getOneDatasetWithAllDatasetAndCount(long datasetId,
+	public Result getOneDatasetWithAllUserAndCount(long datasetId,
 			String format) {
 
 		try {
 			Dataset dataset = datasetRepository.findOne(datasetId);
-			Iterable<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
+			List<DatasetAndUser> datasetAndUsers = datasetAndUserRepository
 					.findByDataset(dataset);
 
 			if (datasetAndUsers == null) {
@@ -352,7 +355,7 @@ public class AnalyticsController extends Controller {
 
 		try {
 			User user = userRepository.findOne(userId);
-			Iterable<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
+			List<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
 					.findByUser(user);
 
 			if (serviceAndUsers == null) {
@@ -377,7 +380,7 @@ public class AnalyticsController extends Controller {
 
 		try {
 			ClimateService service = serviceRepository.findOne(serviceId);
-			Iterable<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
+			List<ServiceAndUser> serviceAndUsers = serviceAndUserRepository
 					.findByClimateService(service);
 
 			if (serviceAndUsers == null) {
@@ -403,7 +406,7 @@ public class AnalyticsController extends Controller {
 
 		try {
 			ClimateService service = serviceRepository.findOne(serviceId);
-			Iterable<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
+			List<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
 					.findByClimateService(service);
 
 			if (datasetAndServices == null) {
@@ -429,7 +432,7 @@ public class AnalyticsController extends Controller {
 
 		try {
 			Dataset dataset = datasetRepository.findOne(datasetId);
-			Iterable<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
+			List<ServiceAndDataset> datasetAndServices = serviceAndDatasetRepository
 					.findByDataset(dataset);
 
 			if (datasetAndServices == null) {
@@ -451,12 +454,14 @@ public class AnalyticsController extends Controller {
 	}
 
 	private Map<String, Object> jsonFormatUserAndDataset(
-			Iterable<DatasetAndUser> userDatasets) {
-
+			List<DatasetAndUser> userDatasets) {
+		long min = userDatasets.get(userDatasets.size()-1).getCount();
+		long max = userDatasets.get(0).getCount();
 		List<Map<String, Object>> nodes = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> rels = new ArrayList<Map<String, Object>>();
 
 		int i = 1;
+		int edgeId = 1;
 		for (DatasetAndUser userDataset : userDatasets) {
 			int source = 0;
 			int target = 0;
@@ -472,7 +477,7 @@ public class AnalyticsController extends Controller {
 			if (source == 0) {
 				String realName = userDataset.getUser().getFirstName() + " "
 						+ userDataset.getUser().getLastName();
-				nodes.add(map7("id", i, "title", realName, "label", userDataset
+				nodes.add(HashMapUtil.map7("id", i, "title", realName, "label", userDataset
 						.getUser().getUserName(), "cluster", "1", "value", 1,
 						"group", "user", "userId", userDataset.getUser()
 								.getId()));
@@ -490,7 +495,7 @@ public class AnalyticsController extends Controller {
 				}
 			}
 			if (target == 0) {
-				nodes.add(map7("id", i, "title", userDataset.getDataset()
+				nodes.add(HashMapUtil.map7("id", i, "title", userDataset.getDataset()
 						.getName(), "label",
 						userDataset.getDataset().getName(), "cluster", "2",
 						"value", 2, "group", "dataset", "datasetId",
@@ -498,20 +503,24 @@ public class AnalyticsController extends Controller {
 				target = i;
 				i++;
 			}
-			rels.add(map3("from", source, "to", target, "title", "USE"));
-
+			rels.add(HashMapUtil.map6("from", source, "to", target, "title", "USE",
+					"id", edgeId, "weight", userDataset.getCount(), "length", (max-min)*3/userDataset.getCount()));
+			edgeId++;
 		}
 
-		return map("nodes", nodes, "edges", rels);
+		return HashMapUtil.map("nodes", nodes, "edges", rels);
 	}
 
 	private Map<String, Object> jsonFormatServiceAndDataset(
-			Iterable<ServiceAndDataset> serviceDatasets) {
-
+			List<ServiceAndDataset> serviceDatasets) {
+		
+		long min = serviceDatasets.get(serviceDatasets.size()-1).getCount();
+		long max = serviceDatasets.get(0).getCount();
 		List<Map<String, Object>> nodes = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> rels = new ArrayList<Map<String, Object>>();
 
 		int i = 1;
+		int edgeId = 1;
 		for (ServiceAndDataset serviceDataset : serviceDatasets) {
 			int source = 0;
 			int target = 0;
@@ -525,7 +534,7 @@ public class AnalyticsController extends Controller {
 				}
 			}
 			if (source == 0) {
-				nodes.add(map7("id", i, "title", serviceDataset
+				nodes.add(HashMapUtil.map7("id", i, "title", serviceDataset
 						.getClimateService().getName(), "label", serviceDataset
 						.getClimateService().getName(), "cluster", "3",
 						"value", 1, "group", "service", "serviceId",
@@ -543,7 +552,7 @@ public class AnalyticsController extends Controller {
 				}
 			}
 			if (target == 0) {
-				nodes.add(map7("id", i, "title", serviceDataset.getDataset()
+				nodes.add(HashMapUtil.map7("id", i, "title", serviceDataset.getDataset()
 						.getName(), "label", serviceDataset.getDataset()
 						.getName(), "cluster", "2", "value", 2, "group",
 						"dataset", "datasetId", serviceDataset.getDataset()
@@ -552,20 +561,24 @@ public class AnalyticsController extends Controller {
 				i++;
 			}
 
-			rels.add(map3("from", source, "to", target, "title", "Utilize"));
-
+			rels.add(HashMapUtil.map6("from", source, "to", target, "title", "Utilize",
+					"id", edgeId, "weight", serviceDataset.getCount(), "length", (max-min)*3/serviceDataset.getCount()));
+			edgeId++;
 		}
 
-		return map("nodes", nodes, "edges", rels);
+		return HashMapUtil.map("nodes", nodes, "edges", rels);
 	}
 
 	private Map<String, Object> jsonFormatServiceAndUser(
-			Iterable<ServiceAndUser> userServices) {
-
+			List<ServiceAndUser> userServices) {
+		
+		long min = userServices.get(userServices.size()-1).getCount();
+		long max = userServices.get(0).getCount();
 		List<Map<String, Object>> nodes = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> rels = new ArrayList<Map<String, Object>>();
 
 		int i = 1;
+		int edgeId = 1;
 		for (ServiceAndUser userService : userServices) {
 			int source = 0;
 			int target = 0;
@@ -580,9 +593,8 @@ public class AnalyticsController extends Controller {
 			}
 			if (source == 0) {
 				String realName = userService.getUser().getFirstName() + " "
-						+ userService.getUser().getMiddleInitial() + " "
 						+ userService.getUser().getLastName();
-				nodes.add(map7("id", i, "title", realName, "label", userService
+				nodes.add(HashMapUtil.map7("id", i, "title", realName, "label", userService
 						.getUser().getUserName(), "cluster", "1", "value", 1,
 						"group", "user", "userId", userService.getUser()
 								.getId()));
@@ -599,7 +611,7 @@ public class AnalyticsController extends Controller {
 				}
 			}
 			if (target == 0) {
-				nodes.add(map7("id", i, "title", userService
+				nodes.add(HashMapUtil.map7("id", i, "title", userService
 						.getClimateService().getName(), "label", userService
 						.getClimateService().getName(), "cluster", "3",
 						"value", 2, "group", "service", "serviceId",
@@ -608,11 +620,12 @@ public class AnalyticsController extends Controller {
 				i++;
 			}
 
-			rels.add(map3("from", source, "to", target, "title", "USE"));
-
+			rels.add(HashMapUtil.map6("from", source, "to", target, "title", "USE",
+					"id", edgeId, "weight", userService.getCount(), "length", (max-min)*4/userService.getCount()));
+			edgeId ++;
 		}
 
-		return map("nodes", nodes, "edges", rels);
+		return HashMapUtil.map("nodes", nodes, "edges", rels);
 	}
 	
 	public String findTitleName(String param, long id) {
@@ -639,6 +652,7 @@ public class AnalyticsController extends Controller {
 		List<Map<String, Object>> rels = new ArrayList<Map<String, Object>>();
 
 		int i = 1;
+		int edgeId = 1;
 		for (int m = 0; m < matrix.length; m++) {
 			for (int n = m + 1; n < matrix[0].length; n++) {
 				if (matrix[m][n] > 0) {
@@ -654,7 +668,7 @@ public class AnalyticsController extends Controller {
 					}
 					if (source == 0) {
 						String name = findTitleName(param, (long)m+1);
-						nodes.add(map7("id", i, "title", name, "label",
+						nodes.add(HashMapUtil.map7("id", i, "title", name, "label",
 								name, "cluster", "1", "value", 1, "group",
 								param, param + "Id", (long)m + 1));
 						source = i;
@@ -669,49 +683,29 @@ public class AnalyticsController extends Controller {
 					}
 					if (target == 0) {
 						String name = findTitleName(param, (long)n+1);
-						nodes.add(map7("id", i, "title", name, "label",
+						nodes.add(HashMapUtil.map7("id", i, "title", name, "label",
 								name, "cluster", "1", "value", 1, "group",
 								param, param + "Id", (long)n + 1));
 						target = i;
 						i++;
 					}
-					rels.add(map3("from", source, "to", target, "title", "RELATE"));
+					int zoom = 0;
+					if(param.equals("dataset")) {
+						zoom = 1600;
+					} else {
+						zoom = 6000;
+					}
+					rels.add(HashMapUtil.map6("from", source, "to", target, "title", "RELATE",
+							"id", edgeId, "weight", matrix[m][n], "length", zoom/matrix[m][n]));
+					edgeId ++;
 				}
 			}
 		}
 
-		return map("nodes", nodes, "edges", rels);
+		return HashMapUtil.map("nodes", nodes, "edges", rels);
 	}
-
-	private Map<String, Object> map(String key1, Object value1, String key2,
-			Object value2) {
-		Map<String, Object> result = new HashMap<String, Object>(2);
-		result.put(key1, value1);
-		result.put(key2, value2);
-		return result;
-	}
-
-	private Map<String, Object> map3(String key1, Object value1, String key2,
-			Object value2, String key3, Object value3) {
-		Map<String, Object> result = new HashMap<String, Object>(3);
-		result.put(key1, value1);
-		result.put(key2, value2);
-		result.put(key3, value3);
-		return result;
-	}
-
-	private Map<String, Object> map7(String key1, Object value1, String key2,
-			Object value2, String key3, Object value3, String key4,
-			Object value4, String key5, Object value5, String key6,
-			Object value6, String key7, Object value7) {
-		Map<String, Object> result = new HashMap<String, Object>(6);
-		result.put(key1, value1);
-		result.put(key2, value2);
-		result.put(key3, value3);
-		result.put(key4, value4);
-		result.put(key5, value5);
-		result.put(key6, value6);
-		result.put(key7, value7);
-		return result;
-	}
+	
+	private Sort sortByCountDesc() {
+        return new Sort(Sort.Direction.DESC, "count");
+    }
 }

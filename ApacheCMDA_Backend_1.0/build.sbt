@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
   "org.mockito" % "mockito-core" % "1.10.19" % "test",
   "mysql" % "mysql-connector-java" % "5.1.34",
   "com.google.code.gson" % "gson" % "2.3.1",
-  "org.hibernate" % "hibernate-c3p0" % "4.3.7.Final"
+  "org.hibernate" % "hibernate-c3p0" % "4.3.7.Final",
+  "com.googlecode.efficient-java-matrix-library" % "ejml" % "0.23",
+  "org.jgrapht" % "jgrapht-jdk1.5" % "0.7.3"
 )
-
-

@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.inject.Named;
@@ -14,4 +15,5 @@ public interface DatasetAndUserRepository extends CrudRepository<DatasetAndUser,
 	List<DatasetAndUser> findByUserAndDataset(User user, Dataset dataset);
 	List<DatasetAndUser> findByUser(User user);
 	List<DatasetAndUser> findByDataset(Dataset dataset);
+	List<DatasetAndUser> findAll(Sort sort);
 }

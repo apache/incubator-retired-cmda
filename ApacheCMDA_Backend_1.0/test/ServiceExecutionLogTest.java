@@ -25,6 +25,7 @@ public class ServiceExecutionLogTest {
 	private static String TEST_DATA_URL = "test_dataUrl";
 	private static Date TEST_DATASET_STUDY_START_TIME;
 	private static Date TEST_DATASET_STUDY_END_TIME;
+	private static String TEST_URL = "test_url";
 	
 	private static ServiceExecutionLog serviceExecutionLog;
 	private static ServiceExecutionLog serviceExecutionLog1;
@@ -41,7 +42,7 @@ public class ServiceExecutionLogTest {
 		TEST_DATASET_STUDY_END_TIME = new Date();
 		serviceExecutionLog1 = new ServiceExecutionLog(climateService, user, serviceConfiguration, TEST_PURPOSE,
 				TEST_EXECUTION_START_TIME, TEST_EXECUTION_END_TIME, TEST_DATA_URL, TEST_PLOT_URL,
-				TEST_DATASET_STUDY_START_TIME, TEST_DATASET_STUDY_END_TIME);
+				TEST_DATASET_STUDY_START_TIME, TEST_DATASET_STUDY_END_TIME, TEST_URL);
 	}
 	
 	@Test
@@ -96,6 +97,12 @@ public class ServiceExecutionLogTest {
 	public void testDataUrl(){
 		serviceExecutionLog.setDataUrl(TEST_DATA_URL);
 		assertEquals(TEST_DATA_URL, serviceExecutionLog.getDataUrl());
+	}
+	
+	@Test
+	public void testUrl(){
+		serviceExecutionLog.setUrl(TEST_URL);
+		assertEquals(TEST_URL, serviceExecutionLog.getUrl());
 	}
 	
 	@Test

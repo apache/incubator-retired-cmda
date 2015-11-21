@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.inject.Named;
@@ -13,6 +14,6 @@ public interface ServiceAndDatasetRepository extends CrudRepository<ServiceAndDa
 
 	List<ServiceAndDataset> findByClimateService(ClimateService service);
 	List<ServiceAndDataset> findByDataset(Dataset dataset);
-		
+	List<ServiceAndDataset> findAll(Sort sort);
 }
 

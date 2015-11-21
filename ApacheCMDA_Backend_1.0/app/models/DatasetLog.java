@@ -8,9 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class DatasetLog {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
@@ -32,6 +35,11 @@ public class DatasetLog {
 	@JoinColumn(name = "outputDatasetId", referencedColumnName = "id")
 	private Dataset outputDataset;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date serviceExecutionStartTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date serviceExecutionEndTime;
+	
 	private Date datasetStudyStartTime;
 	private Date datasetStudyEndTime;
 	
@@ -39,9 +47,11 @@ public class DatasetLog {
 		
 	}
 	
-	public DatasetLog(ServiceExecutionLog serviceExecutionLog, Dataset dataset,
-			User user, String plotUrl, String dataUrl, Dataset originalDataset,
-			Dataset outputDataset, Date datasetStudyStartTime, Date datasetStudyEndTime) {
+	public DatasetLog(ServiceExecutionLog serviceExecutionLog,
+			Dataset dataset, User user, String plotUrl, String dataUrl,
+			Dataset originalDataset, Dataset outputDataset,
+			Date serviceExecutionStartTime, Date serviceExecutionEndTime,
+			Date datasetStudyStartTime, Date datasetStudyEndTime) {
 		super();
 		this.serviceExecutionLog = serviceExecutionLog;
 		this.dataset = dataset;
@@ -50,6 +60,8 @@ public class DatasetLog {
 		this.dataUrl = dataUrl;
 		this.originalDataset = originalDataset;
 		this.outputDataset = outputDataset;
+		this.serviceExecutionStartTime = serviceExecutionStartTime;
+		this.serviceExecutionEndTime = serviceExecutionEndTime;
 		this.datasetStudyStartTime = datasetStudyStartTime;
 		this.datasetStudyEndTime = datasetStudyEndTime;
 	}
@@ -118,6 +130,22 @@ public class DatasetLog {
 		this.user = user;
 	}
 	
+	public Date getServiceExecutionStartTime() {
+		return serviceExecutionStartTime;
+	}
+
+	public void setServiceExecutionStartTime(Date serviceExecutionStartTime) {
+		this.serviceExecutionStartTime = serviceExecutionStartTime;
+	}
+
+	public Date getServiceExecutionEndTime() {
+		return serviceExecutionEndTime;
+	}
+
+	public void setServiceExecutionEndTime(Date serviceExecutionEndTime) {
+		this.serviceExecutionEndTime = serviceExecutionEndTime;
+	}
+	
 	public Date getDatasetStudyStartTime() {
 		return datasetStudyStartTime;
 	}
@@ -137,13 +165,14 @@ public class DatasetLog {
 	@Override
 	public String toString() {
 		return "DatasetLog [id=" + id + ", serviceExecutionLog="
-				+ serviceExecutionLog + ", dataSet=" + dataset + ", user="
+				+ serviceExecutionLog + ", dataset=" + dataset + ", user="
 				+ user + ", plotUrl=" + plotUrl + ", dataUrl=" + dataUrl
-				+ ", originalDataSet=" + originalDataset + ", outputDataSet="
-				+ outputDataset + ", datasetStudyStartTime="
+				+ ", originalDataset=" + originalDataset + ", outputDataset="
+				+ outputDataset + ", serviceExecutionStartTime="
+				+ serviceExecutionStartTime + ", serviceExecutionEndTime="
+				+ serviceExecutionEndTime + ", datasetStudyStartTime="
 				+ datasetStudyStartTime + ", datasetStudyEndTime="
 				+ datasetStudyEndTime + "]";
 	}
-	
 	
 }
