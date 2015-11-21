@@ -133,6 +133,8 @@
 	    var visAdvancedConfig = 1;
 	    var visBasicConfig = 1;
 	    
+	    document.getElementById("paramCombination1").disabled = true;
+	    
 	    
 	    function getParameters() {
 	    	var temp1 = document.getElementById("paramCombination").value;
@@ -156,6 +158,11 @@
 	        }).done(function(data1) {
 	        	console.log("success");
 	        	jsonString = data1;
+	        	if(p1 == "Dataset" || p2 == "Dataset") {
+		    		$("#setShownName").show();
+		    	}else {
+		    		$("#setShownName").hide();
+		    	}
 	        	draw();
 	        }).fail(function(xhr, textStatus, errorThrown) {
 	        	console.log("error!");
@@ -199,12 +206,11 @@
 	      var test = jsonString;
 	      
 	      //test = JSON.stringify(test);
-	      console.log("test: " + test);
 	      test = JSON.parse(test);
 	      var nodes = test.nodes;
-	      console.log("nodes: " + nodes);
+
 	      var edges = test.edges;
-	      console.log("edges: " + edges); 
+
 		  
 	      nodesDataset = new vis.DataSet(nodes); 
 	      edgesDataset = new vis.DataSet(edges); 
@@ -268,15 +274,15 @@
 	        },
 	        
 	        physics: {    
-	          barnesHut: {
-	        	  centralGravity: 1.95,	              
-	        	  springLength: 195,
-	              springConstant: 0.185,
-	        	  damping: 0.25,
-	              avoidOverlap: 0.5
-   			    },
+   			  hierarchicalRepulsion: {
+   				  springConstant: 0.01,
+   		      	  centralGravity: 1.75,
+   		      	  nodeDistance: 120,
+   		      	  
+   		      },
    			 	maxVelocity: 10,
    			    minVelocity: 0.75,
+   			    solver: "hierarchicalRepulsion",
 	          stabilization: {
 	            enabled:true,
 	            iterations:200,
@@ -347,42 +353,9 @@
 	            data: JSON.stringify(ids),
 	            dataType: "text"
 	        }).done(function(data1) {
-	        	var connectedNodes =  null;
-	        	
-	        	
-	        	console.log(data1);
-	        	data1 = JSON.parse(data1);
-	        	var edges = data1.edges;
-	        	var nodes = data1.nodes;
-	        	
-	        	console.log(nodes[0].label);
-	        	for (var i = 0; i< nodes.length; i++) {	             		
-	        		allNodes[nodes[i].id].color =  'rgba(0,255,0,1)';        		
-	        	}
-	        	for (var i = 0; i< edges.length; i++) {	             		
-	        		allEdges[edges[i].id].color =  'rgba(0,255,0,1)';        		
-	        	}
-	        	
-	        	
-	        	var updateArray = [];
-	    	    for (nodeId in allNodes) {
-	    	      if (allNodes.hasOwnProperty(nodeId)) {
-	    	        updateArray.push(allNodes[nodeId]);
-	    	      }
-	    	    }	    	
-	    	
-	    	    nodesDataset.update(updateArray);    	 
-	    	     
-	    	    updateArray = [];
-	    	    for (edgeId in allEdges) {
-	    	      if (allEdges.hasOwnProperty(edgeId)) {
-	    	        updateArray.push(allEdges[edgeId]);
-	    	      }
-	    	    }
-	    	    
-	    	    edgesDataset.update(updateArray);  
-	    	    
-	        	
+	        	console.log("success");
+	        	jsonString = data1;
+	        	draw();
 	        }).fail(function(xhr, textStatus, errorThrown) {
 	        	console.log("error!");
 	        	console.log(xhr);
@@ -397,7 +370,12 @@
 	    		
 	    		var node1 = params.nodes[0];
 	    		var group = allNodes[node1].group;
+	    		var startTime = "";
+		    	var endTime = "";
+	    		
 	    		var id = null;
+	    		
+	    		console.log("***************" + group)
 	    		switch(group) {
 	    		case "service":
 	    			id = allNodes[node1].serviceId;
@@ -411,17 +389,14 @@
 	    		default:
 	    			break;
 	    		}
-	    		
-	    		console.log("id: " + id);
-	    		console.log("idP: " + node1);
-	    		console.log("p1: " + p1);
-	    		console.log("p2: " + p2);
-	    		
+
 	    		var parameters = {
 		    			param1:p1,
 		    			param2:p2,
 		    			id:id,
-		    			groupName:group
+		    			groupName:group,
+		    			startTime:startTime,
+		    			endTime:endTime
 		    	}
 	    		$.ajax({
 		            url: "/getPartKnowledgeGraph",
@@ -448,17 +423,17 @@
 	    	
 	    	 var group = document.getElementById("paramCombination1").value;
 	    	 var id = document.getElementById("userConfId").value;
-	    		
-	    		console.log("id: " + id);
-	    		console.log("group: " + group);
-	    		console.log("p1: " + p1);
-	    		console.log("p2: " + p2);
+	    	 var startTime = document.getElementById("startTime").value;
+	    	 var endTime = document.getElementById("endTime").value;
+	    	 var choice = $('input[name="customizedChoice"]:checked').val();
 	    		
 	    		var parameters = {
 		    			param1:p1,
 		    			param2:p2,
 		    			id:id,
-		    			groupName:group
+		    			groupName:group,
+		    			startTime:startTime,
+		    			endTime:endTime
 		    	}
 	    		$.ajax({
 		            url: "/getPartKnowledgeGraph",
@@ -468,7 +443,20 @@
 		            dataType: "text"
 		        }).done(function(data1) {
 		        	console.log("success");
-		        	jsonString = data1;
+		        	if(choice === "datasetName") {
+		        		jsonString = data1;
+		        	}else {
+		        		
+		        		data1 = JSON.parse(data1);
+		      	        var nodes = data1.nodes;
+		      	        for(var i=0; i<nodes.length; i++) {
+		      	        	if(nodes[i].group == "dataset") {
+		      	        		var start = nodes[i].label.split(" ")[0].length;
+		      	        		nodes[i].label = nodes[i].label.substring(start+1);
+		      	        	}
+		      	        }
+		        		jsonString = JSON.stringify(data1);
+		        	}
 		        	draw();
 		        }).fail(function(xhr, textStatus, errorThrown) {
 		        	console.log("error!");
@@ -519,7 +507,7 @@
 
     	      // all second degree nodes get a different color and their label back
     	      for (i = 0; i < allConnectedNodes.length; i++) {
-    	        allNodes[allConnectedNodes[i]].color = 'rgba(0,255,0,0.3)';
+    	        allNodes[allConnectedNodes[i]].color = 'rgba(0,255,0,0.9)';
     	        if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
     	          allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
     	          allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
@@ -528,25 +516,45 @@
 
     	      // all first degree nodes get their own color and their label back
     	      for (i = 0; i < connectedNodes.length; i++) {
-    	        allNodes[connectedNodes[i]].color = 'rgba(255,0,0,0.3)';
+    	        allNodes[connectedNodes[i]].color = 'rgba(255,255,0,0.9)';
     	        if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
     	          allNodes[connectedNodes[i]].label = allNodes[connectedNodes[i]].hiddenLabel;
     	          allNodes[connectedNodes[i]].hiddenLabel = undefined;
     	        }
     	      }
-    	      
-    	      var curNode = allNodes[selectedNode];	   
-    	      
-    	      $("#nodeName").text(curNode.title);		  	       
-	  	      $("#id").text(curNode.id);
+
+    	      var curNode = allNodes[selectedNode];
+    	      var group = curNode.group;
+	    		var id = null;
+	    		switch(group) {
+	    		case "service":
+	    			id = curNode.serviceId;
+	    			$("#description").text("Service ");
+	    			break;
+	    		case "dataset":
+	    			id = curNode.datasetId;
+	    			$("#description").text("Dataset ");
+	    			break;
+	    		case "user":
+	    			id = curNode.userId;
+	    			$("#description").text("User");
+	    			break;
+	    		default:
+	    			break;
+	    		}  
+    	      		  	      
+	    	  $("#groupId").text(group.charAt(0).toUpperCase()+group.substring(1) + " Id:" );
+	  	      $("#nodeName").text(curNode.title);
+	  	      $("#id").text(id);
+		  	  $("#nodeId").text(curNode.id);
 	  	      $("#cluster").text(curNode.cluster);
 	  	      $("#label").text(curNode.label);
   	          $("#panel").show();
-    	      
+  	          
     	      // the main node gets its own color and its label back.
     	      
     	      
-    	      allNodes[selectedNode].color = 'rgba(0,0,255,0.3)'
+    	      allNodes[selectedNode].color = 'rgba(255,0,255,0.9)'
     	      if (allNodes[selectedNode].hiddenLabel !== undefined) {
     	        allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
     	        allNodes[selectedNode].hiddenLabel = undefined;
@@ -660,12 +668,12 @@
 	        	<br>
 	        	<div class="input-group">
 				  <span class="input-group-addon" id="basic-addon1">Start Point</span>
-				  <input type="text" class="form-control" placeholder="Type in Id" aria-describedby="basic-addon1" id="startPoint">
+				  <input type="text" class="form-control" placeholder="Type in Node Id" aria-describedby="basic-addon1" id="startPoint">
 			    </div>
 			    <br>
 			    <div class="input-group">
 				  <span class="input-group-addon" id="basic-addon2">End Point</span>
-				  <input type="text" class="form-control" placeholder="Type in Id" aria-describedby="basic-addon2" id="endPoint">
+				  <input type="text" class="form-control" placeholder="Type in Node Id" aria-describedby="basic-addon2" id="endPoint">
 				</div>
 				<br>
 				<div class="text-center">
@@ -715,10 +723,11 @@
 		    </div>
 		    <div class="card-block text-center">
 		      <h4 class="card-title" id="nodeName">card</h4>
-		      <p class="card-text text-muted" >A data set (or dataset) is a collection of data.</p>
+		      <p class="card-text text-muted" ><code id="description"></code></p>
 		    </div>
 		    <ul class="list-group list-group-flush">
-		      <li class="list-group-item"><strong>Id:</strong><code id="id"></code></li>
+		      <li class="list-group-item"><strong id="groupId"></strong><code id="id"></code></li>
+		      <li class="list-group-item"><strong>Node Id:</strong><code id="nodeId"></code></li>
 		      <li class="list-group-item"><strong>Cluster:</strong><code id="cluster"></code></li>
 		      <li class="list-group-item"><strong>Label:</strong><code id="label"></code></li>
 		    </ul>
@@ -730,6 +739,7 @@
 		</div>
 	</div>
 	<br>
+
 	<div id="userConfig" class="col-lg-8">
 	<form>
    		<label>Customized ID</label>
@@ -743,12 +753,29 @@
 	                 </select>
 	             </div>
              </div>
-             <div class="col-sm-4 col-md-2">
-             	<input type="text" class="form-control col-lg-3" id="userConfId" placeholder="1">
+             <div class="col-sm-4 col-md-4">
+             	<input type="text" class="form-control col-lg-4" id="userConfId" placeholder="User/Dataset/Service Id">
+             </div>
+             </div>
+             <div class="row">
+             <div class="col-sm-4 col-md-4">
+                <label>Start Time</label>
+             	<input type="text" class="form-control col-lg-4" id="startTime" placeholder="MM/DD/YYYY hh:mm">
              </div>
              <div class="col-sm-4 col-md-4">
-                 <button type="button" class="btn btn-primary col-lg-3" onclick="Javascript:selectThatNodeCustomized()">Show</button>
+                <label>End Time</label>
+             	<input type="text" class="form-control col-lg-4" id="endTime" placeholder="MM/DD/YYYY hh:mm">
              </div>
+             </div>
+             <br>
+             <div class="row">
+                <div id = "setShownName" class="col-sm-4 col-md-4">
+             		<input type="radio" id="datasetNameC" name="customizedChoice" checked="checked" value="datasetName" /> Dataset Name
+             		<input type="radio" id="variableNameC" name="customizedChoice" value="variableName" /> Variable Name
+             	</div>
+	             <div class="col-sm-4 col-md-4">
+	                 <button type="button" class="btn btn-primary col-lg-3" onclick="Javascript:selectThatNodeCustomized()">Show</button>
+	             </div>
              </div>
        	</form>
 	</div>

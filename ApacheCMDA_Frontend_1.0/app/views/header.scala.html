@@ -21,8 +21,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="text-danger">Recommendation</span><b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="@routes.ClimateServiceController.recommendationSummary()">Summary</a></li>
-							
+							<li><a href='@routes.ClimateServiceController.recommendationSummary("ochimborazo")'>Summary</a></li>							
 						</ul>				
 					</li>
 					
@@ -58,7 +57,7 @@
 							<li><a href="@routes.ServiceExecutionLogController.getServiceLog">Service Execution Log</a></li>
 							<li><a href="@routes.ServiceExecutionLogController.searchServiceLog">Search Service Log</a></li>
 							<li><a href="@routes.DatasetLogController.getAllDatasetLogs">Dataset Log</a></li>
-							<li><a href="@routes.AnalyticsController.getKnowledgeGraph">Knowledge Graph</a></li>
+							<li><a href="@routes.AnalyticsController.getKnowledgeGraph()">Knowledge Graph</a></li>
 							<li><a href="@routes.AnalyticsController.getRelationalKnowledgeGraph">Relational Knowledge Graph</a></li>
 							<li><a href="@routes.AnalyticsController.getDatasetRecommend">Semantic Dataset Analytics</a></li>
 							<li><a href="@routes.AnalyticsController.getScientistRecommend">User Analytics</a></li>
@@ -86,6 +85,7 @@
 							<li><a href="@routes.Application.home()">Home</a></li>
 							<li><a href="@routes.AboutController.aboutUs()">About Us</a></li>
 							<li><a href="@routes.AboutController.aboutProject()">About project</a></li>
+							<li><a href="@routes.AboutController.FAQs()">FRQs</a></li>
 							<li><a href="@routes.AboutController.tutorial()">Tutorial</a></li>
 						</ul>
 					</li>

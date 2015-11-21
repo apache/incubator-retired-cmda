@@ -353,7 +353,14 @@ public class ClimateServiceController extends Controller {
 		return ok(mostPopularServices.render(climateServices));
 	}
 	
-	public static Result recommendationSummary() {
+	public static Result recommendationSummary(String userId) {		
+		
+		List<String> userBasedDataset = new ArrayList<String>();
+		
+		List<String> itemBasedDataset = new ArrayList<String>();
+		
+		List<String> featureBasedDataset = new ArrayList<String>();
+		
 		List<ClimateService> climateServices = new ArrayList<ClimateService>();
 		
 		List<Dataset> dataSetsList = new ArrayList<Dataset>();
@@ -367,17 +374,9 @@ public class ClimateServiceController extends Controller {
 		// if no value is returned or error or is not json array
 		if (usersNode == null || usersNode.has("error")
 				|| !usersNode.isArray()) {
-			return ok(recommendationSummary.render(climateServices, dataSetsList, usersList));
+			return ok(recommendationSummary.render(climateServices, dataSetsList, usersList, userBasedDataset, featureBasedDataset, itemBasedDataset, userId));
 		}
 
-		
-//		JsonNode dataSetsNode = RESTfulCalls.getAPI(Constants.URL_HOST
-//				+ Constants.CMU_BACKEND_PORT
-//				+ Constants.GET_ALL_DATASETS);
-//		
-//		System.out.println("GET API: " + Constants.URL_HOST
-//				+ Constants.CMU_BACKEND_PORT
-//				+ Constants.GET_ALL_DATASETS);
 
 		JsonNode climateServicesNode = RESTfulCalls.getAPI(Constants.URL_HOST
 				+ Constants.CMU_BACKEND_PORT
@@ -386,16 +385,9 @@ public class ClimateServiceController extends Controller {
 		// if no value is returned or error or is not json array
 		if (climateServicesNode == null || climateServicesNode.has("error")
 				|| !climateServicesNode.isArray()) {
-			return ok(recommendationSummary.render(climateServices, dataSetsList, usersList));
+			return ok(recommendationSummary.render(climateServices, dataSetsList, usersList, userBasedDataset, featureBasedDataset, itemBasedDataset, userId));
 		}
 		
-//		// if no value is returned or error or is not json array
-//		if (dataSetsNode == null || dataSetsNode.has("error")
-//				|| !dataSetsNode.isArray()) {
-//			System.out.println("All oneDatasets format has error!");
-//			return ok(recommendationSummary.render(climateServices, dataSetsList));
-//		}
-
 		// parse the json string into object
 		for (int i = 0; i < climateServicesNode.size(); i++) {
 			JsonNode json = climateServicesNode.path(i);
@@ -403,13 +395,6 @@ public class ClimateServiceController extends Controller {
 			climateServices.add(newService);
 		}		
 
-//		// parse the json string into object
-//		for (int i = 0; i < dataSetsNode.size(); i++) {
-//			JsonNode json = dataSetsNode.path(i);
-//			Dataset oneDataset = DatasetController.deserializeJsonToDataSet(json);
-//			dataSetsList.add(oneDataset);
-//		}
-		
 		
 		// parse the json string into object
 		for (int i = 0; i < usersNode.size(); i++) {
@@ -430,7 +415,44 @@ public class ClimateServiceController extends Controller {
 
 		int k = Integer.MAX_VALUE; // Set the first popular K datasets
 		dataSetsList = DatasetController.queryFirstKDatasetsWithoutClimateService("", "", "", "", "", new Date(0), new Date(), k);
-		return ok(recommendationSummary.render(climateServices, dataSetsList, usersList));
+		
+		
+		
+		JsonNode userBased = RESTfulCalls.getAPI(Constants.URL_SERVER
+				+ Constants.URL_FLASK
+				+ Constants.GET_TOP_K_USER_BASED_DATASET1 + userId
+				+ Constants.GET_TOP_K_USER_BASED_DATASET2 + 10);
+		
+		for (int i = 0; i<userBased.size(); i++) {
+			userBasedDataset.add(userBased.path(i).findValue("dataset").toString());
+		}
+		
+		JsonNode itemBased = RESTfulCalls.getAPI(Constants.URL_SERVER
+				+ Constants.URL_FLASK
+				+ Constants.GET_TOP_K_ITEM_BASED_DATASET1 + userId
+				+ Constants.GET_TOP_K_ITEM_BASED_DATASET2 + 10);
+		
+		for (int i = 0; i<itemBased.size(); i++) {
+			itemBasedDataset.add(itemBased.path(i).findValue("dataset").toString());
+		}
+		
+		JsonNode featureBased = RESTfulCalls.getAPI(Constants.URL_SERVER
+				+ Constants.URL_FLASK
+				+ Constants.GET_TOP_K_FEATURE_BASED_DATASET1 + userId
+				+ Constants.GET_TOP_K_FEATURE_BASED_DATASET2 + 10);
+		
+		for (int i = 0; i<featureBased.size(); i++) {
+			featureBasedDataset.add(featureBased.path(i).findValue("dataset").toString());
+		}
+		
+		System.out.println("--------------------------");
+		System.out.println(userId);
+//		JsonNode test = userBased.path(0);
+//		System.out.println(test.findValue("dataset"));
+		System.out.println(userBasedDataset);
+		System.out.println("--------------------------");
+		
+		return ok(recommendationSummary.render(climateServices, dataSetsList, usersList, userBasedDataset, featureBasedDataset, itemBasedDataset, userId));
 	}
 
 	public static Result mostRecentlyUsedClimateServices() {
@@ -470,12 +492,19 @@ public class ClimateServiceController extends Controller {
 					result.getAbsolutePath()));
 			StringBuilder sb = new StringBuilder();
 			line = br.readLine();
-			int count = 0;
-			while (line != null && count < 22) {
+			//int count = 0;
+			String fileNameLine = "<h2 class=\"text-center\">";
+			while (line != null ) {
 				sb.append(line);
 				sb.append("\n");
 				line = br.readLine();
-				count++;
+				
+//				if (line.length() > 23)
+//					System.out.println("pair1" + line.substring(0, 24));
+//					System.out.println("pair2" + fileNameLine);
+				if (line.length()>= 24 && line.substring(0, 24).equals(fileNameLine)) 
+					break;
+				//count++;
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -487,6 +516,7 @@ public class ClimateServiceController extends Controller {
 		}
 
 		// TEMPOARY SOLUTION : get the fileName from the html page
+		System.out.println("original Name" + line);
 		String tempName = line.substring(24, line.length() - 5);
 		String fileName = "public/html/service"
 				+ tempName.substring(0, 1).toUpperCase()

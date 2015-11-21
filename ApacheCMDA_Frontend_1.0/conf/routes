@@ -16,7 +16,9 @@ POST	/isEmailExisted				controllers.Application.isEmailExisted()
 
 
 #recommendation overview
-GET		/climateService/recommendationSummary					controllers.ClimateServiceController.recommendationSummary()
+GET		/climateService/recommendationSummary/:userId				controllers.ClimateServiceController.recommendationSummary(userId: String)
+
+
 
 # Climate Service
 GET		/climateService/allServices									controllers.ClimateServiceController.showAllClimateServices()
@@ -58,7 +60,7 @@ GET     /datasetRecommend                           controllers.AnalyticsControl
 GET     /profileRecommend                           controllers.AnalyticsController.getScientistRecommend()
 GET     /serviceLogGraph                            controllers.AnalyticsController.getLogGraph()
 GET 	/searchAndGenerateWorkflow					controllers.AnalyticsController.getSearchAndGenerateWorkflow()
-GET     /serviceKnowledgeGraph                      controllers.AnalyticsController.getKnowledgeGraph()
+GET     /serviceKnowledgeGraph                      controllers.AnalyticsController.getKnowledgeGraph(param1 ?= "User", param2 ?= "Dataset", param3 ?= "Service")
 GET     /relationalKnowledgeGraph                   controllers.AnalyticsController.getRelationalKnowledgeGraph()
 POST	/getSpecifiedKnowledgeGraph					controllers.AnalyticsController.getSpecifiedKnowledgeGraph()
 POST	/getShortestPath 							controllers.AnalyticsController.getShortestPath()
@@ -77,6 +79,7 @@ POST    /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /aboutUs					controllers.AboutController.aboutUs()
 GET     /aboutProject				controllers.AboutController.aboutProject()
 GET		/tutorial					controllers.AboutController.tutorial()
+GET		/FAQs						controllers.AboutController.FAQs()
 
 # BugReporting
 GET         /bugs                                                controllers.BugReportController.reports()
